@@ -1,0 +1,24 @@
+#file: noinspection SpellCheckingInspection
+name: GlitchedSmp
+version: '1.1.0'
+main: me.foxils.glitchedSmp.GlitchedSmp
+api-version: '1.21'
+authors: [ Foxils @notFoxils on Discord ]
+description: Plugin for the Glitched SMP
+
+softdepend:
+  - foxutils-items
+
+commands:
+  setcraftable:
+    description: enable crafting of said one time craftable UberItem
+    usage: /<command>
+    permission: op
+  get:
+    description: get custom item with the item key
+    usage: /<command> <itemkey>
+    permission: op
+  getLevel:
+    description: get custom item level in hand
+    usage: /<command>
+    permission: op
