@@ -27,7 +27,7 @@ public class AirGem extends UpgradeableItem implements TakeDamageAction, AttackA
     private static final Plugin plugin = GlitchedSmp.getInstance();
 
     private static final PotionEffect attackBuffEffect = new PotionEffect(PotionEffectType.SPEED, 200, 0, false, false);
-    private static final PotionEffect attackDebuffEffect = new PotionEffect(PotionEffectType.SPEED, 200, 0, false, false);
+    private static final PotionEffect attackDebuffEffect = new PotionEffect(PotionEffectType.SLOW_FALLING, 200, 0, false, false);
 
     public AirGem(Material material, String name, NamespacedKey key, List<ItemStack> itemsForRecipe, boolean shapedRecipe) {
         super(material, name, key, itemsForRecipe, shapedRecipe, 3, 0);
@@ -52,9 +52,9 @@ public class AirGem extends UpgradeableItem implements TakeDamageAction, AttackA
     }
 
     private void airPunch(LivingEntity attacker, LivingEntity damaged) {
-        Vector lookDir = attacker.getEyeLocation().getDirection().clone().multiply(1.5).add(new Vector(0, 1, 0));
+        Vector lookDir = attacker.getEyeLocation().getDirection().clone().multiply(new Vector(0.75, 1.5, 0.75));
 
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> damaged.setVelocity(lookDir.multiply(new Vector(0.5, 1, 0.5))), 1L);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> damaged.setVelocity(lookDir), 1L);
     }
 
     private void airAttackEffects(LivingEntity attacker, LivingEntity damaged) {
