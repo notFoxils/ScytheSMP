@@ -6,6 +6,7 @@ import me.foxils.foxutils.itemactions.PassiveAction;
 import me.foxils.foxutils.itemactions.TakeDamageAction;
 import me.foxils.foxutils.utilities.ItemUtils;
 import me.foxils.glitchedSmp.GlitchedSmp;
+import me.foxils.foxutils.utilities.ItemAbility;
 import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.*;
@@ -22,7 +23,7 @@ import org.bukkit.util.Vector;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class WaterGem extends Item implements TakeDamageAction, PassiveAction, ClickActions {
+public class WaterGem extends UpgradeableItem implements TakeDamageAction, PassiveAction, ClickActions {
 
     private int arrows = 4;
 
@@ -43,8 +44,8 @@ public class WaterGem extends Item implements TakeDamageAction, PassiveAction, C
             new PotionEffect(PotionEffectType.DOLPHINS_GRACE, 200, 0, false, false)
     );
 
-    public WaterGem(Material material, String name, NamespacedKey key, List<ItemStack> itemsForRecipe, boolean shapedRecipe) {
-        super(material, name, key, itemsForRecipe, shapedRecipe);
+    public WaterGem(Material material, int customModelData, String name, NamespacedKey key, List<ItemAbility> abilityList) {
+        super(material, customModelData, name, key, abilityList, 3, 0);
     }
 
     @Override
@@ -134,7 +135,7 @@ public class WaterGem extends Item implements TakeDamageAction, PassiveAction, C
         }
 
         tracedEntity.damage(0, playerAttacking);
-        tracedEntity.setHealth(Math.max(tracedEntity.getHealth() - 6, 0));
+        tracedEntity.setHealth(Math.max(tracedEntity.getHealth() - 3, 0));
         tracedEntity.addPotionEffect(waterJetPotionEffect);
     }
 
@@ -264,7 +265,7 @@ public class WaterGem extends Item implements TakeDamageAction, PassiveAction, C
                     }
 
                     hitEntity.damage(0.000001, playerThrower);
-                    hitEntity.setHealth(Math.max(0, hitEntity.getHealth() - 6));
+                    hitEntity.setHealth(Math.max(0, hitEntity.getHealth() - 8));
 
                     if (!toBeRemoved.contains(blockGroup)) {
                         toBeRemoved.add(blockGroup);
@@ -291,7 +292,7 @@ public class WaterGem extends Item implements TakeDamageAction, PassiveAction, C
     }
 
     private void waterArrow(Player player, ItemStack item) {
-        if (!ItemUtils.getCooldown(new NamespacedKey(plugin, "water_arrow_restock"), item, 10)) {
+        if (!ItemUtils.getCooldown(new NamespacedKey(plugin, "water_arrow_restock"), item, 420)) {
             arrows = 4;
         }
 
@@ -320,6 +321,7 @@ public class WaterGem extends Item implements TakeDamageAction, PassiveAction, C
         arrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
 
         arrow.setBasePotionType(PotionType.POISON);
+        arrow.setColor(Color.AQUA);
         arrow.setDamage(2);
     }
 }

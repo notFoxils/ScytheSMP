@@ -3,6 +3,7 @@ package me.foxils.glitchedSmp.items;
 import me.foxils.foxutils.Item;
 import me.foxils.foxutils.ItemRegistry;
 import me.foxils.foxutils.itemactions.ClickActions;
+import me.foxils.foxutils.utilities.ItemAbility;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -11,8 +12,8 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
 public class GemUpgrade extends Item implements ClickActions { //InventoryClickAction as well
-    public GemUpgrade(Material material, String name, NamespacedKey key, List<ItemStack> itemsForRecipe, boolean shapedRecipe) {
-        super(material, name, key, itemsForRecipe, shapedRecipe);
+    public GemUpgrade(Material material, String name, NamespacedKey key, List<ItemAbility> abilityList, List<ItemStack> itemsForRecipe, boolean shapedRecipe) {
+        super(material, name, key, abilityList, itemsForRecipe, shapedRecipe);
     }
 
     @Override

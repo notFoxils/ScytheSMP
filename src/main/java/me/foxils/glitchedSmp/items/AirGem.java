@@ -3,6 +3,7 @@ package me.foxils.glitchedSmp.items;
 import me.foxils.foxutils.itemactions.*;
 import me.foxils.foxutils.utilities.ItemUtils;
 import me.foxils.glitchedSmp.GlitchedSmp;
+import me.foxils.foxutils.utilities.ItemAbility;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -29,8 +30,11 @@ public class AirGem extends UpgradeableItem implements TakeDamageAction, AttackA
     private static final PotionEffect attackBuffEffect = new PotionEffect(PotionEffectType.SPEED, 200, 0, false, false);
     private static final PotionEffect attackDebuffEffect = new PotionEffect(PotionEffectType.SLOW_FALLING, 200, 0, false, false);
 
-    public AirGem(Material material, String name, NamespacedKey key, List<ItemStack> itemsForRecipe, boolean shapedRecipe) {
-        super(material, name, key, itemsForRecipe, shapedRecipe, 3, 0);
+    private static final NamespacedKey airAttackEffectsKey = new NamespacedKey(plugin, "air_attack_effects_cooldown");
+    private static final NamespacedKey airPunchKey = new NamespacedKey(plugin, "air_punch_cooldown");
+
+    public AirGem(Material material, int customModelData, String name, NamespacedKey key, List<ItemAbility> abilityList) {
+        super(material, customModelData, name, key, abilityList, 3, 0);
     }
 
     @Override
@@ -42,22 +46,30 @@ public class AirGem extends UpgradeableItem implements TakeDamageAction, AttackA
             return;
         }
 
-        airPunch(attacker, damaged);
+        airPunch(attacker, damaged, item);
 
         if (getLevel(item) < 2) {
             return;
         }
 
-        airAttackEffects(attacker, damaged);
+        airAttackEffects(attacker, damaged, item);
     }
 
-    private void airPunch(LivingEntity attacker, LivingEntity damaged) {
+    private void airPunch(LivingEntity attacker, LivingEntity damaged, ItemStack item) {
+        if (ItemUtils.getCooldown(airPunchKey, item, 120)) {
+            return;
+        }
+
         Vector lookDir = attacker.getEyeLocation().getDirection().clone().multiply(new Vector(0.75, 1.5, 0.75));
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> damaged.setVelocity(lookDir), 1L);
     }
 
-    private void airAttackEffects(LivingEntity attacker, LivingEntity damaged) {
+    private void airAttackEffects(LivingEntity attacker, LivingEntity damaged, ItemStack item) {
+        if (ItemUtils.getCooldown(airAttackEffectsKey, item, 120)) {
+            return;
+        }
+
         attacker.addPotionEffect(attackBuffEffect);
         damaged.addPotionEffect(attackDebuffEffect);
     }
@@ -93,7 +105,7 @@ public class AirGem extends UpgradeableItem implements TakeDamageAction, AttackA
             return;
         }
 
-        if (ItemUtils.getCooldown(new NamespacedKey(plugin, "airgem_doublejump"), item, 4)) {
+        if (ItemUtils.getCooldown(new NamespacedKey(plugin, "airgem_doublejump"), item, 5)) {
             return;
         }
 

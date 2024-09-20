@@ -1,9 +1,9 @@
 package me.foxils.glitchedSmp.items;
 
-import me.foxils.foxutils.Item;
 import me.foxils.foxutils.itemactions.*;
 import me.foxils.foxutils.utilities.ItemUtils;
 import me.foxils.glitchedSmp.GlitchedSmp;
+import me.foxils.foxutils.utilities.ItemAbility;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
@@ -26,7 +27,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-public class EarthGem extends Item implements MineAction, DropAction, ClickActions, PassiveAction {
+public class EarthGem extends UpgradeableItem implements MineAction, DropAction, ClickActions, PassiveAction {
 
     private static final Plugin plugin = GlitchedSmp.getInstance();
 
@@ -41,13 +42,13 @@ public class EarthGem extends Item implements MineAction, DropAction, ClickActio
     private static final NamespacedKey miningBoundsCooldownKey = new NamespacedKey(plugin, "miningBoundsCooldown");
 
     // Extend base item to add function
-    public EarthGem(Material material, String name, NamespacedKey key, List<ItemStack> itemsForRecipe, boolean shapedRecipe) {
-        super(material, name, key, itemsForRecipe, shapedRecipe);
+    public EarthGem(Material material, int customModelData, String name, NamespacedKey key, List<ItemAbility> abilityList) {
+        super(material, customModelData, name, key, abilityList, 3, 0);
     }
 
     @Override
     public ItemStack createItem(int amount) {
-        ItemStack newItem =  super.createItem(amount);
+        ItemStack newItem = super.createItem(amount);
 
         return ItemUtils.storeDataOfType(PersistentDataType.INTEGER_ARRAY, new int[]{-1, 2}, miningBoundKey, newItem);
     }
@@ -247,7 +248,7 @@ public class EarthGem extends Item implements MineAction, DropAction, ClickActio
                     }
 
                     hitEntity.damage(0.000001, playerThrower);
-                    hitEntity.setHealth(Math.max(0, hitEntity.getHealth() - 6));
+                    hitEntity.setHealth(Math.max(0, hitEntity.getHealth() - 8));
 
                     if (!toBeRemoved.contains(blockGroup)) {
                         toBeRemoved.add(blockGroup);

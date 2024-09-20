@@ -3,7 +3,7 @@ name: GlitchedSmp
 version: '1.1.0'
 main: me.foxils.glitchedSmp.GlitchedSmp
 api-version: '1.21'
-authors: [ Foxils @notFoxils on Discord ]
+authors: [ Foxils, foxils. on Discord ]
 description: Plugin for the Glitched SMP
 
 softdepend:

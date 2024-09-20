@@ -6,6 +6,7 @@ import me.foxils.foxutils.itemactions.MineAction;
 import me.foxils.foxutils.itemactions.PassiveAction;
 import me.foxils.foxutils.utilities.ItemUtils;
 import me.foxils.glitchedSmp.GlitchedSmp;
+import me.foxils.foxutils.utilities.ItemAbility;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -36,7 +37,7 @@ public class VillagerGem extends UpgradeableItem implements PassiveAction, MineA
 
     private static final PotionEffect heroOfTheVillageTen = new PotionEffect(PotionEffectType.HERO_OF_THE_VILLAGE, 6000, 9);
 
-    private static final ItemStack villagerEggs = new ItemStack(Material.VILLAGER_SPAWN_EGG, 2);
+    private static final ItemStack villagerStack = new ItemStack(Material.VILLAGER_SPAWN_EGG, 1);
 
     private static final NamespacedKey miningMultiplier = new NamespacedKey(plugin, "mining_multiplier");
     private static final NamespacedKey miningMultiplierCooldown = new NamespacedKey(plugin, "mining_multiplier_cooldown");
@@ -44,15 +45,15 @@ public class VillagerGem extends UpgradeableItem implements PassiveAction, MineA
     private static final NamespacedKey heroTenCooldown = new NamespacedKey(plugin, "hero_ten_cooldown");
     private static final NamespacedKey villagerEggCooldown = new NamespacedKey(plugin, "villager_egg_cooldown");
 
-    public VillagerGem(Material material, String name, NamespacedKey key, List<ItemStack> itemsForRecipe, boolean shapedRecipe) {
-        super(material, name, key, itemsForRecipe, shapedRecipe, 3, 0);
+    public VillagerGem(Material material, int customModelData, String name, NamespacedKey key, List<ItemAbility> abilityList) {
+        super(material, customModelData, name, key, abilityList, 3, 0);
     }
 
     @Override
     public ItemStack createItem(int amount) {
         ItemStack newItem = super.createItem(amount);
 
-        return ItemUtils.storeIntegerData(1, newItem, miningMultiplier);
+        return ItemUtils.storeIntegerData(miningMultiplier, newItem, 1);
     }
 
     @Override
@@ -66,12 +67,103 @@ public class VillagerGem extends UpgradeableItem implements PassiveAction, MineA
         setDropMultiplier(itemUsed, player);
     }
 
+    @Override
+    public void blockMineAction(BlockBreakEvent blockBreakEvent, ItemStack itemStack, ItemStack thisItem) {
+        if (getLevel(thisItem) != 3) {
+            return;
+        }
+
+        multiplyOnMine(blockBreakEvent, thisItem, itemStack);
+    }
+
+    @Override
+    public void rightClickAir(PlayerInteractEvent event) {
+        ItemStack item = event.getItem();
+        Player player = event.getPlayer();
+
+        int itemLevel = getLevel(item);
+
+        if (itemLevel < 2) {
+            return;
+        }
+
+        grantHeroTen(player, item);
+    }
+
+    @Override
+    public void rightClickBlock(PlayerInteractEvent event) {
+        rightClickAir(event);
+    }
+    @Override
+    public void shiftRightClickAir(PlayerInteractEvent event) {
+        rightClickAir(event);
+    }
+    @Override
+    public void shiftRightClickBlock(PlayerInteractEvent event) {
+        rightClickAir(event);
+    }
+
+    @Override
+    public void passiveAction(Player player, ItemStack item) {
+        grantPassiveEffects(player);
+
+        giveVillagerEgg(player, item);
+
+        if (getLevel(item) < 1) return;
+
+        enchantWithFortune(player, item);
+
+        if (getLevel(item) != 3) return;
+
+        grantMaxedEffects(player);
+    }
+
+    private void grantPassiveEffects(Player player) {
+        player.addPotionEffects(defaultEffects);
+    }
+
+    private void giveVillagerEgg(Player player, ItemStack item) {
+        if (ItemUtils.getCooldown(villagerEggCooldown, item, 900)) {
+            return;
+        }
+
+        PlayerInventory inventory = player.getInventory();
+
+        inventory.addItem(villagerStack);
+    }
+
+    private void enchantWithFortune(Player player, ItemStack thisItem) {
+        if (ItemUtils.getCooldown(fortuneEnchantCooldown, thisItem, 900)) {
+            return;
+        }
+
+        ItemStack item = player.getInventory().getItemInMainHand();
+
+        if (!item.getType().name().toLowerCase().contains("pickaxe")) {
+            return;
+        }
+
+        Map<Enchantment, Integer> itemCurrentEnchantmentMap = item.getEnchantments();
+
+        if (itemCurrentEnchantmentMap.containsKey(Enchantment.FORTUNE)) {
+            if (itemCurrentEnchantmentMap.get(Enchantment.FORTUNE) >= 2) {
+                return;
+            }
+        }
+
+        item.addEnchantment(Enchantment.FORTUNE, 2);
+    }
+
+    private void grantMaxedEffects(Player player) {
+        player.addPotionEffects(maxedEffects);
+    }
+
     private void setDropMultiplier(ItemStack itemUsed, Player player) {
         if (ItemUtils.getCooldown(miningMultiplierCooldown, itemUsed, 900)) {
             return;
         }
 
-        ItemStack item = ItemUtils.storeIntegerData(5, itemUsed, miningMultiplier);
+        ItemStack item = ItemUtils.storeIntegerData(miningMultiplier, itemUsed, 5);
 
         new BukkitRunnable() {
             @Override
@@ -85,19 +177,18 @@ public class VillagerGem extends UpgradeableItem implements PassiveAction, MineA
                         continue;
                     }
 
-                    ItemUtils.storeIntegerData(1, itemStack, miningMultiplier);
+                    ItemUtils.storeIntegerData(miningMultiplier, itemStack, 1);
                 }
             }
         }.runTaskLater(plugin, 100L);
     }
 
-    @Override
-    public void blockMineAction(BlockBreakEvent blockBreakEvent, ItemStack itemStack, ItemStack thisItem) {
-        if (getLevel(thisItem) != 3) {
+    private void grantHeroTen(Player player, ItemStack item) {
+        if (ItemUtils.getCooldown(heroTenCooldown, item, 1800)) {
             return;
         }
 
-        multiplyOnMine(blockBreakEvent, thisItem, itemStack);
+        player.addPotionEffect(heroOfTheVillageTen);
     }
 
     private void multiplyOnMine(BlockBreakEvent blockBreakEvent, ItemStack thisItem, ItemStack itemUsedToMine) {
@@ -128,96 +219,5 @@ public class VillagerGem extends UpgradeableItem implements PassiveAction, MineA
         }
     }
 
-    @Override
-    public void rightClickAir(PlayerInteractEvent event) {
-        ItemStack item = event.getItem();
-        Player player = event.getPlayer();
 
-        int itemLevel = getLevel(item);
-
-        if (itemLevel < 2) {
-            return;
-        }
-
-        grantHeroTen(player, item);
-    }
-
-    private void grantHeroTen(Player player, ItemStack item) {
-        if (ItemUtils.getCooldown(heroTenCooldown, item, 1800)) {
-            return;
-        }
-
-        player.addPotionEffect(heroOfTheVillageTen);
-    }
-
-    @Override
-    public void rightClickBlock(PlayerInteractEvent event) {
-        rightClickAir(event);
-    }
-    @Override
-    public void shiftRightClickAir(PlayerInteractEvent event) {
-        rightClickAir(event);
-    }
-    @Override
-    public void shiftRightClickBlock(PlayerInteractEvent event) {
-        rightClickAir(event);
-    }
-
-    @Override
-    public void passiveAction(Player player, ItemStack item) {
-        grantDefaultEffects(player);
-        giveVillagerEgg(player, item);
-
-        if (getLevel(item) < 1) {
-            return;
-        }
-
-        enchantWithFortune(player, item);
-
-        if (getLevel(item) != 3) {
-            return;
-        }
-
-        grantMaxedEffects(player);
-    }
-
-    private void grantDefaultEffects(Player player) {
-        player.addPotionEffects(defaultEffects);
-    }
-
-    private void giveVillagerEgg(Player player, ItemStack item) {
-        if (ItemUtils.getCooldown(villagerEggCooldown, item, 3600)) {
-            return;
-        }
-
-        PlayerInventory inventory = player.getInventory();
-
-        inventory.addItem(villagerEggs);
-    }
-
-    private void enchantWithFortune(Player player, ItemStack thisItem) {
-        if (ItemUtils.getCooldown(fortuneEnchantCooldown, thisItem, 900)) {
-            return;
-        }
-
-        ItemStack item = player.getInventory().getItemInMainHand();
-
-        if (!item.getType().name().toLowerCase().contains("pickaxe")) {
-            return;
-        }
-
-        Map<Enchantment, Integer> itemCurrentEnchantmentMap = item.getEnchantments();
-
-        if (itemCurrentEnchantmentMap.containsKey(Enchantment.FORTUNE)) {
-            if (itemCurrentEnchantmentMap.get(Enchantment.FORTUNE) >= 2) {
-                return;
-            }
-        }
-
-        item.addEnchantment(Enchantment.FORTUNE, 2);
-    }
-
-    private void grantMaxedEffects(Player player) {
-        player.addPotionEffects(maxedEffects);
-    }
 }

@@ -3,10 +3,12 @@ package me.foxils.glitchedSmp.items;
 import me.foxils.foxutils.Item;
 import me.foxils.foxutils.utilities.ItemUtils;
 import me.foxils.glitchedSmp.GlitchedSmp;
+import me.foxils.foxutils.utilities.ItemAbility;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UpgradeableItem extends Item {
@@ -16,8 +18,8 @@ public class UpgradeableItem extends Item {
 
     private static final NamespacedKey levelKey = new NamespacedKey(GlitchedSmp.getInstance(), "upgrade-level");
 
-    public UpgradeableItem(Material material, String name, NamespacedKey key, List<ItemStack> itemsForRecipe, boolean shapedRecipe, int maxLevel, int minLevel) {
-        super(material, name, key, itemsForRecipe, shapedRecipe);
+    public UpgradeableItem(Material material, int customModelData, String name, NamespacedKey key, List<ItemAbility> abilityList, int maxLevel, int minLevel) {
+        super(material, customModelData, name, key, abilityList);
 
         this.minLevel = minLevel;
         this.maxLevel = maxLevel;
@@ -27,7 +29,9 @@ public class UpgradeableItem extends Item {
     public ItemStack createItem(int amount) {
         ItemStack newItem = super.createItem(amount);
 
-        return ItemUtils.storeIntegerData(minLevel, newItem, levelKey);
+        ItemUtils.nameItem(newItem, GlitchedSmp.hex(getName()));
+
+        return ItemUtils.storeIntegerData(levelKey, newItem, minLevel);
     }
 
     public void upgradeLevel(int amount, ItemStack item) {
@@ -37,8 +41,7 @@ public class UpgradeableItem extends Item {
             return;
         }
 
-        ItemUtils.storeIntegerData(Math.min(maxLevel, level + amount), item, levelKey);
-
+        ItemUtils.storeIntegerData(levelKey, item, Math.min(maxLevel, level + amount));
     }
 
     public void downgradeLevel(int amount, ItemStack item) {
@@ -48,7 +51,7 @@ public class UpgradeableItem extends Item {
             return;
         }
 
-        ItemUtils.storeIntegerData(Math.max(minLevel, level - amount), item, levelKey);
+        ItemUtils.storeIntegerData(levelKey, item, Math.min(minLevel, level - amount));
     }
 
     public static int getLevel(ItemStack item) {
