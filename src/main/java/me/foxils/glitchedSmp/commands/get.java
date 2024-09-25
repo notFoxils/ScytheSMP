@@ -2,7 +2,6 @@ package me.foxils.glitchedSmp.commands;
 
 import me.foxils.foxutils.Item;
 import me.foxils.foxutils.ItemRegistry;
-import me.foxils.glitchedSmp.GlitchedSmp;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -10,13 +9,18 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 public class get implements CommandExecutor {
 
-    private final Plugin plugin = GlitchedSmp.getInstance();
+    private final Plugin plugin;
+
+    public get(Plugin plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, String[] strings) {
         if (strings.length != 2 && !(commandSender instanceof Player)) {
             commandSender.sendMessage("No player provided to give item");
             return false;

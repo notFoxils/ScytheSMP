@@ -8,16 +8,19 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class GemUpgrade extends Item implements ClickActions { //InventoryClickAction as well
-    public GemUpgrade(Material material, String name, NamespacedKey key, List<ItemAbility> abilityList, List<ItemStack> itemsForRecipe, boolean shapedRecipe) {
-        super(material, name, key, abilityList, itemsForRecipe, shapedRecipe);
+public class GemUpgrade extends Item implements ClickActions {
+
+    public GemUpgrade(Material material, String name, Plugin plugin, @NotNull List<ItemAbility> abilityList, List<ItemStack> itemsForRecipe, boolean shapedRecipe) {
+        super(material, name, plugin, abilityList, itemsForRecipe, shapedRecipe);
     }
 
     @Override
-    public void rightClickAir(PlayerInteractEvent event) {
+    public void rightClickAir(PlayerInteractEvent event, ItemStack itemInteracted) {
         // Implement upgrading gems in inventory
 
         // Some looping, etc
@@ -58,15 +61,15 @@ public class GemUpgrade extends Item implements ClickActions { //InventoryClickA
     }
 
     @Override
-    public void rightClickBlock(PlayerInteractEvent event) {
-        rightClickAir(event);
+    public void rightClickBlock(PlayerInteractEvent event, ItemStack itemInteracted) {
+        rightClickAir(event, itemInteracted);
     }
     @Override
-    public void shiftRightClickAir(PlayerInteractEvent event) {
-        rightClickAir(event);
+    public void shiftRightClickAir(PlayerInteractEvent event, ItemStack itemInteracted) {
+        rightClickAir(event, itemInteracted);
     }
     @Override
-    public void shiftRightClickBlock(PlayerInteractEvent event) {
-        rightClickAir(event);
+    public void shiftRightClickBlock(PlayerInteractEvent event, ItemStack itemInteracted) {
+        rightClickAir(event, itemInteracted);
     }
 }

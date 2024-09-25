@@ -2,8 +2,9 @@ package me.foxils.glitchedSmp.items;
 
 import me.foxils.foxutils.itemactions.*;
 import me.foxils.foxutils.utilities.ItemUtils;
-import me.foxils.glitchedSmp.GlitchedSmp;
 import me.foxils.foxutils.utilities.ItemAbility;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
@@ -14,7 +15,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
@@ -29,21 +29,19 @@ import java.util.List;
 
 public class EarthGem extends UpgradeableItem implements MineAction, DropAction, ClickActions, PassiveAction {
 
-    private static final Plugin plugin = GlitchedSmp.getInstance();
-
     private static final List<List<FallingBlock>> blocksGroupsThrown = new ArrayList<>();
     private static final HashMap<List<FallingBlock>, Player> thrownBlockGroupPlayerMap = new HashMap<>();
     private static List<List<FallingBlock>> toBeRemoved = new ArrayList<>();
 
-    private static final Vector throwVector = new Vector(0, 0.5, 0);
-    private static final PotionEffect earthHasteEffect = new PotionEffect(PotionEffectType.HASTE, 200, 1, false, false);
+    private final Vector throwVector = new Vector(0, 0.5, 0);
+    private final PotionEffect earthHasteEffect = new PotionEffect(PotionEffectType.HASTE, 200, 1, false, false);
 
-    private static final NamespacedKey miningBoundKey = new NamespacedKey(plugin, "miningBounds");
-    private static final NamespacedKey miningBoundsCooldownKey = new NamespacedKey(plugin, "miningBoundsCooldown");
+    private final NamespacedKey miningBoundKey = new NamespacedKey(plugin, "miningBounds");
+    private final NamespacedKey miningBoundsCooldownKey = new NamespacedKey(plugin, "miningBoundsCooldown");
 
     // Extend base item to add function
-    public EarthGem(Material material, int customModelData, String name, NamespacedKey key, List<ItemAbility> abilityList) {
-        super(material, customModelData, name, key, abilityList, 3, 0);
+    public EarthGem(Material material, int customModelData, String name, Plugin plugin, List<ItemAbility> abilityList) {
+        super(material, customModelData, name, plugin, abilityList, 3, 0);
     }
 
     @Override
@@ -89,7 +87,7 @@ public class EarthGem extends UpgradeableItem implements MineAction, DropAction,
 
     @Override
     public void dropItemAction(PlayerDropItemEvent event, ItemStack itemUsed) {
-        if (ItemUtils.getCooldown(miningBoundsCooldownKey, itemUsed, 900)) {
+        if (ItemUtils.getCooldown(miningBoundsCooldownKey, itemUsed, 900, event.getPlayer(), new TextComponent(ChatColor.GREEN + "" + ChatColor.BOLD + "Used Tumble-Four³"))) {
             return;
         }
 
@@ -115,7 +113,7 @@ public class EarthGem extends UpgradeableItem implements MineAction, DropAction,
     }
 
     private void doEarthToss(Player player, ItemStack item) {
-        if (ItemUtils.getCooldown(new NamespacedKey(plugin, "earth_toss_cooldown"), item, 900)) {
+        if (ItemUtils.getCooldown(new NamespacedKey(plugin, "earth_toss_cooldown"), item, 900, player, new TextComponent(ChatColor.GRAY + "" + ChatColor.BOLD + "Used Terrain-Toss"))) {
             return;
         }
 
@@ -162,7 +160,7 @@ public class EarthGem extends UpgradeableItem implements MineAction, DropAction,
     }
 
     @Override
-    public void rightClickAir(PlayerInteractEvent event) {
+    public void rightClickAir(PlayerInteractEvent event, ItemStack itemInteracted) {
         Player player = event.getPlayer();
         ItemStack item = event.getItem();
 
@@ -170,11 +168,11 @@ public class EarthGem extends UpgradeableItem implements MineAction, DropAction,
     }
 
     @Override
-    public void rightClickBlock(PlayerInteractEvent event) {
-        rightClickAir(event);
+    public void rightClickBlock(PlayerInteractEvent event, ItemStack itemInteracted) {
+        rightClickAir(event, itemInteracted);
     }
 
-    private static FallingBlock createThrowBlock(World world, Location location) {
+    private FallingBlock createThrowBlock(World world, Location location) {
         BlockData blockData = world.getBlockData(location);
         Material blockMaterial = blockData.getMaterial();
 
@@ -259,7 +257,7 @@ public class EarthGem extends UpgradeableItem implements MineAction, DropAction,
         }
     }
 
-    private static void shieldDurability(Player player) {
+    private void shieldDurability(Player player) {
         PlayerInventory inventory = player.getInventory();
 
         ItemStack offHandItem = inventory.getItemInOffHand();
@@ -283,7 +281,7 @@ public class EarthGem extends UpgradeableItem implements MineAction, DropAction,
         offHandItem.setItemMeta(damageableMeta);
     }
 
-    private static void effectBonus(Player player) {
+    private void effectBonus(Player player) {
         player.addPotionEffect(earthHasteEffect);
     }
 

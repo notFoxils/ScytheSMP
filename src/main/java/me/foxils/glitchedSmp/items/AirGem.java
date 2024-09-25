@@ -4,6 +4,8 @@ import me.foxils.foxutils.itemactions.*;
 import me.foxils.foxutils.utilities.ItemUtils;
 import me.foxils.glitchedSmp.GlitchedSmp;
 import me.foxils.foxutils.utilities.ItemAbility;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -25,16 +27,14 @@ import java.util.List;
 
 public class AirGem extends UpgradeableItem implements TakeDamageAction, AttackAction, DoubleJumpAction, PassiveAction, DropAction {
 
-    private static final Plugin plugin = GlitchedSmp.getInstance();
+    private final PotionEffect attackBuffEffect = new PotionEffect(PotionEffectType.SPEED, 200, 0, false, false);
+    private final PotionEffect attackDebuffEffect = new PotionEffect(PotionEffectType.SLOW_FALLING, 200, 0, false, false);
 
-    private static final PotionEffect attackBuffEffect = new PotionEffect(PotionEffectType.SPEED, 200, 0, false, false);
-    private static final PotionEffect attackDebuffEffect = new PotionEffect(PotionEffectType.SLOW_FALLING, 200, 0, false, false);
+    private final NamespacedKey airAttackEffectsKey = new NamespacedKey(plugin, "air_attack_effects_cooldown");
+    private final NamespacedKey airPunchKey = new NamespacedKey(plugin, "air_punch_cooldown");
 
-    private static final NamespacedKey airAttackEffectsKey = new NamespacedKey(plugin, "air_attack_effects_cooldown");
-    private static final NamespacedKey airPunchKey = new NamespacedKey(plugin, "air_punch_cooldown");
-
-    public AirGem(Material material, int customModelData, String name, NamespacedKey key, List<ItemAbility> abilityList) {
-        super(material, customModelData, name, key, abilityList, 3, 0);
+    public AirGem(Material material, int customModelData, String name, Plugin plugin, List<ItemAbility> abilityList) {
+        super(material, customModelData, name, plugin, abilityList, 3, 0);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class AirGem extends UpgradeableItem implements TakeDamageAction, AttackA
     }
 
     private void airPunch(LivingEntity attacker, LivingEntity damaged, ItemStack item) {
-        if (ItemUtils.getCooldown(airPunchKey, item, 120)) {
+        if (ItemUtils.getCooldown(airPunchKey, item, 120, (Player) attacker, new TextComponent(ChatColor.AQUA + "" + ChatColor.BOLD + "Used Light Wind"))) {
             return;
         }
 
@@ -75,7 +75,7 @@ public class AirGem extends UpgradeableItem implements TakeDamageAction, AttackA
     }
 
     @Override
-    public void onTakeDamage(EntityDamageEvent entityDamageEvent) {
+    public void onTakeDamage(EntityDamageEvent entityDamageEvent, ItemStack itemUsedToFire) {
         cancelFallDamage(entityDamageEvent);
     }
 
@@ -105,7 +105,7 @@ public class AirGem extends UpgradeableItem implements TakeDamageAction, AttackA
             return;
         }
 
-        if (ItemUtils.getCooldown(new NamespacedKey(plugin, "airgem_doublejump"), item, 5)) {
+        if (ItemUtils.getCooldown(new NamespacedKey(plugin, "airgem_doublejump"), item, 5, player, new TextComponent(ChatColor.WHITE + "" + ChatColor.BOLD + "Used Double Jump"))) {
             return;
         }
 
@@ -129,7 +129,7 @@ public class AirGem extends UpgradeableItem implements TakeDamageAction, AttackA
             return;
         }
 
-        if (ItemUtils.getCooldown(new NamespacedKey(plugin, "airgem_flight"), item, 420)) {
+        if (ItemUtils.getCooldown(new NamespacedKey(plugin, "airgem_flight"), item, 420, player, new TextComponent(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Used Air-Channeling"))) {
             return;
         }
 

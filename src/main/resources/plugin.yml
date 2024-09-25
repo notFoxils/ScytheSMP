@@ -1,6 +1,6 @@
 #file: noinspection SpellCheckingInspection
 name: GlitchedSmp
-version: '1.1.0'
+version: '${project.version}'
 main: me.foxils.glitchedSmp.GlitchedSmp
 api-version: '1.21'
 authors: [ Foxils, foxils. on Discord ]

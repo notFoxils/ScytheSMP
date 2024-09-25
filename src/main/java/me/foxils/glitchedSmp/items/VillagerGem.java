@@ -5,8 +5,9 @@ import me.foxils.foxutils.itemactions.DropAction;
 import me.foxils.foxutils.itemactions.MineAction;
 import me.foxils.foxutils.itemactions.PassiveAction;
 import me.foxils.foxutils.utilities.ItemUtils;
-import me.foxils.glitchedSmp.GlitchedSmp;
 import me.foxils.foxutils.utilities.ItemAbility;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -24,29 +25,30 @@ import java.util.*;
 
 public class VillagerGem extends UpgradeableItem implements PassiveAction, MineAction, DropAction, ClickActions {
 
-    private static final Plugin plugin = GlitchedSmp.getInstance();
-
-    private static final List<PotionEffect> defaultEffects = Arrays.asList(
+    private final List<PotionEffect> defaultEffects = Arrays.asList(
             new PotionEffect(PotionEffectType.HASTE, 200, 1, false, false),
             new PotionEffect(PotionEffectType.SPEED, 200, 0, false, false)
     );
 
-    private static final List<PotionEffect> maxedEffects = List.of(
+    private final List<PotionEffect> maxedEffects = List.of(
             new PotionEffect(PotionEffectType.HERO_OF_THE_VILLAGE, 200, 1)
     );
 
-    private static final PotionEffect heroOfTheVillageTen = new PotionEffect(PotionEffectType.HERO_OF_THE_VILLAGE, 6000, 9);
+    private final PotionEffect heroOfTheVillageTen = new PotionEffect(PotionEffectType.HERO_OF_THE_VILLAGE, 6000, 9);
 
-    private static final ItemStack villagerStack = new ItemStack(Material.VILLAGER_SPAWN_EGG, 1);
+    private final ItemStack villagerStack = new ItemStack(Material.VILLAGER_SPAWN_EGG, 1);
 
-    private static final NamespacedKey miningMultiplier = new NamespacedKey(plugin, "mining_multiplier");
-    private static final NamespacedKey miningMultiplierCooldown = new NamespacedKey(plugin, "mining_multiplier_cooldown");
-    private static final NamespacedKey fortuneEnchantCooldown = new NamespacedKey(plugin, "apply_fortune_cooldown");
-    private static final NamespacedKey heroTenCooldown = new NamespacedKey(plugin, "hero_ten_cooldown");
-    private static final NamespacedKey villagerEggCooldown = new NamespacedKey(plugin, "villager_egg_cooldown");
+    private final NamespacedKey miningMultiplierCooldown = new NamespacedKey(plugin, "mining_multiplier_cooldown");
+    private final NamespacedKey miningMultiplier = new NamespacedKey(plugin, "mining_multiplier");
 
-    public VillagerGem(Material material, int customModelData, String name, NamespacedKey key, List<ItemAbility> abilityList) {
-        super(material, customModelData, name, key, abilityList, 3, 0);
+    private final NamespacedKey fortuneEnchantCooldown = new NamespacedKey(plugin, "apply_fortune_cooldown");
+
+    private final NamespacedKey heroTenCooldown = new NamespacedKey(plugin, "hero_ten_cooldown");
+
+    private final NamespacedKey villagerEggCooldown = new NamespacedKey(plugin, "villager_egg_cooldown");
+
+    public VillagerGem(Material material, int customModelData, String name, Plugin plugin, List<ItemAbility> abilityList) {
+        super(material, customModelData, name, plugin, abilityList, 3, 0);
     }
 
     @Override
@@ -77,7 +79,7 @@ public class VillagerGem extends UpgradeableItem implements PassiveAction, MineA
     }
 
     @Override
-    public void rightClickAir(PlayerInteractEvent event) {
+    public void rightClickAir(PlayerInteractEvent event, ItemStack itemInteracted) {
         ItemStack item = event.getItem();
         Player player = event.getPlayer();
 
@@ -91,16 +93,16 @@ public class VillagerGem extends UpgradeableItem implements PassiveAction, MineA
     }
 
     @Override
-    public void rightClickBlock(PlayerInteractEvent event) {
-        rightClickAir(event);
+    public void rightClickBlock(PlayerInteractEvent event, ItemStack itemInteracted) {
+        rightClickAir(event, itemInteracted);
     }
     @Override
-    public void shiftRightClickAir(PlayerInteractEvent event) {
-        rightClickAir(event);
+    public void shiftRightClickAir(PlayerInteractEvent event, ItemStack itemInteracted) {
+        rightClickAir(event, itemInteracted);
     }
     @Override
-    public void shiftRightClickBlock(PlayerInteractEvent event) {
-        rightClickAir(event);
+    public void shiftRightClickBlock(PlayerInteractEvent event, ItemStack itemInteracted) {
+        rightClickAir(event, itemInteracted);
     }
 
     @Override
@@ -159,7 +161,7 @@ public class VillagerGem extends UpgradeableItem implements PassiveAction, MineA
     }
 
     private void setDropMultiplier(ItemStack itemUsed, Player player) {
-        if (ItemUtils.getCooldown(miningMultiplierCooldown, itemUsed, 900)) {
+        if (ItemUtils.getCooldown(miningMultiplierCooldown, itemUsed, 900, player, new TextComponent(ChatColor.AQUA + "" + ChatColor.BOLD + "Used Champion's Grace"))) {
             return;
         }
 
@@ -184,7 +186,7 @@ public class VillagerGem extends UpgradeableItem implements PassiveAction, MineA
     }
 
     private void grantHeroTen(Player player, ItemStack item) {
-        if (ItemUtils.getCooldown(heroTenCooldown, item, 1800)) {
+        if (ItemUtils.getCooldown(heroTenCooldown, item, 1800, player, new TextComponent(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Used Villager's Blessing"))) {
             return;
         }
 
