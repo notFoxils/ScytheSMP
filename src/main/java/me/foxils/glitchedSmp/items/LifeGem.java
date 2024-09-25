@@ -27,13 +27,6 @@ import java.util.List;
 
 public class LifeGem extends UpgradeableItem implements PassiveAction, AttackAction, ClickActions {
 
-    // Note for anyone decompiling my code (why) I got lazy starting with this one.
-    // the earth, air, water, and villager gems all had an amount of effort put in to make the code clean (even if they were failed to look presentable, [customThrowCollision], cough cough..), this one not so much
-    // there's also a lot of things I dislike in this codebase that I have no reason to change but would clean things up to a point
-    // don't judge, unless it's a truly critical mistake
-    //
-    // -- Foxils, (@foxils.)
-
     public final List<PotionEffect> passivePotionEffects = List.of(
             new PotionEffect(PotionEffectType.REGENERATION, 100, 1, false, false)
     );

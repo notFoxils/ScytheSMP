@@ -23,7 +23,6 @@ public final class GlitchedSmp extends JavaPlugin {
 
     @Override
     public void onEnable() {
-
         scheduleTasks();
         registerItems();
         registerCommands();
@@ -35,7 +34,7 @@ public final class GlitchedSmp extends JavaPlugin {
     }
 
     private void registerItems() {
-        ItemRegistry.registerItem(new GemUpgrade(Material.NETHER_STAR,  ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "[" + ChatColor.LIGHT_PURPLE + ChatColor.BOLD + "Gem Upgrade" + ChatColor.DARK_GRAY + ChatColor.BOLD + "]", this,
+        ItemRegistry.registerItem(new GemUpgrade(Material.NETHER_STAR, ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "[" + ChatColor.LIGHT_PURPLE + ChatColor.BOLD + "Gem Upgrade" + ChatColor.DARK_GRAY + ChatColor.BOLD + "]", this,
                 List.of(
                         new ItemAbility("Upgrade-ify", Arrays.asList(
                                 "Upgrades your current Gem by 1 level.",
@@ -49,11 +48,11 @@ public final class GlitchedSmp extends JavaPlugin {
                 ), true));
         ItemRegistry.registerItem(new PowerGem(Material.PAPER, 8, ChatColor.of("#292138") + "" + ChatColor.MAGIC + ChatColor.BOLD + "[" + ChatColor.of("#292138") + ChatColor.BOLD + "[G" + ChatColor.of("#2e233f") + ChatColor.BOLD + "e" + ChatColor.of("#332546") + ChatColor.BOLD + "m " + ChatColor.of("#38264c") + ChatColor.BOLD + "O" + ChatColor.of("#3d2853") + ChatColor.BOLD + "f " + ChatColor.of("#432a5a") + ChatColor.BOLD + "P" + ChatColor.of("#482c61") + ChatColor.BOLD + "o" + ChatColor.of("#4d2e68") + ChatColor.BOLD + "w" + ChatColor.of("#52306f") + ChatColor.BOLD + "e" + ChatColor.of("#573175") + ChatColor.BOLD + "r]" + ChatColor.MAGIC + ChatColor.BOLD + "]", this,
                 List.of(
-                    new ItemAbility("test", List.of("testing"), ActionType.NONE)
+                        new ItemAbility("test", List.of("testing"), ActionType.NONE)
                 ), Arrays.asList(
-                    new ItemStack(Material.NETHERITE_BLOCK), new ItemStack(Material.DIAMOND_BLOCK), new ItemStack(Material.NETHERITE_BLOCK),
-                    new ItemStack(Material.END_CRYSTAL), new ItemStack(Material.DRAGON_EGG), new ItemStack(Material.END_CRYSTAL),
-                    new ItemStack(Material.NETHERITE_BLOCK), new ItemStack(Material.DIAMOND_BLOCK), new ItemStack(Material.NETHERITE_BLOCK)
+                        new ItemStack(Material.NETHERITE_BLOCK), new ItemStack(Material.DIAMOND_BLOCK), new ItemStack(Material.NETHERITE_BLOCK),
+                        new ItemStack(Material.END_CRYSTAL), new ItemStack(Material.DRAGON_EGG), new ItemStack(Material.END_CRYSTAL),
+                        new ItemStack(Material.NETHERITE_BLOCK), new ItemStack(Material.DIAMOND_BLOCK), new ItemStack(Material.NETHERITE_BLOCK)
                 ), true));
         ItemRegistry.registerItem(new EarthGem(Material.PAPER, 1,  ChatColor.of("#63452c") + "" + ChatColor.BOLD + "[" + ChatColor.DARK_GREEN + ChatColor.BOLD + "Earth Gem" + ChatColor.of("#63452c") + ChatColor.BOLD + "]", this,
                 Arrays.asList(

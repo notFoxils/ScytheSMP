@@ -3,10 +3,10 @@ name: GlitchedSmp
 version: '${project.version}'
 main: me.foxils.glitchedSmp.GlitchedSmp
 api-version: '1.21'
-authors: [ Foxils, foxils. on Discord ]
-description: Plugin for the Glitched SMP
+author: Foxils
+description: Plugin for the ?
 
-softdepend:
+depend:
   - foxutils-items
 
 commands:

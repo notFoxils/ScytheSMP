@@ -52,13 +52,6 @@ public class VillagerGem extends UpgradeableItem implements PassiveAction, MineA
     }
 
     @Override
-    public ItemStack createItem(int amount) {
-        ItemStack newItem = super.createItem(amount);
-
-        return ItemUtils.storeIntegerData(miningMultiplier, newItem, 1);
-    }
-
-    @Override
     public void dropItemAction(PlayerDropItemEvent event, ItemStack itemUsed) {
         Player player = event.getPlayer();
 
@@ -194,7 +187,12 @@ public class VillagerGem extends UpgradeableItem implements PassiveAction, MineA
     }
 
     private void multiplyOnMine(BlockBreakEvent blockBreakEvent, ItemStack thisItem, ItemStack itemUsedToMine) {
-        int multiplier = ItemUtils.getIntegerDataFromWeaponKey(miningMultiplier, thisItem);
+        Integer multiplier = ItemUtils.getIntegerDataFromWeaponKey(miningMultiplier, thisItem);
+
+        if (multiplier == null) {
+            ItemUtils.storeIntegerData(miningMultiplier, thisItem, 1);
+            return;
+        }
 
         if (multiplier == 1) {
             return;

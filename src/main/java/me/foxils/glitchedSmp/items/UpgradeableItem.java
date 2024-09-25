@@ -32,13 +32,6 @@ public class UpgradeableItem extends Item {
         this.maxLevel = maxLevel;
     }
 
-    @Override
-    public ItemStack createItem(int amount) {
-        ItemStack newItem = super.createItem(amount);
-
-        return ItemUtils.storeIntegerData(levelKey, newItem, minLevel);
-    }
-
     public void upgradeLevel(int amount, ItemStack item) {
         int level = ItemUtils.getIntegerDataFromWeaponKey(levelKey, item);
 
@@ -60,6 +53,14 @@ public class UpgradeableItem extends Item {
     }
 
     public final int getLevel(ItemStack item) {
-        return ItemUtils.getIntegerDataFromWeaponKey(levelKey, item);
+        Integer currentLevel = ItemUtils.getIntegerDataFromWeaponKey(levelKey, item);
+
+        if (currentLevel == null) {
+            currentLevel = minLevel;
+
+            ItemUtils.storeIntegerData(levelKey, item, minLevel);
+        }
+
+        return currentLevel;
     }
 }

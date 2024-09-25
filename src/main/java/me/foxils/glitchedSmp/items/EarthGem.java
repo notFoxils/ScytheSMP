@@ -45,13 +45,6 @@ public class EarthGem extends UpgradeableItem implements MineAction, DropAction,
     }
 
     @Override
-    public ItemStack createItem(int amount) {
-        ItemStack newItem = super.createItem(amount);
-
-        return ItemUtils.storeDataOfType(PersistentDataType.INTEGER_ARRAY, new int[]{-1, 2}, miningBoundKey, newItem);
-    }
-
-    @Override
     public void blockMineAction(BlockBreakEvent event, ItemStack itemUsed, ItemStack thisItem) {
         if (event.getPlayer().isSneaking()) {
             return;
@@ -65,6 +58,15 @@ public class EarthGem extends UpgradeableItem implements MineAction, DropAction,
         //-1, 2
 
         int[] miningBounds = ItemUtils.getDataOfType(PersistentDataType.INTEGER_ARRAY, miningBoundKey, thisItem);
+
+        if (miningBounds == null) {
+            final int[] defaultBounds = new int[]{-1, 2};
+
+            ItemUtils.storeDataOfType(PersistentDataType.INTEGER_ARRAY, defaultBounds, miningBoundKey, thisItem);
+
+            miningBounds = defaultBounds;
+        }
+
         int lowerDepth = miningBounds[0];
         int upperDepth = miningBounds[1];
 

@@ -10,7 +10,7 @@ import java.util.List;
 public class PowerGem extends UpgradeableItem {
 
     public PowerGem(Material material, int customModelData, String name, Plugin plugin, List<ItemAbility> abilityList, List<ItemStack> itemsForRecipe, boolean shapedRecipe) {
-        super(material, customModelData, name, plugin, abilityList, itemsForRecipe, shapedRecipe, 1, 3);
+        super(material, customModelData, name, plugin, abilityList, itemsForRecipe, shapedRecipe, 3, 1);
     }
 
 
