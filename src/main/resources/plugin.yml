@@ -22,3 +22,7 @@ commands:
     description: get custom item level in hand
     usage: /<command>
     permission: op
+  getItems:
+    description: Lists all currently registered items
+    usage: /<command>
+    permission: op

@@ -23,7 +23,7 @@ public class get implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, String[] strings) {
         if (strings.length != 2 && !(commandSender instanceof Player)) {
             commandSender.sendMessage("No player provided to give item");
-            return false;
+            return true;
         }
 
         Player givePlayer;
@@ -43,7 +43,7 @@ public class get implements CommandExecutor {
 
         if (itemToCreate == null) {
             commandSender.sendMessage(strings[0] + " is not a valid item!");
-            return false;
+            return true;
         }
 
         int amountToGive = 1;
@@ -54,6 +54,6 @@ public class get implements CommandExecutor {
 
         playerInventory.addItem(itemToCreate.createItem(amountToGive));
 
-        return false;
+        return true;
     }
 }

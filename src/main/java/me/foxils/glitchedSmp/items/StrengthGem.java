@@ -33,7 +33,7 @@ public class StrengthGem extends UpgradeableItem implements PassiveAction, DropA
     private final NamespacedKey strengthIncreaseBooleanKey = new NamespacedKey(plugin, "strength_increase_boolean");
 
     public StrengthGem(Material material, int customModelData, String name, Plugin plugin, List<ItemAbility> abilityList) {
-        super(material, customModelData, name, plugin, abilityList, 3, 1);
+        super(material, customModelData, name, plugin, abilityList, 3, 0);
     }
 
     @Override
@@ -99,7 +99,7 @@ public class StrengthGem extends UpgradeableItem implements PassiveAction, DropA
             if (!(entity instanceof LivingEntity livingEntity)) return;
 
             livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 200, 0, true, false));
-            entity.sendMessage(ChatColor.GRAY + "You have been weakened by" + ChatColor.BOLD + player.getName());
+            entity.sendMessage(ChatColor.GRAY + "You have been weakened by " + ChatColor.BOLD + player.getName());
         }
     }
 
@@ -110,7 +110,7 @@ public class StrengthGem extends UpgradeableItem implements PassiveAction, DropA
     }
 
     private void autoSharpness(Player player, ItemStack thisItem) {
-        if (ItemUtils.getCooldown(sharpnessApplicationCooldownKey, thisItem, 30, player, new TextComponent(ChatColor.DARK_RED + "" + ChatColor.BOLD + "Tried Auto-Sharpness"))) {
+        if (ItemUtils.getCooldown(sharpnessApplicationCooldownKey, thisItem, 30)) {
             return;
         }
 

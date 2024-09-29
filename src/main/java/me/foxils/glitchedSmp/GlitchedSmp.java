@@ -1,11 +1,16 @@
 package me.foxils.glitchedSmp;
 
 import me.foxils.foxutils.ItemRegistry;
+import me.foxils.glitchedSmp.commands.getItems;
+import me.foxils.glitchedSmp.databases.Database;
 import me.foxils.glitchedSmp.items.*;
 import me.foxils.glitchedSmp.commands.get;
 import me.foxils.glitchedSmp.commands.getItemLevel;
 import me.foxils.foxutils.utilities.ActionType;
 import me.foxils.foxutils.utilities.ItemAbility;
+import me.foxils.glitchedSmp.listeners.PlayerDeathListener;
+import me.foxils.glitchedSmp.listeners.PlayerJoinListener;
+import me.foxils.glitchedSmp.listeners.PlayerRespawnListener;
 import org.bukkit.Bukkit;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
@@ -21,16 +26,31 @@ public final class GlitchedSmp extends JavaPlugin {
 
     public static final List<Integer> taskIDs = new ArrayList<>();
 
+    private static Database database;
+
     @Override
     public void onEnable() {
+        this.saveDefaultConfig();
+        database = new Database(this);
+
+        database.initializeDatabase();
+
         scheduleTasks();
         registerItems();
         registerCommands();
+        registerListeners();
+    }
+
+    private void registerListeners() {
+        Bukkit.getPluginManager().registerEvents(new PlayerDeathListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerRespawnListener(this), this);
     }
 
     private void registerCommands() {
         Objects.requireNonNull(Bukkit.getPluginCommand("get")).setExecutor(new get(this));
         Objects.requireNonNull(Bukkit.getPluginCommand("getLevel")).setExecutor(new getItemLevel());
+        Objects.requireNonNull(Bukkit.getPluginCommand("getItems")).setExecutor(new getItems());
     }
 
     private void registerItems() {
@@ -42,9 +62,18 @@ public final class GlitchedSmp extends JavaPlugin {
                         ), ActionType.RIGHT_CLICK)
                 ),
                 Arrays.asList(
-                        new ItemStack(Material.DIAMOND_BLOCK), new ItemStack(Material.GOLD_BLOCK), new ItemStack(Material.DIAMOND_BLOCK),
-                        new ItemStack(Material.GOLD_BLOCK), new ItemStack(Material.NETHERITE_INGOT), new ItemStack(Material.GOLD_BLOCK),
-                        new ItemStack(Material.DIAMOND_BLOCK), new ItemStack(Material.GOLD_BLOCK), new ItemStack(Material.DIAMOND_BLOCK)
+                        new ItemStack(Material.DIAMOND_BLOCK), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.DIAMOND_BLOCK),
+                        new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.AMETHYST_SHARD), new ItemStack(Material.GOLD_INGOT),
+                        new ItemStack(Material.DIAMOND_BLOCK), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.DIAMOND_BLOCK)
+                ), true));
+        ItemRegistry.registerItem(new RerollItem(Material.NETHER_STAR, 9, ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "[" + ChatColor.GOLD + ChatColor.BOLD + "Gem Reroll" + ChatColor.DARK_GRAY + ChatColor.BOLD + "]", this,
+                List.of(
+                        new ItemAbility("Test", List.of(), ActionType.NONE)
+                ),
+                Arrays.asList(
+                        new ItemStack(Material.DIAMOND), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.DIAMOND),
+                        new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.AMETHYST_SHARD), new ItemStack(Material.GOLD_INGOT),
+                        new ItemStack(Material.DIAMOND), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.DIAMOND)
                 ), true));
         ItemRegistry.registerItem(new PowerGem(Material.PAPER, 8, ChatColor.of("#292138") + "" + ChatColor.MAGIC + ChatColor.BOLD + "[" + ChatColor.of("#292138") + ChatColor.BOLD + "[G" + ChatColor.of("#2e233f") + ChatColor.BOLD + "e" + ChatColor.of("#332546") + ChatColor.BOLD + "m " + ChatColor.of("#38264c") + ChatColor.BOLD + "O" + ChatColor.of("#3d2853") + ChatColor.BOLD + "f " + ChatColor.of("#432a5a") + ChatColor.BOLD + "P" + ChatColor.of("#482c61") + ChatColor.BOLD + "o" + ChatColor.of("#4d2e68") + ChatColor.BOLD + "w" + ChatColor.of("#52306f") + ChatColor.BOLD + "e" + ChatColor.of("#573175") + ChatColor.BOLD + "r]" + ChatColor.MAGIC + ChatColor.BOLD + "]", this,
                 List.of(
@@ -163,6 +192,10 @@ public final class GlitchedSmp extends JavaPlugin {
         for (int taskID : taskIDs) {
             Bukkit.getScheduler().cancelTask(taskID);
         }
+    }
+
+    public static Database getDatabase() {
+        return database;
     }
 
 }

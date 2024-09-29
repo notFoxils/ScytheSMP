@@ -39,7 +39,7 @@ public class SpeedGem extends UpgradeableItem implements DropAction, ClickAction
     private final NamespacedKey randomLightningBooleanKey = new NamespacedKey(plugin, "random_lightning_boolean");
 
     public SpeedGem(Material material, int customModelData, String name, Plugin plugin, List<ItemAbility> abilityList) {
-        super(material, customModelData, name, plugin, abilityList, 3, 1);
+        super(material, customModelData, name, plugin, abilityList, 3, 0);
     }
 
     @Override
