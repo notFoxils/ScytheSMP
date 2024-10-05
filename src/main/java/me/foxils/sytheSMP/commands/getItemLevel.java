@@ -1,8 +1,8 @@
-package me.foxils.glitchedSmp.commands;
+package me.foxils.sytheSMP.commands;
 
 import me.foxils.foxutils.Item;
 import me.foxils.foxutils.ItemRegistry;
-import me.foxils.glitchedSmp.items.UpgradeableItem;
+import me.foxils.sytheSMP.items.UpgradeableItem;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

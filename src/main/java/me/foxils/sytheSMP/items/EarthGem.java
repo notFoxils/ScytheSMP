@@ -1,4 +1,4 @@
-package me.foxils.glitchedSmp.items;
+package me.foxils.sytheSMP.items;
 
 import me.foxils.foxutils.itemactions.*;
 import me.foxils.foxutils.utilities.ItemUtils;
@@ -247,8 +247,8 @@ public class EarthGem extends UpgradeableItem implements MineAction, DropAction,
                         continue;
                     }
 
-                    hitEntity.damage(0.000001, playerThrower);
-                    hitEntity.setHealth(Math.max(0, hitEntity.getHealth() - 8));
+                    hitEntity.setHealth(hitEntity.getHealth() - 8);
+                    hitEntity.damage(0.1, playerThrower);
 
                     if (!toBeRemoved.contains(blockGroup)) {
                         toBeRemoved.add(blockGroup);

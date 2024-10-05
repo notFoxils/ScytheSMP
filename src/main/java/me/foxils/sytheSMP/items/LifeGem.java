@@ -1,4 +1,4 @@
-package me.foxils.glitchedSmp.items;
+package me.foxils.sytheSMP.items;
 
 import me.foxils.foxutils.itemactions.AttackAction;
 import me.foxils.foxutils.itemactions.ClickActions;

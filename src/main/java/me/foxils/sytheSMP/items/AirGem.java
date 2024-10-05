@@ -1,8 +1,8 @@
-package me.foxils.glitchedSmp.items;
+package me.foxils.sytheSMP.items;
 
 import me.foxils.foxutils.itemactions.*;
 import me.foxils.foxutils.utilities.ItemUtils;
-import me.foxils.glitchedSmp.GlitchedSmp;
+import me.foxils.sytheSMP.SytheSMP;
 import me.foxils.foxutils.utilities.ItemAbility;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -135,7 +135,7 @@ public class AirGem extends UpgradeableItem implements TakeDamageAction, AttackA
 
         player.setFlying(true);
 
-        GlitchedSmp.taskIDs.add(Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> player.setFlying(false), 200));
+        SytheSMP.taskIDs.add(Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> player.setFlying(false), 200));
     }
 
     @Override
@@ -148,6 +148,5 @@ public class AirGem extends UpgradeableItem implements TakeDamageAction, AttackA
         Player player = playerDropItemEvent.getPlayer();
 
         player.setAllowFlight(false);
-        playerDropItemEvent.setCancelled(false);
     }
 }

@@ -1,9 +1,9 @@
-package me.foxils.glitchedSmp.tables;
+package me.foxils.sytheSMP.tables;
 
 import com.thoughtworks.xstream.XStream;
-import me.foxils.glitchedSmp.GlitchedSmp;
-import me.foxils.glitchedSmp.helpers.MapEntryConverter;
-import me.foxils.glitchedSmp.helpers.RandomGemStuff;
+import me.foxils.sytheSMP.SytheSMP;
+import me.foxils.sytheSMP.helpers.MapEntryConverter;
+import me.foxils.sytheSMP.helpers.RandomGemStuff;
 
 import java.sql.*;
 import java.util.*;
@@ -34,7 +34,7 @@ public final class PlayerStats {
     public static PlayerStats getDataObjectFromUUID(UUID uuid) {
         final String UUIDString = uuid.toString();
 
-        Connection connection = GlitchedSmp.getDatabase().createConnection();
+        Connection connection = SytheSMP.getDatabase().createConnection();
 
         try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM " + tableName + " WHERE " + identifierName + " = ?")) {
             statement.setString(1, UUIDString);
@@ -57,7 +57,7 @@ public final class PlayerStats {
     }
 
     public static void createColumn(PlayerStats playerStats) {
-        Connection connection = GlitchedSmp.getDatabase().createConnection();
+        Connection connection = SytheSMP.getDatabase().createConnection();
 
         try (PreparedStatement statement = connection.prepareStatement("INSERT INTO player_stats(playerUUID, playerGem, gemLevelMap) VALUES (?, ?, ?)")) {
             statement.setString(1, playerStats.getPlayerUUID());
@@ -73,7 +73,7 @@ public final class PlayerStats {
     }
 
     public void updateColumn() {
-        Connection connection = GlitchedSmp.getDatabase().createConnection();
+        Connection connection = SytheSMP.getDatabase().createConnection();
 
         try (PreparedStatement statement = connection.prepareStatement("UPDATE player_stats SET playerGem = ?, gemLevelMap = ? WHERE playerUUID = ?")) {
             statement.setString(1, getCurrentGem());
@@ -89,7 +89,7 @@ public final class PlayerStats {
     }
 
     public void deleteColumn() {
-        Connection connection = GlitchedSmp.getDatabase().createConnection();
+        Connection connection = SytheSMP.getDatabase().createConnection();
 
         try (PreparedStatement statement = connection.prepareStatement("DELETE FROM player_stats WHERE playerUUID = ?")) {
             statement.setString(1, getPlayerUUID());

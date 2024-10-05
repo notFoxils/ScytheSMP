@@ -1,7 +1,7 @@
 #file: noinspection SpellCheckingInspection
-name: GlitchedSmp
+name: SytheSMP
 version: '${project.version}'
-main: me.foxils.glitchedSmp.GlitchedSmp
+main: me.foxils.sytheSMP.SytheSMP
 api-version: '1.21'
 author: Foxils
 description: Plugin for the ?

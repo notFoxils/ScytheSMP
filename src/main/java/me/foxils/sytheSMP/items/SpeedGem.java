@@ -1,4 +1,4 @@
-package me.foxils.glitchedSmp.items;
+package me.foxils.sytheSMP.items;
 
 import me.foxils.foxutils.itemactions.AttackAction;
 import me.foxils.foxutils.itemactions.ClickActions;
@@ -156,7 +156,7 @@ public class SpeedGem extends UpgradeableItem implements DropAction, ClickAction
         for (Entity entity : entitiesNearby) {
             entity.getWorld().strikeLightning(entity.getLocation()).setFireTicks(0);
 
-            entity.sendMessage(ChatColor.DARK_AQUA + "You have been shocked by" + ChatColor.BOLD + player.getName());
+            entity.sendMessage(ChatColor.DARK_AQUA + "You have been shocked by " + ChatColor.BOLD + player.getName());
         }
 
         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BIT, 1F, 1F);

@@ -1,8 +1,8 @@
-package me.foxils.glitchedSmp.listeners;
+package me.foxils.sytheSMP.listeners;
 
 import me.foxils.foxutils.ItemRegistry;
-import me.foxils.glitchedSmp.items.UpgradeableItem;
-import me.foxils.glitchedSmp.tables.PlayerStats;
+import me.foxils.sytheSMP.items.UpgradeableItem;
+import me.foxils.sytheSMP.tables.PlayerStats;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

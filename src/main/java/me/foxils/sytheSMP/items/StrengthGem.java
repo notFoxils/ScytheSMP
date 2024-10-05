@@ -1,4 +1,4 @@
-package me.foxils.glitchedSmp.items;
+package me.foxils.sytheSMP.items;
 
 import me.foxils.foxutils.itemactions.ClickActions;
 import me.foxils.foxutils.itemactions.DropAction;
@@ -38,12 +38,34 @@ public class StrengthGem extends UpgradeableItem implements PassiveAction, DropA
 
     @Override
     public void rightClickAir(PlayerInteractEvent event, ItemStack itemInteracted) {
-        // Level 2
+        weaknessAbility(event, itemInteracted);
     }
 
     @Override
     public void rightClickBlock(PlayerInteractEvent event, ItemStack itemInteracted) {
         rightClickAir(event, itemInteracted);
+    }
+
+    private void weaknessAbility(PlayerInteractEvent playerInteractEvent, ItemStack itemStack) {
+        Player player = playerInteractEvent.getPlayer();
+
+        if (ItemUtils.getCooldown(weaknessAbilityCooldownKey, itemStack, 300, player, new TextComponent(ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "Activated Weakness Aura"))) {
+            return;
+        }
+
+        List<Entity> entitiesNearby = player.getNearbyEntities(5, 2, 5);
+
+        if (entitiesNearby.isEmpty()) {
+            unsuccessfulAbility(player, new TextComponent(ChatColor.DARK_RED + "" + ChatColor.BOLD + "No nearby players to weaken"));
+            return;
+        }
+
+        for (Entity entity : entitiesNearby) {
+            if (!(entity instanceof LivingEntity livingEntity)) return;
+
+            livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 200, 0, true, false));
+            entity.sendMessage(ChatColor.GRAY + "You have been weakened by " + ChatColor.BOLD + player.getName());
+        }
     }
 
     @Override
@@ -72,35 +94,7 @@ public class StrengthGem extends UpgradeableItem implements PassiveAction, DropA
 
     @Override
     public void dropItemAction(PlayerDropItemEvent playerDropItemEvent, ItemStack itemStack) {
-        weaknessAbility(playerDropItemEvent, itemStack);
-    }
 
-    private void weaknessAbility(PlayerDropItemEvent playerDropItemEvent, ItemStack itemStack) {
-        Player player = playerDropItemEvent.getPlayer();
-
-        if (!player.isSneaking()) {
-            return;
-        }
-
-        // Should move this to api level
-
-        if (ItemUtils.getCooldown(weaknessAbilityCooldownKey, itemStack, 600, player, new TextComponent(ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "Activated Weakness Aura"))) {
-            return;
-        }
-
-        List<Entity> entitiesNearby = player.getNearbyEntities(5, 2, 5);
-
-        if (entitiesNearby.isEmpty()) {
-            unsuccessfulAbility(player, new TextComponent(ChatColor.DARK_RED + "" + ChatColor.BOLD + "No nearby players to weaken"));
-            return;
-        }
-
-        for (Entity entity : entitiesNearby) {
-            if (!(entity instanceof LivingEntity livingEntity)) return;
-
-            livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 200, 0, true, false));
-            entity.sendMessage(ChatColor.GRAY + "You have been weakened by " + ChatColor.BOLD + player.getName());
-        }
     }
 
     @Override
@@ -141,7 +135,7 @@ public class StrengthGem extends UpgradeableItem implements PassiveAction, DropA
     }
 
     private void passiveEffects(Player player, ItemStack itemStack) {
-        Boolean canIncreaseStrength = ItemUtils.getDataOfType(PersistentDataType.BOOLEAN, strengthIncreaseCooldownKey, itemStack);
+        Boolean canIncreaseStrength = ItemUtils.getDataOfType(PersistentDataType.BOOLEAN, strengthIncreaseBooleanKey, itemStack);
         PotionEffect currentStrengthEffect = player.getPotionEffect(PotionEffectType.STRENGTH);
 
         if (canIncreaseStrength != null && canIncreaseStrength) {

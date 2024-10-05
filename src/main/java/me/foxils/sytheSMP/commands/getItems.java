@@ -1,4 +1,4 @@
-package me.foxils.glitchedSmp.commands;
+package me.foxils.sytheSMP.commands;
 
 import me.foxils.foxutils.ItemRegistry;
 import org.bukkit.command.Command;

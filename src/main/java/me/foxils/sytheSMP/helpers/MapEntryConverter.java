@@ -1,4 +1,4 @@
-package me.foxils.glitchedSmp.helpers;
+package me.foxils.sytheSMP.helpers;
 
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;

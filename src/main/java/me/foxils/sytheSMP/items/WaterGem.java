@@ -1,4 +1,4 @@
-package me.foxils.glitchedSmp.items;
+package me.foxils.sytheSMP.items;
 
 import me.foxils.foxutils.itemactions.ClickActions;
 import me.foxils.foxutils.itemactions.PassiveAction;
@@ -133,7 +133,7 @@ public class WaterGem extends UpgradeableItem implements TakeDamageAction, Passi
         }
 
         tracedEntity.damage(0, playerAttacking);
-        tracedEntity.setHealth(Math.max(tracedEntity.getHealth() - 3, 0));
+        tracedEntity.setHealth(tracedEntity.getHealth() - 3);
         tracedEntity.addPotionEffect(waterJetPotionEffect);
     }
 
@@ -262,8 +262,8 @@ public class WaterGem extends UpgradeableItem implements TakeDamageAction, Passi
                         continue;
                     }
 
-                    hitEntity.damage(0.000001, playerThrower);
                     hitEntity.setHealth(Math.max(0, hitEntity.getHealth() - 8));
+                    hitEntity.damage(0.1, playerThrower);
 
                     if (!toBeRemoved.contains(blockGroup)) {
                         toBeRemoved.add(blockGroup);

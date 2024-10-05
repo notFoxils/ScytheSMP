@@ -1,21 +1,22 @@
-package me.foxils.glitchedSmp.helpers;
+package me.foxils.sytheSMP.helpers;
 
 import me.foxils.foxutils.Item;
 import me.foxils.foxutils.ItemRegistry;
-import me.foxils.glitchedSmp.items.UpgradeableItem;
-import me.foxils.glitchedSmp.tables.PlayerStats;
+import me.foxils.sytheSMP.items.UpgradeableItem;
 import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Random;
 
 public class RandomGemStuff {
@@ -42,30 +43,39 @@ public class RandomGemStuff {
         private final Plugin plugin;
         private final Player player;
         private final BukkitRunnable taskToCancel;
+        private final ItemStack item;
+        private final String randomGemName;
+        private String secondaryText = null;
 
-        public GiveRandomUpgradeableItem(Plugin plugin, Player player, BukkitRunnable taskToCancel) {
+        public GiveRandomUpgradeableItem(Plugin plugin, Player player, BukkitRunnable taskToCancel, ItemStack itemToGive) {
             this.plugin = plugin;
             this.player = player;
             this.taskToCancel = taskToCancel;
+            this.item = itemToGive;
+            this.randomGemName = Objects.requireNonNull(itemToGive.getItemMeta()).getItemName();
+        }
+
+        public GiveRandomUpgradeableItem(Plugin plugin, Player player, BukkitRunnable taskToCancel, ItemStack itemToGive, String secondaryText) {
+            this(plugin, player, taskToCancel, itemToGive);
+            this.secondaryText = secondaryText;
         }
 
         @Override
         public void run() {
             taskToCancel.cancel();
-            Item randomGem = ItemRegistry.getItemFromKey(new NamespacedKey(plugin, PlayerStats.getDataObjectFromUUID(player.getUniqueId()).getCurrentGem()));
 
-            player.getInventory().addItem(randomGem.createItem(1));
+            player.getInventory().addItem(item);
 
-            player.sendTitle(randomGem.getName(), null, 5, 40, 5);
+            player.sendTitle(randomGemName, secondaryText, 5, 40, 5);
 
             player.playSound(player, Sound.UI_TOAST_CHALLENGE_COMPLETE, 1F, 0.9F);
 
-            Collection<? extends Player> otherPlayers = new ArrayList<>(player.getServer().getOnlinePlayers());
+            final Collection<? extends Player> otherPlayers = new ArrayList<>(player.getServer().getOnlinePlayers());
 
             otherPlayers.removeIf(otherPlayer -> otherPlayer.getUniqueId() == player.getUniqueId());
 
             otherPlayers.forEach(otherPlayer -> {
-                TextComponent notificationComponent = new TextComponent(ChatColor.getByChar(Integer.toHexString(new Random().nextInt(16))) + "" + ChatColor.ITALIC + ChatColor.BOLD + player.getName() + ChatColor.RESET + " has received the " + randomGem.getName());
+                BaseComponent notificationComponent = TextComponent.fromLegacy(getPrimaryColorOfGemName(randomGemName) + ChatColor.ITALIC + player.getName() + ChatColor.RESET + " has received the " + randomGemName);
                 otherPlayer.spigot().sendMessage(ChatMessageType.ACTION_BAR, notificationComponent);
                 Bukkit.getScheduler().runTaskLater(plugin, () -> otherPlayer.playSound(otherPlayer, Sound.BLOCK_NOTE_BLOCK_BELL, 1.2F, 1.2F), 0L);
                 Bukkit.getScheduler().runTaskLater(plugin, () -> otherPlayer.playSound(otherPlayer, Sound.BLOCK_NOTE_BLOCK_BELL, 1.2F, 1F), 4L);
@@ -86,12 +96,31 @@ public class RandomGemStuff {
         return getRandomGem().getName();
     }
 
-    public static Item getRandomGem() {
+    public static UpgradeableItem getRandomGem() {
         Collection<Item> registeredGems = ItemRegistry.getRegisteredGems();
 
         registeredGems.removeIf(item -> !(item instanceof UpgradeableItem) || item.getRawName().contains("power"));
 
-        return randomFromCollection(registeredGems);
+        return (UpgradeableItem) randomFromCollection(registeredGems);
+    }
+
+    public static String getPrimaryColorOfGemName(String gemName) {
+        StringBuilder stringBuilder = new StringBuilder(gemName);
+
+        if (gemName.chars().filter(num -> num == '§').count() > 6) {
+            // This is for names that use hex color codes instead of regular color codes
+            stringBuilder.delete(0, 17);
+        } else if (gemName.chars().filter(num -> num == '§').count() <= 6){
+            stringBuilder.delete(0, 5);
+        }
+
+        if (stringBuilder.toString().chars().filter(num -> num == '§').count() > 15) {
+            stringBuilder.delete(16, stringBuilder.length());
+        } else if (stringBuilder.toString().chars().filter(num -> num == '§').count() < 15) {
+            stringBuilder.delete(4, stringBuilder.length());
+        }
+
+        return stringBuilder.toString();
     }
 
     private static <T> T randomFromCollection(Collection<T> coll) {

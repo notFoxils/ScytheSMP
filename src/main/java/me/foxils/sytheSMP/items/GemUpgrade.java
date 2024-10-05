@@ -1,10 +1,10 @@
-package me.foxils.glitchedSmp.items;
+package me.foxils.sytheSMP.items;
 
 import me.foxils.foxutils.Item;
 import me.foxils.foxutils.ItemRegistry;
 import me.foxils.foxutils.itemactions.ClickActions;
 import me.foxils.foxutils.utilities.ItemAbility;
-import me.foxils.glitchedSmp.tables.PlayerStats;
+import me.foxils.sytheSMP.tables.PlayerStats;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;

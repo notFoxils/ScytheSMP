@@ -1,16 +1,17 @@
-package me.foxils.glitchedSmp;
+package me.foxils.sytheSMP;
 
 import me.foxils.foxutils.ItemRegistry;
-import me.foxils.glitchedSmp.commands.getItems;
-import me.foxils.glitchedSmp.databases.Database;
-import me.foxils.glitchedSmp.items.*;
-import me.foxils.glitchedSmp.commands.get;
-import me.foxils.glitchedSmp.commands.getItemLevel;
+import me.foxils.sytheSMP.commands.getItems;
+import me.foxils.sytheSMP.databases.Database;
+import me.foxils.sytheSMP.items.*;
+import me.foxils.sytheSMP.commands.get;
+import me.foxils.sytheSMP.commands.getItemLevel;
 import me.foxils.foxutils.utilities.ActionType;
 import me.foxils.foxutils.utilities.ItemAbility;
-import me.foxils.glitchedSmp.listeners.PlayerDeathListener;
-import me.foxils.glitchedSmp.listeners.PlayerJoinListener;
-import me.foxils.glitchedSmp.listeners.PlayerRespawnListener;
+import me.foxils.sytheSMP.listeners.PlayerDeathListener;
+import me.foxils.sytheSMP.listeners.PlayerInteractEntityListener;
+import me.foxils.sytheSMP.listeners.PlayerJoinListener;
+import me.foxils.sytheSMP.listeners.PlayerRespawnListener;
 import org.bukkit.Bukkit;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
@@ -22,7 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public final class GlitchedSmp extends JavaPlugin {
+public final class SytheSMP extends JavaPlugin {
 
     public static final List<Integer> taskIDs = new ArrayList<>();
 
@@ -31,8 +32,8 @@ public final class GlitchedSmp extends JavaPlugin {
     @Override
     public void onEnable() {
         this.saveDefaultConfig();
-        database = new Database(this);
 
+        database = new Database(this);
         database.initializeDatabase();
 
         scheduleTasks();
@@ -43,6 +44,7 @@ public final class GlitchedSmp extends JavaPlugin {
 
     private void registerListeners() {
         Bukkit.getPluginManager().registerEvents(new PlayerDeathListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerInteractEntityListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(this), this);
         Bukkit.getPluginManager().registerEvents(new PlayerRespawnListener(this), this);
     }
@@ -66,9 +68,14 @@ public final class GlitchedSmp extends JavaPlugin {
                         new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.AMETHYST_SHARD), new ItemStack(Material.GOLD_INGOT),
                         new ItemStack(Material.DIAMOND_BLOCK), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.DIAMOND_BLOCK)
                 ), true));
-        ItemRegistry.registerItem(new RerollItem(Material.NETHER_STAR, 9, ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "[" + ChatColor.GOLD + ChatColor.BOLD + "Gem Reroll" + ChatColor.DARK_GRAY + ChatColor.BOLD + "]", this,
+        ItemRegistry.registerItem(new RerollItem(Material.NETHER_STAR, 1, ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "[" + ChatColor.GOLD + ChatColor.BOLD + "Gem Reroll" + ChatColor.DARK_GRAY + ChatColor.BOLD + "]", this,
                 List.of(
-                        new ItemAbility("Test", List.of(), ActionType.NONE)
+                        new ItemAbility("Gem Forge", Arrays.asList(
+                                "When crafted this item generates a",
+                                "randomly selected Gem. And automatically",
+                                "consumes the previous gem that was in your inventory.",
+                                "This also lowers Gem's level by 1."
+                        ), ActionType.CRAFT)
                 ),
                 Arrays.asList(
                         new ItemStack(Material.DIAMOND), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.DIAMOND),
@@ -165,14 +172,23 @@ public final class GlitchedSmp extends JavaPlugin {
         )));
         ItemRegistry.registerItem(new StrengthGem(Material.PAPER, 7,  ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "[" + ChatColor.RED + ChatColor.BOLD + "Strength Gem" + ChatColor.DARK_GRAY + ChatColor.BOLD + "]", this,
                 Arrays.asList(
-                        new ItemAbility("Wither-Away", List.of("Inflict the withering effect on another player."), ActionType.RIGHT_CLICK, 120),
-                        new ItemAbility("Power-Heal", List.of("Restores up-to 10 hearts for 5 seconds"), ActionType.SHIFT_RIGHT_CLICK, 120),
-                        new ItemAbility("Life Steal", Arrays.asList(
-                                "Steal 4 hearts from another player.",
-                                "Hearts are returned after 30s."
-                        ), ActionType.ATTACK, 180),
-                        new ItemAbility("Passive Regeneration", List.of("Grants regeneration II for 5s"), ActionType.PASSIVE, 10),
-                        new ItemAbility("Auto Sharpness", List.of("Automatically enchants your main-hand, sharpness capable weapon with Sharpness V"), ActionType.PASSIVE, 30)
+                        new ItemAbility("Gloomy Aura", Arrays.asList(
+                                "Weakens other players within a",
+                                "5-block radius with Weakness I"
+                        ), ActionType.RIGHT_CLICK, 300),
+                        new ItemAbility("Strength Of The Abyss", Arrays.asList(
+                                "Summons powerful tentacles on the ground.",
+                                "Deals 3 damage when other players are hit"
+                        ), ActionType.DROP, 120),
+                        new ItemAbility("Super Strength", Arrays.asList(
+                                "Use all your might and change your passive",
+                                "to a Strength III buff for 20s."
+                        ), ActionType.SHIFT_RIGHT_CLICK, 900),
+                        new ItemAbility("Buff, Buff", List.of("Grants Strength II permanently"), ActionType.PASSIVE),
+                        new ItemAbility("Auto Sharpness", Arrays.asList(
+                                "Automatically enchants any Sharpness-capable",
+                                "weapon in your main-hand with Sharpness V"
+                        ), ActionType.PASSIVE, 30)
                 )));
     }
 
