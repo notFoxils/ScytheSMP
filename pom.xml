@@ -6,7 +6,7 @@
 
     <groupId>me.foxils</groupId>
     <artifactId>SytheSMP</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
     <packaging>jar</packaging>
 
     <name>SytheSMP</name>
@@ -79,7 +79,7 @@
         <dependency>
             <groupId>me.foxils</groupId>
             <artifactId>foxutils-items</artifactId>
-            <version>1.12.8-SNAPSHOT</version>
+            <version>1.12.9-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

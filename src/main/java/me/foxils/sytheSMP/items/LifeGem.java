@@ -89,7 +89,7 @@ public class LifeGem extends UpgradeableItem implements PassiveAction, AttackAct
     }
 
     private void tempLifeSteal(EntityDamageByEntityEvent event, ItemStack thisItem) {
-        if (!(event.getDamager() instanceof Player player) || !(event.getEntity() instanceof  Player playerAttacked)) {
+        if (!(event.getDamager() instanceof Player player) || !(event.getEntity() instanceof Player playerAttacked)) {
             return;
         }
 
@@ -120,8 +120,9 @@ public class LifeGem extends UpgradeableItem implements PassiveAction, AttackAct
         playerMaxHealthAttribute.setBaseValue(playerNewValue);
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-            attckedMaxHealthAttribute.setBaseValue(attackedMaxHealthValue);
-            playerMaxHealthAttribute.setBaseValue(playerMaxHealthValue);
+            if (player.isOnline()) playerMaxHealthAttribute.setBaseValue(playerMaxHealthValue);
+
+            if (playerAttacked.isOnline()) attckedMaxHealthAttribute.setBaseValue(attackedMaxHealthValue);
         }, 600);
     }
 

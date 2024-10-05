@@ -140,13 +140,13 @@ public class VillagerGem extends UpgradeableItem implements PassiveAction, MineA
 
         Map<Enchantment, Integer> itemCurrentEnchantmentMap = item.getEnchantments();
 
-        if (itemCurrentEnchantmentMap.containsKey(Enchantment.FORTUNE)) {
-            if (itemCurrentEnchantmentMap.get(Enchantment.FORTUNE) >= 2) {
-                return;
-            }
+        if (itemCurrentEnchantmentMap.containsKey(Enchantment.SILK_TOUCH)) {
+            return;
         }
 
-        item.addEnchantment(Enchantment.FORTUNE, 2);
+        if (!itemCurrentEnchantmentMap.containsKey(Enchantment.FORTUNE) || itemCurrentEnchantmentMap.get(Enchantment.FORTUNE) < 2) {
+            item.addEnchantment(Enchantment.FORTUNE, 2);
+        }
     }
 
     private void grantMaxedEffects(Player player) {

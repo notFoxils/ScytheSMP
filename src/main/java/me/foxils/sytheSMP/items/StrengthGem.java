@@ -110,7 +110,7 @@ public class StrengthGem extends UpgradeableItem implements PassiveAction, DropA
 
         ItemStack item = player.getInventory().getItemInMainHand();
 
-        if (isSharpnessWeapon(item)) {
+        if (!isSharpnessWeapon(item)) {
             return;
         }
 
@@ -118,14 +118,12 @@ public class StrengthGem extends UpgradeableItem implements PassiveAction, DropA
 
         Integer sharpnessLevel = itemCurrentEnchantmentMap.get(Enchantment.SHARPNESS);
 
-        if (sharpnessLevel == null || sharpnessLevel >= 5) {
-            return;
+        if (sharpnessLevel == null || sharpnessLevel < 5) {
+            item.addEnchantment(Enchantment.SHARPNESS, 5);
         }
-
-        item.addEnchantment(Enchantment.SHARPNESS, 5);
     }
 
-    public static boolean isSharpnessWeapon(ItemStack weapon){
+    public static boolean isSharpnessWeapon(ItemStack weapon) {
         if (weapon == null) return false;
 
         Material stackType = weapon.getType();
