@@ -79,7 +79,7 @@
         <dependency>
             <groupId>me.foxils</groupId>
             <artifactId>foxutils-items</artifactId>
-            <version>1.12.9-SNAPSHOT</version>
+            <version>1.12.10-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
