@@ -9,6 +9,7 @@ import me.foxils.foxutils.utilities.ItemAbility;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -37,6 +38,27 @@ public class VillagerGem extends UpgradeableItem implements PassiveAction, MineA
     private final PotionEffect heroOfTheVillageTen = new PotionEffect(PotionEffectType.HERO_OF_THE_VILLAGE, 6000, 9);
 
     private final ItemStack villagerStack = new ItemStack(Material.VILLAGER_SPAWN_EGG, 1);
+
+    private final List<Material> VILLAGER_MULTIPLIER_WHITELIST = Arrays.asList(
+            Material.DEEPSLATE_COAL_ORE,
+            Material.DEEPSLATE_GOLD_ORE,
+            Material.DEEPSLATE_COPPER_ORE,
+            Material.DEEPSLATE_EMERALD_ORE,
+            Material.DEEPSLATE_DIAMOND_ORE,
+            Material.DEEPSLATE_IRON_ORE,
+            Material.DEEPSLATE_LAPIS_ORE,
+            Material.DEEPSLATE_REDSTONE_ORE,
+            Material.COAL_ORE,
+            Material.IRON_ORE,
+            Material.GOLD_ORE,
+            Material.EMERALD_ORE,
+            Material.LAPIS_ORE,
+            Material.DIAMOND_ORE,
+            Material.COPPER_ORE,
+            Material.REDSTONE_ORE,
+            Material.NETHER_GOLD_ORE,
+            Material.NETHER_GOLD_ORE
+    );
 
     private final NamespacedKey miningMultiplierCooldown = new NamespacedKey(plugin, "mining_multiplier_cooldown");
     private final NamespacedKey miningMultiplier = new NamespacedKey(plugin, "mining_multiplier");
@@ -198,15 +220,15 @@ public class VillagerGem extends UpgradeableItem implements PassiveAction, MineA
             return;
         }
 
-        blockBreakEvent.setCancelled(true);
+        Block block = blockBreakEvent.getBlock();
+        Material blockMaterial = block.getType();
 
-        Collection<ItemStack> defaultDrops = blockBreakEvent.getBlock().getDrops(itemUsedToMine);
-        blockBreakEvent.setDropItems(false);
-        blockBreakEvent.getBlock().setType(Material.AIR);
+        if (!VILLAGER_MULTIPLIER_WHITELIST.contains(blockMaterial)) return;
 
-        World world = blockBreakEvent.getBlock().getWorld();
+        World world = block.getWorld();
+        Location blockLocation = block.getLocation();
 
-        Location blockLocation = blockBreakEvent.getBlock().getLocation();
+        Collection<ItemStack> defaultDrops = block.getDrops(itemUsedToMine);
 
         for (ItemStack item : defaultDrops) {
             ItemStack multipliedItem = item.clone();
@@ -217,6 +239,11 @@ public class VillagerGem extends UpgradeableItem implements PassiveAction, MineA
 
             world.dropItem(blockLocation, multipliedItem);
         }
+
+        block.setType(Material.AIR);
+
+        blockBreakEvent.setDropItems(false);
+        blockBreakEvent.setCancelled(true);
     }
 
 
