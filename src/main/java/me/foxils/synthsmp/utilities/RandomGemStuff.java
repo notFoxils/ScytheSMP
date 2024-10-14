@@ -1,8 +1,9 @@
-package me.foxils.sytheSMP.helpers;
+package me.foxils.synthsmp.utilities;
 
 import me.foxils.foxutils.Item;
 import me.foxils.foxutils.ItemRegistry;
-import me.foxils.sytheSMP.items.UpgradeableItem;
+import me.foxils.synthsmp.items.PowerGem;
+import me.foxils.synthsmp.items.UpgradeableItem;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -89,17 +90,22 @@ public class RandomGemStuff {
     }
 
     public static String getRandomRawGemName() {
-        return getRandomGem().getRawName();
+        return getRandomUpgradeableGem().getRawName();
     }
 
     public static String getRandomGemName() {
-        return getRandomGem().getName();
+        return getRandomUpgradeableGem().getName();
     }
 
-    public static UpgradeableItem getRandomGem() {
+    public static UpgradeableItem getRandomUpgradeableGem() {
         Collection<Item> registeredGems = ItemRegistry.getRegisteredGems();
 
-        registeredGems.removeIf(item -> !(item instanceof UpgradeableItem) || item.getRawName().contains("power"));
+        registeredGems.removeIf(item -> {
+            if (item instanceof PowerGem) {
+                return true;
+            }
+            return !(item instanceof UpgradeableItem);
+        });
 
         return (UpgradeableItem) randomFromCollection(registeredGems);
     }

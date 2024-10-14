@@ -1,9 +1,9 @@
-package me.foxils.sytheSMP.tables;
+package me.foxils.synthsmp.tables;
 
 import com.thoughtworks.xstream.XStream;
-import me.foxils.sytheSMP.SytheSMP;
-import me.foxils.sytheSMP.helpers.MapEntryConverter;
-import me.foxils.sytheSMP.helpers.RandomGemStuff;
+import me.foxils.synthsmp.SynthSMP;
+import me.foxils.synthsmp.utilities.MapEntryConverter;
+import me.foxils.synthsmp.utilities.RandomGemStuff;
 
 import java.sql.*;
 import java.util.*;
@@ -34,7 +34,9 @@ public final class PlayerStats {
     public static PlayerStats getDataObjectFromUUID(UUID uuid) {
         final String UUIDString = uuid.toString();
 
-        Connection connection = SytheSMP.getDatabase().createConnection();
+        // Would definitely like to switch this to dependency injection, but am too lazy to restructure the database
+        // I will write a module inside foxutils to do this and then implement that and remove this.
+        Connection connection = SynthSMP.getDatabase().createConnection();
 
         try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM " + tableName + " WHERE " + identifierName + " = ?")) {
             statement.setString(1, UUIDString);
@@ -57,7 +59,7 @@ public final class PlayerStats {
     }
 
     public static void createColumn(PlayerStats playerStats) {
-        Connection connection = SytheSMP.getDatabase().createConnection();
+        Connection connection = SynthSMP.getDatabase().createConnection();
 
         try (PreparedStatement statement = connection.prepareStatement("INSERT INTO player_stats(playerUUID, playerGem, gemLevelMap) VALUES (?, ?, ?)")) {
             statement.setString(1, playerStats.getPlayerUUID());
@@ -73,7 +75,7 @@ public final class PlayerStats {
     }
 
     public void updateColumn() {
-        Connection connection = SytheSMP.getDatabase().createConnection();
+        Connection connection = SynthSMP.getDatabase().createConnection();
 
         try (PreparedStatement statement = connection.prepareStatement("UPDATE player_stats SET playerGem = ?, gemLevelMap = ? WHERE playerUUID = ?")) {
             statement.setString(1, getCurrentGem());
@@ -89,7 +91,7 @@ public final class PlayerStats {
     }
 
     public void deleteColumn() {
-        Connection connection = SytheSMP.getDatabase().createConnection();
+        Connection connection = SynthSMP.getDatabase().createConnection();
 
         try (PreparedStatement statement = connection.prepareStatement("DELETE FROM player_stats WHERE playerUUID = ?")) {
             statement.setString(1, getPlayerUUID());
@@ -129,6 +131,8 @@ public final class PlayerStats {
     public void setGemLevelMapFromXML(String xml) {
         Map<String, Integer> basedMap = new HashMap<>();
 
+        // *dies of death*
+        // this is most definitely a byproduct of my terrible database code
         Map<String, String> weirdMap = (Map<String, String>) magicApi.fromXML(xml);
 
         weirdMap.forEach((string, stringInteger) -> basedMap.put(string, Integer.valueOf(stringInteger)));

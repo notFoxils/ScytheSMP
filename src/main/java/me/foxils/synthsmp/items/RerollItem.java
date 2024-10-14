@@ -1,11 +1,11 @@
-package me.foxils.sytheSMP.items;
+package me.foxils.synthsmp.items;
 
 import me.foxils.foxutils.Item;
 import me.foxils.foxutils.ItemRegistry;
 import me.foxils.foxutils.itemactions.InventoryClickAction;
 import me.foxils.foxutils.utilities.ItemAbility;
-import me.foxils.sytheSMP.helpers.RandomGemStuff;
-import me.foxils.sytheSMP.tables.PlayerStats;
+import me.foxils.synthsmp.utilities.RandomGemStuff;
+import me.foxils.synthsmp.tables.PlayerStats;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -50,7 +50,7 @@ public class RerollItem extends Item implements InventoryClickAction {
             itemStack.setAmount(0);
         });
 
-        UpgradeableItem item = RandomGemStuff.getRandomGem();
+        UpgradeableItem item = RandomGemStuff.getRandomUpgradeableGem();
         ItemStack gemItemStack = item.createItem(1);
         final String rawItemName = item.getRawName();
 

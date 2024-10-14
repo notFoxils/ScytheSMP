@@ -1,17 +1,15 @@
-package me.foxils.sytheSMP;
+package me.foxils.synthsmp;
 
 import me.foxils.foxutils.ItemRegistry;
-import me.foxils.sytheSMP.commands.getItems;
-import me.foxils.sytheSMP.databases.Database;
-import me.foxils.sytheSMP.items.*;
-import me.foxils.sytheSMP.commands.get;
-import me.foxils.sytheSMP.commands.getItemLevel;
+import me.foxils.synthsmp.databases.Database;
+import me.foxils.synthsmp.items.*;
+import me.foxils.synthsmp.commands.GetItemLevel;
 import me.foxils.foxutils.utilities.ActionType;
 import me.foxils.foxutils.utilities.ItemAbility;
-import me.foxils.sytheSMP.listeners.PlayerDeathListener;
-import me.foxils.sytheSMP.listeners.PlayerInteractEntityListener;
-import me.foxils.sytheSMP.listeners.PlayerJoinListener;
-import me.foxils.sytheSMP.listeners.PlayerRespawnListener;
+import me.foxils.synthsmp.listeners.PlayerDeathListener;
+import me.foxils.synthsmp.listeners.PlayerInteractEntityListener;
+import me.foxils.synthsmp.listeners.PlayerJoinListener;
+import me.foxils.synthsmp.listeners.PlayerRespawnListener;
 import org.bukkit.Bukkit;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
@@ -23,7 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public final class SytheSMP extends JavaPlugin {
+public final class SynthSMP extends JavaPlugin {
 
     public static final List<Integer> taskIDs = new ArrayList<>();
 
@@ -50,9 +48,7 @@ public final class SytheSMP extends JavaPlugin {
     }
 
     private void registerCommands() {
-        Objects.requireNonNull(Bukkit.getPluginCommand("get")).setExecutor(new get(this));
-        Objects.requireNonNull(Bukkit.getPluginCommand("getLevel")).setExecutor(new getItemLevel());
-        Objects.requireNonNull(Bukkit.getPluginCommand("getItems")).setExecutor(new getItems());
+        Objects.requireNonNull(Bukkit.getPluginCommand("getLevel")).setExecutor(new GetItemLevel());
     }
 
     private void registerItems() {

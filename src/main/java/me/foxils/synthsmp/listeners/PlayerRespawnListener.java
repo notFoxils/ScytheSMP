@@ -1,8 +1,8 @@
-package me.foxils.sytheSMP.listeners;
+package me.foxils.synthsmp.listeners;
 
 import me.foxils.foxutils.ItemRegistry;
-import me.foxils.sytheSMP.items.UpgradeableItem;
-import me.foxils.sytheSMP.tables.PlayerStats;
+import me.foxils.synthsmp.items.UpgradeableItem;
+import me.foxils.synthsmp.tables.PlayerStats;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,6 +21,10 @@ public class PlayerRespawnListener implements Listener {
 
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
+        givePlayerCurrentGem(event);
+    }
+
+    private void givePlayerCurrentGem(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
 
         PlayerStats playerStats = PlayerStats.getDataObjectFromUUID(player.getUniqueId());

@@ -1,10 +1,10 @@
 #file: noinspection SpellCheckingInspection
-name: SytheSMP
+name: SynthSMP
 version: '${project.version}'
-main: me.foxils.sytheSMP.SytheSMP
+main: me.foxils.synthsmp.SynthSMP
 api-version: '1.21'
 author: Foxils
-description: Plugin for the ?
+description: Plugin for the SynthSMP
 
 depend:
   - foxutils-items
@@ -14,15 +14,7 @@ commands:
     description: enable crafting of said one time craftable UberItem
     usage: /<command>
     permission: op
-  get:
-    description: get custom item with the item key
-    usage: /<command> <itemkey>
-    permission: op
   getLevel:
     description: get custom item level in hand
-    usage: /<command>
-    permission: op
-  getItems:
-    description: Lists all currently registered items
     usage: /<command>
     permission: op

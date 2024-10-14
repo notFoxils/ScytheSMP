@@ -1,4 +1,4 @@
-package me.foxils.sytheSMP.helpers;
+package me.foxils.synthsmp.utilities;
 
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MapEntryConverter implements Converter {
+
+    // Again, a bad byproduct of bad database structure and implementation
 
     public boolean canConvert(Class clazz) {
         return AbstractMap.class.isAssignableFrom(clazz);

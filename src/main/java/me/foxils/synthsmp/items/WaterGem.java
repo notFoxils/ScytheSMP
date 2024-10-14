@@ -1,10 +1,11 @@
-package me.foxils.sytheSMP.items;
+package me.foxils.synthsmp.items;
 
 import me.foxils.foxutils.itemactions.ClickActions;
 import me.foxils.foxutils.itemactions.PassiveAction;
 import me.foxils.foxutils.itemactions.TakeDamageAction;
-import me.foxils.foxutils.utilities.ItemUtils;
 import me.foxils.foxutils.utilities.ItemAbility;
+import me.foxils.foxutils.utilities.ItemUtils;
+import me.foxils.synthsmp.utilities.EntityTracing;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
@@ -17,10 +18,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
-import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
-import javax.annotation.Nullable;
 import java.util.*;
 
 public class WaterGem extends UpgradeableItem implements TakeDamageAction, PassiveAction, ClickActions {
@@ -103,7 +102,7 @@ public class WaterGem extends UpgradeableItem implements TakeDamageAction, Passi
     }
 
     private void waterJet(Player playerAttacking, ItemStack item) {
-        LivingEntity tracedEntity = getEntityLookingAt(playerAttacking);
+        LivingEntity tracedEntity = EntityTracing.getEntityLookingAt(playerAttacking);
 
         if (tracedEntity == null) {
             return;
@@ -135,29 +134,6 @@ public class WaterGem extends UpgradeableItem implements TakeDamageAction, Passi
         tracedEntity.damage(0, playerAttacking);
         tracedEntity.setHealth(tracedEntity.getHealth() - 3);
         tracedEntity.addPotionEffect(waterJetPotionEffect);
-    }
-
-    @Nullable
-    private LivingEntity getEntityLookingAt(Player player) {
-        World world = player.getWorld();
-
-        Location eyeLocation = player.getEyeLocation().clone();
-
-        Vector direction = eyeLocation.getDirection().clone();
-
-        RayTraceResult traceResult = world.rayTraceEntities(eyeLocation.add(direction.clone().multiply(0.5)), eyeLocation.getDirection(), 6.5);
-
-        if (traceResult == null) {
-            return null;
-        }
-
-        Entity tracedEntity = traceResult.getHitEntity();
-
-        if (!(tracedEntity instanceof LivingEntity livingEntity) || livingEntity.isInvulnerable() || livingEntity.equals(player)) {
-            return null;
-        }
-
-        return livingEntity;
     }
     
     private void rainDropOfGod(Player player, ItemStack item) {

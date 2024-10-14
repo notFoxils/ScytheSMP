@@ -1,4 +1,4 @@
-package me.foxils.sytheSMP.items;
+package me.foxils.synthsmp.items;
 
 import me.foxils.foxutils.Item;
 import me.foxils.foxutils.itemactions.ClickActions;
@@ -22,6 +22,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class PowerGem extends Item implements PassiveAction, ClickActions, DropAction {
+
+    // Unfinished
 
     public final NamespacedKey summonDragonCooldown = new NamespacedKey(plugin, "player_dragon_cooldown");
 

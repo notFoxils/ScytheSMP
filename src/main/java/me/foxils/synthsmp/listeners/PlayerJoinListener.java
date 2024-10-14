@@ -1,8 +1,8 @@
-package me.foxils.sytheSMP.listeners;
+package me.foxils.synthsmp.listeners;
 
 import me.foxils.foxutils.ItemRegistry;
-import me.foxils.sytheSMP.helpers.RandomGemStuff;
-import me.foxils.sytheSMP.tables.PlayerStats;
+import me.foxils.synthsmp.utilities.RandomGemStuff;
+import me.foxils.synthsmp.tables.PlayerStats;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;

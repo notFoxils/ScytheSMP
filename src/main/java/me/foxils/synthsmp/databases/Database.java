@@ -1,4 +1,4 @@
-package me.foxils.sytheSMP.databases;
+package me.foxils.synthsmp.databases;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,6 +10,11 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
 public class Database {
+
+    // I really dislike how I had structured this class
+    // you can mostly ignore it as I do want to write something a bit more robust
+    // but yknow you do you
+
     private final Logger logger;
     private final String hostname;
     private final String databaseName;

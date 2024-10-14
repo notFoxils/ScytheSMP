@@ -1,8 +1,8 @@
-package me.foxils.sytheSMP.commands;
+package me.foxils.synthsmp.commands;
 
 import me.foxils.foxutils.Item;
 import me.foxils.foxutils.ItemRegistry;
-import me.foxils.sytheSMP.items.UpgradeableItem;
+import me.foxils.synthsmp.items.UpgradeableItem;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public class getItemLevel implements CommandExecutor {
+public class GetItemLevel implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, String[] strings) {

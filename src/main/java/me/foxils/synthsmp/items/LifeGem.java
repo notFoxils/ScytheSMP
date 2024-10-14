@@ -1,17 +1,19 @@
-package me.foxils.sytheSMP.items;
+package me.foxils.synthsmp.items;
 
 import me.foxils.foxutils.itemactions.AttackAction;
 import me.foxils.foxutils.itemactions.ClickActions;
 import me.foxils.foxutils.itemactions.PassiveAction;
-import me.foxils.foxutils.utilities.ItemUtils;
 import me.foxils.foxutils.utilities.ItemAbility;
+import me.foxils.foxutils.utilities.ItemUtils;
+import me.foxils.synthsmp.utilities.EntityTracing;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -19,10 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.util.RayTraceResult;
-import org.bukkit.util.Vector;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class LifeGem extends UpgradeableItem implements PassiveAction, AttackAction, ClickActions {
@@ -74,7 +73,7 @@ public class LifeGem extends UpgradeableItem implements PassiveAction, AttackAct
             return;
         }
 
-        Entity hitEntity = getEntityLookingAt(playerInflicting);
+        Entity hitEntity = EntityTracing.getEntityLookingAt(playerInflicting);
 
         if (!(hitEntity instanceof Player hitPlayer)) {
             return;
@@ -137,30 +136,6 @@ public class LifeGem extends UpgradeableItem implements PassiveAction, AttackAct
         }
 
         player.addPotionEffects(passivePotionEffects);
-    }
-
-    @Nullable
-    private LivingEntity getEntityLookingAt(Player player) {
-        // I know this is a copy from WaterGem, whatcha gonna do about it (read the top blurb)
-        World world = player.getWorld();
-
-        Location eyeLocation = player.getEyeLocation().clone();
-
-        Vector direction = eyeLocation.getDirection().clone();
-
-        RayTraceResult traceResult = world.rayTraceEntities(eyeLocation.add(direction.clone().multiply(0.5)), eyeLocation.getDirection(), 5);
-
-        if (traceResult == null) {
-            return null;
-        }
-
-        Entity tracedEntity = traceResult.getHitEntity();
-
-        if (!(tracedEntity instanceof LivingEntity livingEntity) || livingEntity.isInvulnerable() || livingEntity.equals(player)) {
-            return null;
-        }
-
-        return livingEntity;
     }
 
 }
