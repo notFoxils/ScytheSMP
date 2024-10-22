@@ -25,15 +25,16 @@ public class PlayerRespawnListener implements Listener {
     }
 
     private void givePlayerCurrentGem(PlayerRespawnEvent event) {
-        Player player = event.getPlayer();
+        final Player player = event.getPlayer();
 
-        PlayerStats playerStats = PlayerStats.getDataObjectFromUUID(player.getUniqueId());
+        final PlayerStats playerStats = PlayerStats.getDataObjectFromUUID(player.getUniqueId());
 
-        String playerGemRawName = playerStats.getCurrentGem();
+        final String playerGemRawName = playerStats.getCurrentGem();
 
-        UpgradeableItem playerGem = (UpgradeableItem) ItemRegistry.getItemFromKey(new NamespacedKey(plugin, playerGemRawName));
+        final UpgradeableItem playerGem = (UpgradeableItem) ItemRegistry.getItemFromKey(new NamespacedKey(plugin, playerGemRawName));
 
-        ItemStack playerGemItem = playerGem.createItem(1);
+        final ItemStack playerGemItem = playerGem.createItem(1);
+
         playerGem.setLevel(playerStats.getGemLevelMap().get(playerGemRawName), playerGemItem);
 
         player.getInventory().addItem(playerGemItem);

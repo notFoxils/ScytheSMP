@@ -44,13 +44,15 @@ public final class PlayerStats {
 
             PlayerStats playerStats = new PlayerStats(uuid);
 
-            if (resultSet == null) createColumn(playerStats);
-            assert resultSet != null;
-
-            if (resultSet.next()) {
-                playerStats.setCurrentGem(resultSet.getString(2));
-                playerStats.setGemLevelMapFromXML(resultSet.getString(3));
+            if (resultSet == null || !resultSet.next()) {
+                createColumn(playerStats);
+                return playerStats;
             }
+
+            playerStats.setCurrentGem(resultSet.getString(2));
+            playerStats.setGemLevelMapFromXML(resultSet.getString(3));
+
+            connection.close();
 
             return playerStats;
         } catch (SQLException e) {

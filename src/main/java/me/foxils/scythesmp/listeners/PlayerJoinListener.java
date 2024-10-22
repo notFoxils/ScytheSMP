@@ -13,9 +13,17 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class PlayerJoinListener implements Listener {
 
     private final Plugin plugin;
+
+    private static final List<NamespacedKey> recipes = Arrays.asList(
+            NamespacedKey.fromString("scythesmp:gem_reroll"),
+            NamespacedKey.fromString("scythesmp:gem_upgrade")
+    );
 
     public PlayerJoinListener(Plugin plugin) {
         this.plugin = plugin;
@@ -26,12 +34,21 @@ public class PlayerJoinListener implements Listener {
         rollFirstTimeGem(event);
         resetHealthAmount(event);
         resetMovementSpeedAttribute(event);
+        grantPluginRecipes(event);
+    }
+
+    private void grantPluginRecipes(PlayerJoinEvent event) {
+        final Player player = event.getPlayer();
+
+        if (player.hasDiscoveredRecipe(recipes.getFirst()) && player.hasDiscoveredRecipe(recipes.getLast())) return;
+
+        player.discoverRecipes(recipes);
     }
 
     private void resetMovementSpeedAttribute(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
+        final Player player = event.getPlayer();
 
-        AttributeInstance movementSpeedAttribute = player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
+        final AttributeInstance movementSpeedAttribute = player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
 
         if (movementSpeedAttribute == null) return;
 
@@ -39,9 +56,9 @@ public class PlayerJoinListener implements Listener {
     }
 
     private void resetHealthAmount(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
+        final Player player = event.getPlayer();
 
-        AttributeInstance maxHealthAttribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        final AttributeInstance maxHealthAttribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
 
         if (maxHealthAttribute == null) return;
 
@@ -51,18 +68,18 @@ public class PlayerJoinListener implements Listener {
     }
 
     private void rollFirstTimeGem(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
+        final Player player = event.getPlayer();
 
         if (player.getLastPlayed() != 0) return;//&& !player.getName().equals("Foxils")) return;
 
         //if (player.getName().equals("Foxils")) PlayerStats.getDataObjectFromUUID(player.getUniqueId()).deleteColumn();
 
-        PlayerStats playerStats = new PlayerStats(player.getUniqueId());
+        final PlayerStats playerStats = new PlayerStats(player.getUniqueId());
 
         PlayerStats.createColumn(playerStats);
 
-        RandomGemStuff.ShowRandomUpgradeableItem showRandomUpgradeableItem = new RandomGemStuff.ShowRandomUpgradeableItem(player);
-        RandomGemStuff.GiveRandomUpgradeableItem giveRandomUpgradeableItem = new RandomGemStuff.GiveRandomUpgradeableItem(plugin, player, showRandomUpgradeableItem, ItemRegistry.getItemFromKey(new NamespacedKey(plugin, playerStats.getCurrentGem())).createItem(1));
+        final RandomGemStuff.ShowRandomUpgradeableItem showRandomUpgradeableItem = new RandomGemStuff.ShowRandomUpgradeableItem(player);
+        final RandomGemStuff.GiveRandomUpgradeableItem giveRandomUpgradeableItem = new RandomGemStuff.GiveRandomUpgradeableItem(plugin, player, showRandomUpgradeableItem, ItemRegistry.getItemFromKey(new NamespacedKey(plugin, playerStats.getCurrentGem())).createItem(1));
 
         showRandomUpgradeableItem.runTaskTimer(plugin, 0L, 2L);
         giveRandomUpgradeableItem.runTaskLater(plugin, 80L);
