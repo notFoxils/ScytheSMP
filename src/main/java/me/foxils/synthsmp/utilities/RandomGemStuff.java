@@ -94,7 +94,7 @@ public class RandomGemStuff {
     }
 
     public static UpgradeableItem getRandomUpgradeableGem() {
-        HashSet<Item> registeredGems = ItemRegistry.getRegisteredGems();
+        HashSet<Item> registeredGems = ItemRegistry.getRegisteredItems();
 
         registeredGems.removeIf(item -> !(item instanceof UpgradeableItem));
 
