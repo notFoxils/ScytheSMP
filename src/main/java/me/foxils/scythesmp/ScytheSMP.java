@@ -1,16 +1,16 @@
-package me.foxils.synthsmp;
+package me.foxils.scythesmp;
 
 import me.foxils.foxutils.registry.ItemRegistry;
-import me.foxils.synthsmp.commands.DeletePlayerGemData;
-import me.foxils.synthsmp.databases.Database;
-import me.foxils.synthsmp.items.*;
-import me.foxils.synthsmp.commands.GetItemLevel;
+import me.foxils.scythesmp.commands.DeletePlayerGemData;
+import me.foxils.scythesmp.databases.Database;
+import me.foxils.scythesmp.items.*;
+import me.foxils.scythesmp.commands.GetItemLevel;
 import me.foxils.foxutils.utilities.ActionType;
 import me.foxils.foxutils.utilities.ItemAbility;
-import me.foxils.synthsmp.listeners.PlayerDeathListener;
-import me.foxils.synthsmp.listeners.PlayerInteractEntityListener;
-import me.foxils.synthsmp.listeners.PlayerJoinListener;
-import me.foxils.synthsmp.listeners.PlayerRespawnListener;
+import me.foxils.scythesmp.listeners.PlayerDeathListener;
+import me.foxils.scythesmp.listeners.PlayerInteractEntityListener;
+import me.foxils.scythesmp.listeners.PlayerJoinListener;
+import me.foxils.scythesmp.listeners.PlayerRespawnListener;
 import org.bukkit.Bukkit;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public final class SynthSMP extends JavaPlugin {
+public final class ScytheSMP extends JavaPlugin {
 
     public static final List<Integer> taskIDs = new ArrayList<>();
 

@@ -1,4 +1,4 @@
-package me.foxils.synthsmp.listeners;
+package me.foxils.scythesmp.listeners;
 
 import me.foxils.foxutils.utilities.ItemUtils;
 import org.bukkit.Material;

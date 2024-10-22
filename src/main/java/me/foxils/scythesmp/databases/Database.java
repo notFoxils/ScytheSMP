@@ -1,4 +1,4 @@
-package me.foxils.synthsmp.databases;
+package me.foxils.scythesmp.databases;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

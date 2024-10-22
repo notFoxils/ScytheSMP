@@ -1,4 +1,4 @@
-package me.foxils.synthsmp.utilities;
+package me.foxils.scythesmp.utilities;
 
 import org.bukkit.Location;
 import org.bukkit.World;

@@ -1,4 +1,4 @@
-package me.foxils.synthsmp.items;
+package me.foxils.scythesmp.items;
 
 import me.foxils.foxutils.itemactions.ClickActions;
 import me.foxils.foxutils.itemactions.DropAction;

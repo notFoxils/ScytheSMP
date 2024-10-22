@@ -1,11 +1,11 @@
-package me.foxils.synthsmp.items;
+package me.foxils.scythesmp.items;
 
 import me.foxils.foxutils.itemactions.ClickActions;
 import me.foxils.foxutils.itemactions.PassiveAction;
 import me.foxils.foxutils.itemactions.TakeDamageAction;
 import me.foxils.foxutils.utilities.ItemAbility;
 import me.foxils.foxutils.utilities.ItemUtils;
-import me.foxils.synthsmp.utilities.EntityTracing;
+import me.foxils.scythesmp.utilities.EntityTracing;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;

@@ -1,6 +1,6 @@
-package me.foxils.synthsmp.commands;
+package me.foxils.scythesmp.commands;
 
-import me.foxils.synthsmp.tables.PlayerStats;
+import me.foxils.scythesmp.tables.PlayerStats;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;

@@ -1,4 +1,4 @@
-package me.foxils.synthsmp.utilities;
+package me.foxils.scythesmp.utilities;
 
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.MarshallingContext;

@@ -1,10 +1,10 @@
 #file: noinspection SpellCheckingInspection
-name: SynthSMP
+name: ScytheSMP
 version: '${project.version}'
-main: me.foxils.synthsmp.SynthSMP
+main: me.foxils.scythesmp.ScytheSMP
 api-version: '1.21'
 author: Foxils
-description: Plugin for the SynthSMP
+description: Plugin for the ScytheSMP
 
 depend:
   - foxutils-items

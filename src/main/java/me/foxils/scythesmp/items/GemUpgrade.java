@@ -1,10 +1,10 @@
-package me.foxils.synthsmp.items;
+package me.foxils.scythesmp.items;
 
 import me.foxils.foxutils.Item;
 import me.foxils.foxutils.registry.ItemRegistry;
 import me.foxils.foxutils.itemactions.ClickActions;
 import me.foxils.foxutils.utilities.ItemAbility;
-import me.foxils.synthsmp.tables.PlayerStats;
+import me.foxils.scythesmp.tables.PlayerStats;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;

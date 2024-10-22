@@ -1,9 +1,9 @@
-package me.foxils.synthsmp.items;
+package me.foxils.scythesmp.items;
 
 import me.foxils.foxutils.itemactions.*;
 import me.foxils.foxutils.utilities.ItemUtils;
 import me.foxils.foxutils.utilities.ItemAbility;
-import me.foxils.synthsmp.SynthSMP;
+import me.foxils.scythesmp.ScytheSMP;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -135,7 +135,7 @@ public class AirGem extends UpgradeableItem implements TakeDamageAction, AttackA
 
         player.setFlying(true);
 
-        SynthSMP.taskIDs.add(Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> player.setFlying(false), 200));
+        ScytheSMP.taskIDs.add(Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> player.setFlying(false), 200));
     }
 
     @Override

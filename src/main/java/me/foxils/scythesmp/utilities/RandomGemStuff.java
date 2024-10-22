@@ -1,8 +1,8 @@
-package me.foxils.synthsmp.utilities;
+package me.foxils.scythesmp.utilities;
 
 import me.foxils.foxutils.Item;
 import me.foxils.foxutils.registry.ItemRegistry;
-import me.foxils.synthsmp.items.UpgradeableItem;
+import me.foxils.scythesmp.items.UpgradeableItem;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;

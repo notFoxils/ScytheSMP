@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.foxils</groupId>
-    <artifactId>SytheSMP</artifactId>
+    <artifactId>ScytheSMP</artifactId>
     <version>1.2.4</version>
     <packaging>jar</packaging>
 
-    <name>SytheSMP</name>
+    <name>ScytheSMP</name>
 
     <properties>
         <java.version>21</java.version>

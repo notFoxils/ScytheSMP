@@ -1,9 +1,9 @@
-package me.foxils.synthsmp.listeners;
+package me.foxils.scythesmp.listeners;
 
 import me.foxils.foxutils.registry.ItemRegistry;
-import me.foxils.synthsmp.items.SpeedGem;
-import me.foxils.synthsmp.utilities.RandomGemStuff;
-import me.foxils.synthsmp.tables.PlayerStats;
+import me.foxils.scythesmp.items.SpeedGem;
+import me.foxils.scythesmp.utilities.RandomGemStuff;
+import me.foxils.scythesmp.tables.PlayerStats;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;

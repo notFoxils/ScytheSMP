@@ -1,9 +1,9 @@
-package me.foxils.synthsmp.tables;
+package me.foxils.scythesmp.tables;
 
 import com.thoughtworks.xstream.XStream;
-import me.foxils.synthsmp.SynthSMP;
-import me.foxils.synthsmp.utilities.MapEntryConverter;
-import me.foxils.synthsmp.utilities.RandomGemStuff;
+import me.foxils.scythesmp.ScytheSMP;
+import me.foxils.scythesmp.utilities.MapEntryConverter;
+import me.foxils.scythesmp.utilities.RandomGemStuff;
 
 import java.sql.*;
 import java.util.*;
@@ -36,7 +36,7 @@ public final class PlayerStats {
 
         // Would definitely like to switch this to dependency injection, but am too lazy to restructure the database
         // I will write a module inside foxutils to do this and then implement that and remove this.
-        Connection connection = SynthSMP.getDatabase().createConnection();
+        Connection connection = ScytheSMP.getDatabase().createConnection();
 
         try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM " + tableName + " WHERE " + identifierName + " = ?")) {
             statement.setString(1, UUIDString);
@@ -59,7 +59,7 @@ public final class PlayerStats {
     }
 
     public static void createColumn(PlayerStats playerStats) {
-        Connection connection = SynthSMP.getDatabase().createConnection();
+        Connection connection = ScytheSMP.getDatabase().createConnection();
 
         try (PreparedStatement statement = connection.prepareStatement("INSERT INTO player_stats(playerUUID, playerGem, gemLevelMap) VALUES (?, ?, ?)")) {
             statement.setString(1, playerStats.getPlayerUUID());
@@ -75,7 +75,7 @@ public final class PlayerStats {
     }
 
     public void updateColumn() {
-        Connection connection = SynthSMP.getDatabase().createConnection();
+        Connection connection = ScytheSMP.getDatabase().createConnection();
 
         try (PreparedStatement statement = connection.prepareStatement("UPDATE player_stats SET playerGem = ?, gemLevelMap = ? WHERE playerUUID = ?")) {
             statement.setString(1, getCurrentGem());
@@ -91,7 +91,7 @@ public final class PlayerStats {
     }
 
     public void deleteColumn() {
-        Connection connection = SynthSMP.getDatabase().createConnection();
+        Connection connection = ScytheSMP.getDatabase().createConnection();
 
         try (PreparedStatement statement = connection.prepareStatement("DELETE FROM player_stats WHERE playerUUID = ?")) {
             statement.setString(1, getPlayerUUID());
