@@ -1,17 +1,20 @@
 package me.foxils.synthsmp.items;
 
 import me.foxils.foxutils.Item;
+import me.foxils.foxutils.itemactions.ClickActions;
 import me.foxils.foxutils.utilities.ItemUtils;
 import me.foxils.foxutils.utilities.ItemAbility;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 import java.util.List;
 
 @SuppressWarnings("unused")
-public abstract class UpgradeableItem extends Item {
+public abstract class UpgradeableItem extends Item implements ClickActions {
 
     private final int minLevel;
     private final int maxLevel;
@@ -34,6 +37,20 @@ public abstract class UpgradeableItem extends Item {
         ItemStack newItem = super.createItem(amount);
 
         return ItemUtils.storeIntegerData(levelKey, newItem, minLevel);
+    }
+
+    @Override
+    @MustBeInvokedByOverriders
+    public void rightClickBlock(PlayerInteractEvent event, ItemStack itemInteracted) {
+        preventPotInteraction(event, itemInteracted);
+    }
+
+    private void preventPotInteraction(PlayerInteractEvent event, ItemStack itemInteracted) {
+        assert event.getClickedBlock() != null;
+
+        if (event.getClickedBlock().getType() != Material.DECORATED_POT) return;
+
+        event.setCancelled(true);
     }
 
     public void setLevel(Integer level, ItemStack itemStack) {

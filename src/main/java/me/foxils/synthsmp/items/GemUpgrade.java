@@ -1,7 +1,7 @@
 package me.foxils.synthsmp.items;
 
 import me.foxils.foxutils.Item;
-import me.foxils.foxutils.ItemRegistry;
+import me.foxils.foxutils.registry.ItemRegistry;
 import me.foxils.foxutils.itemactions.ClickActions;
 import me.foxils.foxutils.utilities.ItemAbility;
 import me.foxils.synthsmp.tables.PlayerStats;

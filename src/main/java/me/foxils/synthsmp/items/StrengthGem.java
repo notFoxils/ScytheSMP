@@ -43,6 +43,7 @@ public class StrengthGem extends UpgradeableItem implements PassiveAction, DropA
 
     @Override
     public void rightClickBlock(PlayerInteractEvent event, ItemStack itemInteracted) {
+        super.rightClickBlock(event, itemInteracted);
         rightClickAir(event, itemInteracted);
     }
 

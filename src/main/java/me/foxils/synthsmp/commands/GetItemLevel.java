@@ -1,7 +1,7 @@
 package me.foxils.synthsmp.commands;
 
 import me.foxils.foxutils.Item;
-import me.foxils.foxutils.ItemRegistry;
+import me.foxils.foxutils.registry.ItemRegistry;
 import me.foxils.synthsmp.items.UpgradeableItem;
 import org.bukkit.Material;
 import org.bukkit.command.Command;

@@ -1,6 +1,7 @@
 package me.foxils.synthsmp;
 
-import me.foxils.foxutils.ItemRegistry;
+import me.foxils.foxutils.registry.ItemRegistry;
+import me.foxils.synthsmp.commands.DeletePlayerGemData;
 import me.foxils.synthsmp.databases.Database;
 import me.foxils.synthsmp.items.*;
 import me.foxils.synthsmp.commands.GetItemLevel;
@@ -48,7 +49,8 @@ public final class SynthSMP extends JavaPlugin {
     }
 
     private void registerCommands() {
-        Objects.requireNonNull(Bukkit.getPluginCommand("getLevel")).setExecutor(new GetItemLevel());
+        Objects.requireNonNull(Bukkit.getPluginCommand("getlevel")).setExecutor(new GetItemLevel());
+        Objects.requireNonNull(Bukkit.getPluginCommand("deletegemdata")).setExecutor(new DeletePlayerGemData());
     }
 
     private void registerItems() {
@@ -124,8 +126,8 @@ public final class SynthSMP extends JavaPlugin {
         ItemRegistry.registerItem(new AirGem(Material.PAPER, 3,  ChatColor.AQUA + "" + ChatColor.BOLD + "[" + ChatColor.WHITE + ChatColor.BOLD + "Air Gem" + ChatColor.AQUA + ChatColor.BOLD + "]", this,
                 Arrays.asList(
                         new ItemAbility("Light Wind", List.of("Send players flying into the air."), ActionType.ATTACK, 120),
-                        new ItemAbility("Air-Channeling", List.of("Allows you to fly in the air with a timer of 10s."), ActionType.DOUBLEJUMP, 180),
-                        new ItemAbility("Double-Jump", List.of("Allows you to double jump."), ActionType.SHIFTDOUBLEJUMP, 5),
+                        new ItemAbility("Air-Channeling", List.of("Allows you to fly in the air with a timer of 10s."), ActionType.DOUBLE_JUMP, 180),
+                        new ItemAbility("Double-Jump", List.of("Allows you to double jump."), ActionType.SHIFT_DOUBLE_JUMP, 5),
                         new ItemAbility("Push-Pull", Arrays.asList(
                                 "When hitting a player gain Speed II.",
                                 "Inflicts Slow Falling to the hit player."
@@ -154,8 +156,9 @@ public final class SynthSMP extends JavaPlugin {
                 Arrays.asList(
                         new ItemAbility("Static-Wrath", Arrays.asList(
                                 "Build up static with your speed powers and",
-                                "zap all players within a 10 block radius."
-                                ), ActionType.SHIFTDROP, 360),
+                                "zap all players within a 10 block radius.",
+                                "All players hit will be stunned for 4s."
+                                ), ActionType.SHIFT_DROP, 360),
                         new ItemAbility("Solo-Strike", Arrays.asList(
                                 "Has a 10% chance to strike your next enemy with lightning.",
                                 "Grants Speed V for 10s."

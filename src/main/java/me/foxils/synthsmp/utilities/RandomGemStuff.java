@@ -1,8 +1,7 @@
 package me.foxils.synthsmp.utilities;
 
 import me.foxils.foxutils.Item;
-import me.foxils.foxutils.ItemRegistry;
-import me.foxils.synthsmp.items.PowerGem;
+import me.foxils.foxutils.registry.ItemRegistry;
 import me.foxils.synthsmp.items.UpgradeableItem;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -15,10 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 public class RandomGemStuff {
 
@@ -98,14 +94,9 @@ public class RandomGemStuff {
     }
 
     public static UpgradeableItem getRandomUpgradeableGem() {
-        Collection<Item> registeredGems = ItemRegistry.getRegisteredGems();
+        HashSet<Item> registeredGems = ItemRegistry.getRegisteredGems();
 
-        registeredGems.removeIf(item -> {
-            if (item instanceof PowerGem) {
-                return true;
-            }
-            return !(item instanceof UpgradeableItem);
-        });
+        registeredGems.removeIf(item -> !(item instanceof UpgradeableItem));
 
         return (UpgradeableItem) randomFromCollection(registeredGems);
     }
@@ -113,16 +104,16 @@ public class RandomGemStuff {
     public static String getPrimaryColorOfGemName(String gemName) {
         StringBuilder stringBuilder = new StringBuilder(gemName);
 
-        if (gemName.chars().filter(num -> num == '§').count() > 6) {
+        if (stringBuilder.chars().filter(num -> num == '§').count() > 6) {
             // This is for names that use hex color codes instead of regular color codes
             stringBuilder.delete(0, 17);
-        } else if (gemName.chars().filter(num -> num == '§').count() <= 6){
+        } else if (stringBuilder.chars().filter(num -> num == '§').count() <= 6){
             stringBuilder.delete(0, 5);
         }
 
-        if (stringBuilder.toString().chars().filter(num -> num == '§').count() > 15) {
+        if (stringBuilder.chars().filter(num -> num == '§').count() > 15) {
             stringBuilder.delete(16, stringBuilder.length());
-        } else if (stringBuilder.toString().chars().filter(num -> num == '§').count() < 15) {
+        } else if (stringBuilder.chars().filter(num -> num == '§').count() < 15) {
             stringBuilder.delete(4, stringBuilder.length());
         }
 

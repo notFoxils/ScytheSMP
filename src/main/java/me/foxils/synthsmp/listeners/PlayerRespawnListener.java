@@ -1,6 +1,6 @@
 package me.foxils.synthsmp.listeners;
 
-import me.foxils.foxutils.ItemRegistry;
+import me.foxils.foxutils.registry.ItemRegistry;
 import me.foxils.synthsmp.items.UpgradeableItem;
 import me.foxils.synthsmp.tables.PlayerStats;
 import org.bukkit.NamespacedKey;

@@ -9,6 +9,9 @@ import me.foxils.foxutils.utilities.ItemUtils;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
+import org.bukkit.attribute.Attributable;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -25,7 +28,10 @@ import java.util.List;
 import java.util.Random;
 
 public class SpeedGem extends UpgradeableItem implements DropAction, ClickActions, AttackAction, PassiveAction {
+
     private static final Random random = new Random();
+
+    public static final double DEFAULT_PLAYER_SPEED_VALUE = 0.1;
 
     private final NamespacedKey lightningAbilityCooldownKey = new NamespacedKey(plugin, "lightning_ability_cooldown");
 
@@ -156,7 +162,17 @@ public class SpeedGem extends UpgradeableItem implements DropAction, ClickAction
         for (Entity entity : entitiesNearby) {
             entity.getWorld().strikeLightning(entity.getLocation()).setFireTicks(0);
 
-            entity.sendMessage(ChatColor.DARK_AQUA + "You have been shocked by " + ChatColor.BOLD + player.getName());
+            entity.sendMessage(ChatColor.DARK_AQUA + "You have been shocked and stunned by " + ChatColor.BOLD + player.getName());
+
+            if (!(entity instanceof Attributable attributableEntity)) continue;
+
+            final AttributeInstance movementSpeedAttribute = attributableEntity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
+
+            if (movementSpeedAttribute == null) return;
+
+            movementSpeedAttribute.setBaseValue(0);
+
+            plugin.getServer().getScheduler().runTaskLater(plugin, () -> movementSpeedAttribute.setBaseValue(DEFAULT_PLAYER_SPEED_VALUE), 80L);
         }
 
         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BIT, 1F, 1F);

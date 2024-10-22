@@ -109,6 +109,7 @@ public class VillagerGem extends UpgradeableItem implements PassiveAction, MineA
 
     @Override
     public void rightClickBlock(PlayerInteractEvent event, ItemStack itemInteracted) {
+        super.rightClickBlock(event, itemInteracted);
         rightClickAir(event, itemInteracted);
     }
     @Override

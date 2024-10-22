@@ -73,6 +73,8 @@ public class WaterGem extends UpgradeableItem implements TakeDamageAction, Passi
 
     @Override
     public void rightClickBlock(PlayerInteractEvent event, ItemStack itemInteracted) {
+        super.rightClickBlock(event, itemInteracted);
+
         rightClickAir(event, itemInteracted);
     }
 

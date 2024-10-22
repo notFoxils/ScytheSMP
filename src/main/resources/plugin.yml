@@ -10,11 +10,11 @@ depend:
   - foxutils-items
 
 commands:
-  setcraftable:
-    description: enable crafting of said one time craftable UberItem
-    usage: /<command>
+  deletegemdata:
+    description: Delete a player's gem data permanently
+    usage: /<command> <player>
     permission: op
-  getLevel:
-    description: get custom item level in hand
+  getlevel:
+    description: Get level of the current custom item in your hand
     usage: /<command>
     permission: op

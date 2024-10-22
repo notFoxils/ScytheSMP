@@ -6,7 +6,7 @@
 
     <groupId>me.foxils</groupId>
     <artifactId>SytheSMP</artifactId>
-    <version>1.2.3</version>
+    <version>1.2.4</version>
     <packaging>jar</packaging>
 
     <name>SytheSMP</name>
@@ -41,6 +41,14 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.4.2</version>
+                <configuration>
+                    <outputDirectory>../../Servers/GlitchedSMP/plugins</outputDirectory>
+                </configuration>
+            </plugin>
         </plugins>
         <resources>
             <resource>
@@ -71,7 +79,7 @@
         <dependency>
             <groupId>me.foxils</groupId>
             <artifactId>foxutils-items</artifactId>
-            <version>1.16.2-SNAPSHOT</version>
+            <version>1.17.2-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

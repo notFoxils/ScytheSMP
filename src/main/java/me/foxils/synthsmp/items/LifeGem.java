@@ -29,7 +29,7 @@ public class LifeGem extends UpgradeableItem implements PassiveAction, AttackAct
     public final List<PotionEffect> passivePotionEffects = List.of(
             new PotionEffect(PotionEffectType.REGENERATION, 100, 1, false, false)
     );
-    public final PotionEffect witheringEffect = new PotionEffect(PotionEffectType.WITHER, 200, 1, false, true);
+    public final PotionEffect witheringEffect = new PotionEffect(PotionEffectType.WITHER, 300, 1, false, true);
     public final PotionEffect powerHeal = new PotionEffect(PotionEffectType.REGENERATION, 100, 4, false, true);
 
     public final NamespacedKey lifeStealCooldownKey = new NamespacedKey(plugin, "lifegem_lifesteal");
@@ -92,36 +92,31 @@ public class LifeGem extends UpgradeableItem implements PassiveAction, AttackAct
             return;
         }
 
+        AttributeInstance attackedMaxHealthAttribute = playerAttacked.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        AttributeInstance playerMaxHealthAttribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+
+        if (attackedMaxHealthAttribute == null || playerMaxHealthAttribute == null) return;
+
+        double attackedMaxHealthValue = attackedMaxHealthAttribute.getValue();
+
+        if (attackedMaxHealthValue < attackedMaxHealthAttribute.getDefaultValue()) return;
+
         if (ItemUtils.getCooldown(lifeStealCooldownKey, thisItem, 180, player, new TextComponent(ChatColor.DARK_RED + "" + ChatColor.BOLD + "Used Life-Steal"))) {
             return;
         }
 
-        AttributeInstance attckedMaxHealthAttribute = playerAttacked.getAttribute(Attribute.GENERIC_MAX_HEALTH);
-        AttributeInstance playerMaxHealthAttribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
-
-        if (attckedMaxHealthAttribute == null || playerMaxHealthAttribute == null) return;
-
-        double attackedMaxHealthValue = attckedMaxHealthAttribute.getValue();
         double playerMaxHealthValue = playerMaxHealthAttribute.getValue();
 
-        double attackedNewValue;
-        double playerNewValue;
+        double attackedNewValue = attackedMaxHealthValue - 8;
+        double playerNewValue = playerMaxHealthValue + 8;
 
-        attackedNewValue = attackedMaxHealthValue - 8;
-        playerNewValue = playerMaxHealthValue + 8;
-
-        if (attackedMaxHealthValue <= 4 && attackedMaxHealthValue > 2) {
-            attackedNewValue = attackedMaxHealthValue - 4;
-            playerNewValue = playerMaxHealthValue + 4;
-        }
-
-        attckedMaxHealthAttribute.setBaseValue(attackedNewValue);
+        attackedMaxHealthAttribute.setBaseValue(attackedNewValue);
         playerMaxHealthAttribute.setBaseValue(playerNewValue);
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
             if (player.isOnline()) playerMaxHealthAttribute.setBaseValue(playerMaxHealthValue);
 
-            if (playerAttacked.isOnline()) attckedMaxHealthAttribute.setBaseValue(attackedMaxHealthValue);
+            if (playerAttacked.isOnline()) attackedMaxHealthAttribute.setBaseValue(attackedMaxHealthValue);
         }, 600);
     }
 

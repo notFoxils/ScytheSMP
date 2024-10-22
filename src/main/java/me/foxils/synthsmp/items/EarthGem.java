@@ -171,6 +171,8 @@ public class EarthGem extends UpgradeableItem implements MineAction, DropAction,
 
     @Override
     public void rightClickBlock(PlayerInteractEvent event, ItemStack itemInteracted) {
+        super.rightClickBlock(event, itemInteracted);
+
         rightClickAir(event, itemInteracted);
     }
 

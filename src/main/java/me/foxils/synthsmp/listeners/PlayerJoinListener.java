@@ -1,6 +1,7 @@
 package me.foxils.synthsmp.listeners;
 
-import me.foxils.foxutils.ItemRegistry;
+import me.foxils.foxutils.registry.ItemRegistry;
+import me.foxils.synthsmp.items.SpeedGem;
 import me.foxils.synthsmp.utilities.RandomGemStuff;
 import me.foxils.synthsmp.tables.PlayerStats;
 import org.bukkit.NamespacedKey;
@@ -24,6 +25,17 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         rollFirstTimeGem(event);
         resetHealthAmount(event);
+        resetMovementSpeedAttribute(event);
+    }
+
+    private void resetMovementSpeedAttribute(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+
+        AttributeInstance movementSpeedAttribute = player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
+
+        if (movementSpeedAttribute == null) return;
+
+        movementSpeedAttribute.setBaseValue(SpeedGem.DEFAULT_PLAYER_SPEED_VALUE);
     }
 
     private void resetHealthAmount(PlayerJoinEvent event) {
