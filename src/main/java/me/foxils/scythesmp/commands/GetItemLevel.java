@@ -15,19 +15,19 @@ public class GetItemLevel implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, String[] strings) {
-        if (!(commandSender instanceof Player player) || player.getInventory().getItemInMainHand().getType() == Material.AIR) {
+        if (!(commandSender instanceof Player player)) {
             return false;
         }
 
-        ItemStack itemStack = player.getInventory().getItemInMainHand();
+        final ItemStack itemStack = player.getInventory().getItemInMainHand();
 
-        Item item = ItemRegistry.getItemFromItemStack(itemStack);
+        final Item item = ItemRegistry.getItemFromItemStack(itemStack);
 
         if (!(item instanceof UpgradeableItem upgradeableItem)) {
             return false;
         }
 
-        player.sendMessage(upgradeableItem.getLevel(itemStack) + "");
+        player.sendMessage(item.getName() + "'s Level: " + upgradeableItem.getLevel(itemStack));
 
         return true;
     }

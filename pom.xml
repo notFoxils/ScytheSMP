@@ -6,7 +6,7 @@
 
     <groupId>me.foxils</groupId>
     <artifactId>ScytheSMP</artifactId>
-    <version>1.2.4</version>
+    <version>1.2.5</version>
     <packaging>jar</packaging>
 
     <name>ScytheSMP</name>
@@ -79,7 +79,7 @@
         <dependency>
             <groupId>me.foxils</groupId>
             <artifactId>foxutils-items</artifactId>
-            <version>1.17.3-SNAPSHOT</version>
+            <version>1.17.5-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
