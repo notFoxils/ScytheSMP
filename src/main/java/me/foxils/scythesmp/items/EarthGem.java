@@ -46,9 +46,7 @@ public class EarthGem extends UpgradeableItem implements MineAction, DropAction,
 
     @Override
     public void blockMineAction(BlockBreakEvent event, ItemStack itemUsed, ItemStack thisItem) {
-        if (event.getPlayer().isSneaking()) {
-            return;
-        }
+        if (event.getPlayer().isSneaking()) return;
 
         Block blockBroken = event.getBlock();
 
@@ -89,7 +87,7 @@ public class EarthGem extends UpgradeableItem implements MineAction, DropAction,
 
     @Override
     public void dropItemAction(PlayerDropItemEvent event, ItemStack itemUsed) {
-        if (ItemUtils.getCooldown(miningBoundsCooldownKey, itemUsed, 900, event.getPlayer(), new TextComponent(ChatColor.GREEN + "" + ChatColor.BOLD + "Used Tumble-Four³"))) return;
+        if (ItemUtils.getCooldown(miningBoundsCooldownKey, itemUsed, 900L, event.getPlayer(), new TextComponent(ChatColor.GREEN + "" + ChatColor.BOLD + "Used Tumble-Four³"))) return;
 
         ItemUtils.storeDataOfType(PersistentDataType.INTEGER_ARRAY, new int[]{-1, 3}, miningBoundKey, itemUsed);
 
@@ -113,9 +111,7 @@ public class EarthGem extends UpgradeableItem implements MineAction, DropAction,
     }
 
     private void doEarthToss(Player player, ItemStack item) {
-        if (ItemUtils.getCooldown(new NamespacedKey(plugin, "earth_toss_cooldown"), item, 900, player, new TextComponent(ChatColor.GRAY + "" + ChatColor.BOLD + "Used Terrain-Toss"))) {
-            return;
-        }
+        if (ItemUtils.getCooldown(new NamespacedKey(plugin, "earth_toss_cooldown"), item, 900L, player, new TextComponent(ChatColor.GRAY + "" + ChatColor.BOLD + "Used Terrain-Toss"))) return;
 
         World world = player.getWorld();
         Location playerPosition = player.getLocation();
@@ -211,9 +207,7 @@ public class EarthGem extends UpgradeableItem implements MineAction, DropAction,
             toBeRemoved = new ArrayList<>();
         }
 
-        if (blocksGroupsThrown.isEmpty()) {
-            return;
-        }
+        if (blocksGroupsThrown.isEmpty()) return;
 
         for (List<FallingBlock> blockGroup : blocksGroupsThrown) {
             for (FallingBlock block : blockGroup) {
@@ -264,20 +258,14 @@ public class EarthGem extends UpgradeableItem implements MineAction, DropAction,
 
         ItemStack offHandItem = inventory.getItemInOffHand();
 
-        if (!offHandItem.getType().equals(Material.SHIELD)) {
-            return;
-        }
+        if (!offHandItem.getType().equals(Material.SHIELD)) return;
 
-        if (!offHandItem.hasItemMeta()) {
-            return;
-        }
+        if (!offHandItem.hasItemMeta()) return;
 
         Damageable damageableMeta = (Damageable) offHandItem.getItemMeta();
         assert damageableMeta != null;
 
-        if (!damageableMeta.hasDamage()) {
-            return;
-        }
+        if (!damageableMeta.hasDamage()) return;
 
         damageableMeta.setDamage(0);
         offHandItem.setItemMeta(damageableMeta);

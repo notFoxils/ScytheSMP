@@ -2,6 +2,7 @@ package me.foxils.scythesmp;
 
 import me.foxils.foxutils.registry.ItemRegistry;
 import me.foxils.scythesmp.commands.DeletePlayerGemData;
+import me.foxils.scythesmp.commands.SetItemLevel;
 import me.foxils.scythesmp.databases.Database;
 import me.foxils.scythesmp.items.*;
 import me.foxils.scythesmp.commands.GetItemLevel;
@@ -50,6 +51,7 @@ public final class ScytheSMP extends JavaPlugin {
 
     private void registerCommands() {
         Objects.requireNonNull(Bukkit.getPluginCommand("getlevel")).setExecutor(new GetItemLevel());
+        Objects.requireNonNull(Bukkit.getPluginCommand("setlevel")).setExecutor(new SetItemLevel());
         Objects.requireNonNull(Bukkit.getPluginCommand("deletegemdata")).setExecutor(new DeletePlayerGemData());
     }
 

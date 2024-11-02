@@ -4,6 +4,7 @@ import com.thoughtworks.xstream.XStream;
 import me.foxils.scythesmp.ScytheSMP;
 import me.foxils.scythesmp.utilities.MapEntryConverter;
 import me.foxils.scythesmp.utilities.RandomGemStuff;
+import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
 import java.util.*;
@@ -31,6 +32,7 @@ public final class PlayerStats {
         magicApi.alias("root", Map.class);
     }
 
+    @Nullable
     public static PlayerStats getDataObjectFromUUID(UUID uuid) {
         final String UUIDString = uuid.toString();
 
@@ -42,12 +44,11 @@ public final class PlayerStats {
             statement.setString(1, UUIDString);
             ResultSet resultSet = statement.executeQuery();
 
-            PlayerStats playerStats = new PlayerStats(uuid);
-
             if (resultSet == null || !resultSet.next()) {
-                createColumn(playerStats);
-                return playerStats;
+                return null;
             }
+
+            PlayerStats playerStats = new PlayerStats(uuid);
 
             playerStats.setCurrentGem(resultSet.getString(2));
             playerStats.setGemLevelMapFromXML(resultSet.getString(3));
@@ -135,6 +136,7 @@ public final class PlayerStats {
 
         // *dies of death*
         // this is most definitely a byproduct of my terrible database code
+        @SuppressWarnings("unchecked")
         Map<String, String> weirdMap = (Map<String, String>) magicApi.fromXML(xml);
 
         weirdMap.forEach((string, stringInteger) -> basedMap.put(string, Integer.valueOf(stringInteger)));

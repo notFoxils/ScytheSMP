@@ -54,9 +54,7 @@ public class LifeGem extends UpgradeableItem implements PassiveAction, AttackAct
     private void powerHeal(PlayerInteractEvent event, ItemStack itemInteracted) {
         Player player = event.getPlayer();
 
-        if (ItemUtils.getCooldown(powerHealCooldownKey, itemInteracted, 120, player, new TextComponent(ChatColor.RED + "" + ChatColor.BOLD + "Used Power-Heal"))) {
-            return;
-        }
+        if (ItemUtils.getCooldown(powerHealCooldownKey, itemInteracted, 120L, player, new TextComponent(ChatColor.RED + "" + ChatColor.BOLD + "Used Power-Heal"))) return;
 
         player.addPotionEffect(powerHeal);
     }
@@ -69,15 +67,11 @@ public class LifeGem extends UpgradeableItem implements PassiveAction, AttackAct
     private void inflictWithering(PlayerInteractEvent event, ItemStack itemInteracted) {
         Player playerInflicting = event.getPlayer();
 
-        if (ItemUtils.getCooldown(witheringCooldownKey, itemInteracted, 120, playerInflicting, new TextComponent(ChatColor.GRAY + "" + ChatColor.BOLD + "Used Wither-Away"))) {
-            return;
-        }
+        if (ItemUtils.getCooldown(witheringCooldownKey, itemInteracted, 120L, playerInflicting, new TextComponent(ChatColor.GRAY + "" + ChatColor.BOLD + "Used Wither-Away"))) return;
 
         Entity hitEntity = EntityTracing.getEntityLookingAt(playerInflicting);
 
-        if (!(hitEntity instanceof Player hitPlayer)) {
-            return;
-        }
+        if (!(hitEntity instanceof Player hitPlayer)) return;
 
         hitPlayer.addPotionEffect(witheringEffect);
     }
@@ -88,9 +82,7 @@ public class LifeGem extends UpgradeableItem implements PassiveAction, AttackAct
     }
 
     private void tempLifeSteal(EntityDamageByEntityEvent event, ItemStack thisItem) {
-        if (!(event.getDamager() instanceof Player player) || !(event.getEntity() instanceof Player playerAttacked)) {
-            return;
-        }
+        if (!(event.getDamager() instanceof Player player) || !(event.getEntity() instanceof Player playerAttacked)) return;
 
         AttributeInstance attackedMaxHealthAttribute = playerAttacked.getAttribute(Attribute.GENERIC_MAX_HEALTH);
         AttributeInstance playerMaxHealthAttribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
@@ -101,9 +93,7 @@ public class LifeGem extends UpgradeableItem implements PassiveAction, AttackAct
 
         if (attackedMaxHealthValue < attackedMaxHealthAttribute.getDefaultValue()) return;
 
-        if (ItemUtils.getCooldown(lifeStealCooldownKey, thisItem, 180, player, new TextComponent(ChatColor.DARK_RED + "" + ChatColor.BOLD + "Used Life-Steal"))) {
-            return;
-        }
+        if (ItemUtils.getCooldown(lifeStealCooldownKey, thisItem, 180L, player, new TextComponent(ChatColor.DARK_RED + "" + ChatColor.BOLD + "Used Life-Steal"))) return;
 
         double playerMaxHealthValue = playerMaxHealthAttribute.getValue();
 
@@ -126,9 +116,7 @@ public class LifeGem extends UpgradeableItem implements PassiveAction, AttackAct
     }
 
     private void giveEffects(Player player, ItemStack thisItem) {
-        if (ItemUtils.getCooldown(passiveEffectsCooldownKey, thisItem, 10)) {
-            return;
-        }
+        if (ItemUtils.getCooldown(passiveEffectsCooldownKey, thisItem, 10L)) return;
 
         player.addPotionEffects(passivePotionEffects);
     }

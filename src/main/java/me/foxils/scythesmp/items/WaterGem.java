@@ -49,9 +49,7 @@ public class WaterGem extends UpgradeableItem implements TakeDamageAction, Passi
     public void onTakeDamage(EntityDamageEvent event, ItemStack itemStack) {
         Player playerTakingDamage = (Player) event.getEntity();
 
-        if (playerTakingDamage.getWorld().getEnvironment() != World.Environment.NETHER) {
-            return;
-        }
+        if (playerTakingDamage.getWorld().getEnvironment() != World.Environment.NETHER) return;
 
         double damageAmount = event.getDamage();
 
@@ -106,13 +104,9 @@ public class WaterGem extends UpgradeableItem implements TakeDamageAction, Passi
     private void waterJet(Player playerAttacking, ItemStack item) {
         LivingEntity tracedEntity = EntityTracing.getEntityLookingAt(playerAttacking);
 
-        if (tracedEntity == null) {
-            return;
-        }
+        if (tracedEntity == null) return;
 
-        if (ItemUtils.getCooldown(new NamespacedKey(plugin, "water_jet_cooldown"), item, 600, playerAttacking, new TextComponent(ChatColor.DARK_BLUE + "" + ChatColor.BOLD + "Used Water Jet"))) {
-            return;
-        }
+        if (ItemUtils.getCooldown(new NamespacedKey(plugin, "water_jet_cooldown"), item, 600L, playerAttacking, new TextComponent(ChatColor.DARK_BLUE + "" + ChatColor.BOLD + "Used Water Jet"))) return;
 
         World world = playerAttacking.getWorld();
 
@@ -133,15 +127,12 @@ public class WaterGem extends UpgradeableItem implements TakeDamageAction, Passi
             direction.normalize();
         }
 
-        tracedEntity.damage(0, playerAttacking);
-        tracedEntity.setHealth(tracedEntity.getHealth() - 3);
+        tracedEntity.damage(1.5, playerAttacking);
         tracedEntity.addPotionEffect(waterJetPotionEffect);
     }
     
     private void rainDropOfGod(Player player, ItemStack item) {
-        if (ItemUtils.getCooldown(new NamespacedKey(plugin, "god_drop_cooldown"), item, 900, player, new TextComponent(ChatColor.DARK_BLUE + "" + ChatColor.BOLD + "Launched The Wave"))) {
-            return;
-        }
+        if (ItemUtils.getCooldown(new NamespacedKey(plugin, "god_drop_cooldown"), item, 900L, player, new TextComponent(ChatColor.DARK_BLUE + "" + ChatColor.BOLD + "Launched The Wave"))) return;
 
         World world = player.getWorld();
         Location playerPosition = player.getLocation();
@@ -204,9 +195,7 @@ public class WaterGem extends UpgradeableItem implements TakeDamageAction, Passi
             toBeRemoved = new ArrayList<>();
         }
 
-        if (blocksGroupsThrown.isEmpty()) {
-            return;
-        }
+        if (blocksGroupsThrown.isEmpty()) return;
 
         for (List<FallingBlock> blockGroup : blocksGroupsThrown) {
             for (FallingBlock block : blockGroup) {
@@ -268,17 +257,13 @@ public class WaterGem extends UpgradeableItem implements TakeDamageAction, Passi
     }
 
     private void waterArrow(Player player, ItemStack item) {
-        if (!ItemUtils.getCooldown(new NamespacedKey(plugin, "water_arrow_restock"), item, 420, player, new TextComponent(ChatColor.GOLD + "" + ChatColor.BOLD + "Restocked Water Arrows"))) {
+        if (!ItemUtils.getCooldown(new NamespacedKey(plugin, "water_arrow_restock"), item, 420L, player, new TextComponent(ChatColor.GOLD + "" + ChatColor.BOLD + "Restocked Water Arrows"))) {
             arrows = 4;
         }
 
-        if (arrows < 1) {
-            return;
-        }
+        if (arrows < 1) return;
 
-        if (ItemUtils.getCooldown(new NamespacedKey(plugin, "water_arrow_cooldown"), item, 1, player, new TextComponent(ChatColor.BLUE + "" + ChatColor.BOLD + "Launched Water Arrow"))) {
-            return;
-        }
+        if (ItemUtils.getCooldown(new NamespacedKey(plugin, "water_arrow_cooldown"), item, 1L, player, new TextComponent(ChatColor.BLUE + "" + ChatColor.BOLD + "Launched Water Arrow"))) return;
 
         arrows--;
 

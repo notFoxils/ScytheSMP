@@ -42,23 +42,17 @@ public class AirGem extends UpgradeableItem implements TakeDamageAction, AttackA
         LivingEntity attacker = (LivingEntity) entityDamageByEntityEvent.getDamager();
         LivingEntity damaged = (LivingEntity) entityDamageByEntityEvent.getEntity();
 
-        if (getLevel(item) < 1) {
-            return;
-        }
+        if (getItemStackLevel(item) < 1) return;
 
         airPunch(attacker, damaged, item);
 
-        if (getLevel(item) < 2) {
-            return;
-        }
+        if (getItemStackLevel(item) < 2) return;
 
         airAttackEffects(attacker, damaged, item);
     }
 
     private void airPunch(LivingEntity attacker, LivingEntity damaged, ItemStack item) {
-        if (ItemUtils.getCooldown(airPunchKey, item, 120, (Player) attacker, new TextComponent(ChatColor.AQUA + "" + ChatColor.BOLD + "Used Light Wind"))) {
-            return;
-        }
+        if (ItemUtils.getCooldown(airPunchKey, item, 120L, (Player) attacker, new TextComponent(ChatColor.AQUA + "" + ChatColor.BOLD + "Used Light Wind"))) return;
 
         Vector lookDir = attacker.getEyeLocation().getDirection().clone().multiply(new Vector(0.75, 1.5, 0.75));
 
@@ -66,9 +60,7 @@ public class AirGem extends UpgradeableItem implements TakeDamageAction, AttackA
     }
 
     private void airAttackEffects(LivingEntity attacker, LivingEntity damaged, ItemStack item) {
-        if (ItemUtils.getCooldown(airAttackEffectsKey, item, 120)) {
-            return;
-        }
+        if (ItemUtils.getCooldown(airAttackEffectsKey, item, 120L)) return;
 
         attacker.addPotionEffect(attackBuffEffect);
         damaged.addPotionEffect(attackDebuffEffect);
@@ -80,9 +72,7 @@ public class AirGem extends UpgradeableItem implements TakeDamageAction, AttackA
     }
 
     private void cancelFallDamage(EntityDamageEvent event) {
-        if (!(event.getDamageSource().getDamageType() == DamageType.FALL)) {
-            return;
-        }
+        if (!(event.getDamageSource().getDamageType() == DamageType.FALL)) return;
 
         event.setCancelled(true);
     }
@@ -91,9 +81,7 @@ public class AirGem extends UpgradeableItem implements TakeDamageAction, AttackA
     public void doubleJumpAction(PlayerToggleFlightEvent playerToggleFlightEvent, ItemStack item) {
         doubleJump(playerToggleFlightEvent, item);
 
-        if (getLevel(item) != 3) {
-            return;
-        }
+        if (getItemStackLevel(item) != 3) return;
 
         playerFlight(playerToggleFlightEvent, item);
     }
@@ -101,19 +89,13 @@ public class AirGem extends UpgradeableItem implements TakeDamageAction, AttackA
     private void doubleJump(PlayerToggleFlightEvent event, ItemStack item) {
         Player player = event.getPlayer();
 
-        if (!player.isSneaking()) {
-            return;
-        }
+        if (!player.isSneaking()) return;
 
-        if (ItemUtils.getCooldown(new NamespacedKey(plugin, "airgem_doublejump"), item, 5, player, new TextComponent(ChatColor.WHITE + "" + ChatColor.BOLD + "Used Double Jump"))) {
-            return;
-        }
+        if (ItemUtils.getCooldown(new NamespacedKey(plugin, "airgem_doublejump"), item, 5L, player, new TextComponent(ChatColor.WHITE + "" + ChatColor.BOLD + "Used Double Jump"))) return;
 
         Location playerLocation = player.getLocation().clone();
 
-        if (playerLocation.subtract(0, 2, 0).getBlock().getType() == Material.AIR) {
-            return;
-        }
+        if (playerLocation.subtract(0, 2, 0).getBlock().getType() == Material.AIR) return;
 
         Vector playerLookDirection = playerLocation.getDirection().add(new Vector(0, 0.25, 0));
 
@@ -125,13 +107,9 @@ public class AirGem extends UpgradeableItem implements TakeDamageAction, AttackA
     private void playerFlight(PlayerToggleFlightEvent event, ItemStack item) {
         Player player = event.getPlayer();
 
-        if (player.isSneaking()) {
-            return;
-        }
+        if (player.isSneaking()) return;
 
-        if (ItemUtils.getCooldown(new NamespacedKey(plugin, "airgem_flight"), item, 420, player, new TextComponent(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Used Air-Channeling"))) {
-            return;
-        }
+        if (ItemUtils.getCooldown(new NamespacedKey(plugin, "airgem_flight"), item, 420L, player, new TextComponent(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Used Air-Channeling"))) return;
 
         player.setFlying(true);
 

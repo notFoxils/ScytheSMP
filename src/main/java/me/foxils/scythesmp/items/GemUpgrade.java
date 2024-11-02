@@ -47,7 +47,7 @@ public class GemUpgrade extends Item implements ClickActions {
             int i;
 
             for (i = 0; i < upgradeItemAmount; i++) {
-                if (!upgradeableCustomItem.upgradeLevel(1, item)) {
+                if (!UpgradeableItem.setItemStackLevel(upgradeItem, UpgradeableItem.getItemStackLevel(item) + 1)) {
                     break;
                 }
                 player.getWorld().spawnParticle(Particle.EXPLOSION_EMITTER, player.getLocation(), 1);
@@ -63,9 +63,11 @@ public class GemUpgrade extends Item implements ClickActions {
 
             PlayerStats playerStats = PlayerStats.getDataObjectFromUUID(player.getUniqueId());
 
+            if (playerStats == null) playerStats = new PlayerStats(player.getUniqueId());
+
             Map<String, Integer> gemLevelMap = playerStats.getGemLevelMap();
 
-            int newLevel = upgradeableCustomItem.getLevel(item);
+            int newLevel = UpgradeableItem.getItemStackLevel(item);
 
             if (gemLevelMap.containsKey(upgradeableCustomItem.getRawName())) gemLevelMap.replace(upgradeableCustomItem.getRawName(), newLevel);
             else gemLevelMap.put(upgradeableCustomItem.getRawName(), newLevel);

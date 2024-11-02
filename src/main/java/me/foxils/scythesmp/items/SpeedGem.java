@@ -57,13 +57,13 @@ public class SpeedGem extends UpgradeableItem implements DropAction, ClickAction
     public void shiftLeftClickBlock(PlayerInteractEvent event, ItemStack itemInteracted) {shiftLeftClickAir(event, itemInteracted);}
 
     private void hasteIncreaseAbility(PlayerInteractEvent event, ItemStack itemInteracted) {
-        if (getLevel(itemInteracted) < 3) return;
+        if (getItemStackLevel(itemInteracted) < 3) return;
 
         Player player = event.getPlayer();
 
         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BIT, 1F, 0.75F);
 
-        if (ItemUtils.getCooldown(hasteIncreaseCooldownKey, itemInteracted, 900)) {
+        if (ItemUtils.getCooldown(hasteIncreaseCooldownKey, itemInteracted, 900L)) {
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.DARK_RED + "" + ChatColor.BOLD + "Wait for cooldown"));
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BIT, 1F, 0.5F);
             return;
@@ -87,20 +87,20 @@ public class SpeedGem extends UpgradeableItem implements DropAction, ClickAction
     }
 
     private void randomLightningHitAbility(ItemStack itemInteracted) {
-        if (getLevel(itemInteracted) < 2) return;
-        if (ItemUtils.getCooldown(randomLightningCooldownKey, itemInteracted, 900)) return;
+        if (getItemStackLevel(itemInteracted) < 2) return;
+        if (ItemUtils.getCooldown(randomLightningCooldownKey, itemInteracted, 900L)) return;
 
         if (random.nextInt(0, 100) > 90) ItemUtils.storeDataOfType(PersistentDataType.BOOLEAN, true, randomLightningBooleanKey, itemInteracted);
     }
 
     private void speedIncreaseAbility(PlayerInteractEvent event, ItemStack itemInteracted) {
-        if (getLevel(itemInteracted) < 2) return;
+        if (getItemStackLevel(itemInteracted) < 2) return;
 
         Player player = event.getPlayer();
 
         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BIT, 1F, 0.75F);
 
-        if (ItemUtils.getCooldown(speedIncreaseCooldownKey, itemInteracted, 900)) {
+        if (ItemUtils.getCooldown(speedIncreaseCooldownKey, itemInteracted, 900L)) {
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.DARK_RED + "" + ChatColor.BOLD + "Wait for cooldown"));
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BIT, 1F, 0.5F);
             return;
@@ -143,13 +143,9 @@ public class SpeedGem extends UpgradeableItem implements DropAction, ClickAction
     private void lightningAbility(PlayerDropItemEvent playerDropItemEvent, ItemStack itemStack) {
         Player player = playerDropItemEvent.getPlayer();
 
-        if (!player.isSneaking()) {
-            return;
-        }
+        if (!player.isSneaking()) return;
 
-        if (ItemUtils.getCooldown(lightningAbilityCooldownKey, itemStack, 600, player, new TextComponent(ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "Activated Static Wrath"))) {
-            return;
-        }
+        if (ItemUtils.getCooldown(lightningAbilityCooldownKey, itemStack, 600L, player, new TextComponent(ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "Activated Static Wrath"))) return;
 
         List<Entity> entitiesNearby = player.getNearbyEntities(5, 2, 5);
 
@@ -184,7 +180,7 @@ public class SpeedGem extends UpgradeableItem implements DropAction, ClickAction
     }
 
     private void passiveEffects(Player player, ItemStack itemStack) {
-        int itemLevel = getLevel(itemStack);
+        int itemLevel = getItemStackLevel(itemStack);
 
         Boolean canIncreaseSpeed = ItemUtils.getDataOfType(PersistentDataType.BOOLEAN, speedIncreaseBooleanKey, itemStack);
         PotionEffect currentSpeedEffect = player.getPotionEffect(PotionEffectType.SPEED);
@@ -196,9 +192,7 @@ public class SpeedGem extends UpgradeableItem implements DropAction, ClickAction
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 200, itemLevel - 1));
         }
 
-        if (itemLevel <= 1) {
-            return;
-        }
+        if (itemLevel <= 1) return;
 
         Boolean canIncreaseHaste = ItemUtils.getDataOfType(PersistentDataType.BOOLEAN, hasteIncreaseBooleanKey, itemStack);
         PotionEffect currentHasteEffect = player.getPotionEffect(PotionEffectType.HASTE);

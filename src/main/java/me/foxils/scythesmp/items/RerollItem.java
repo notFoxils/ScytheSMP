@@ -26,46 +26,50 @@ public class RerollItem extends Item implements InventoryClickAction {
     private void changeToRandomItem(InventoryClickEvent inventoryClickEvent) {
         if (!inventoryClickEvent.getSlotType().equals(InventoryType.SlotType.RESULT)) return;
 
-        Player player = (Player) inventoryClickEvent.getWhoClicked();
-        PlayerInventory playerInventory = player.getInventory();
+        final Player player = (Player) inventoryClickEvent.getWhoClicked();
+        final PlayerInventory playerInventory = player.getInventory();
 
-        PlayerStats playerStats = PlayerStats.getDataObjectFromUUID(player.getUniqueId());
+        final UUID playerUUID = player.getUniqueId();
 
-        Map<String, Integer> gemLevelMap = playerStats.getGemLevelMap();
+        PlayerStats playerStats = PlayerStats.getDataObjectFromUUID(playerUUID);
 
-        Arrays.stream(playerInventory.getContents()).forEach(itemStack -> {
-            if (!(ItemRegistry.getItemFromItemStack(itemStack) instanceof UpgradeableItem upgradeableItem) || upgradeableItem.getRawName().contains("power")) return;
+        if (playerStats == null) {
+            playerStats = new PlayerStats(playerUUID);
+        }
 
-            upgradeableItem.downgradeLevel(1, itemStack);
+        final Map<String, Integer> gemLevelMap = playerStats.getGemLevelMap();
 
-            final int newLevel = upgradeableItem.getLevel(itemStack);
+        for (ItemStack itemStack : playerInventory.getContents()) {
+            if (!(ItemRegistry.getItemFromItemStack(itemStack) instanceof UpgradeableItem upgradeableItem)) return;
+
+            final int storedItemLevel = UpgradeableItem.getItemStackLevel(itemStack) - 1;
             final String rawItemName = upgradeableItem.getRawName();
 
             if (gemLevelMap.containsKey(rawItemName)) {
-                gemLevelMap.replace(rawItemName, newLevel);
+                gemLevelMap.replace(rawItemName, storedItemLevel);
             } else {
-                gemLevelMap.put(rawItemName, newLevel);
+                gemLevelMap.put(rawItemName, storedItemLevel);
             }
 
             itemStack.setAmount(0);
-        });
+        }
 
-        UpgradeableItem item = RandomGemStuff.getRandomUpgradeableGem();
-        ItemStack gemItemStack = item.createItem(1);
+        final UpgradeableItem item = RandomGemStuff.getRandomUpgradeableGem();
+        final ItemStack gemItemStack = item.createItem(1);
         final String rawItemName = item.getRawName();
 
         if (gemLevelMap.containsKey(rawItemName)) {
-            item.setLevel(gemLevelMap.get(rawItemName), gemItemStack);
+            UpgradeableItem.setItemStackLevel(gemItemStack, gemLevelMap.get(rawItemName));
         } else {
-            gemLevelMap.put(rawItemName, item.getMinLevel());
+            gemLevelMap.put(rawItemName, item.getMinimumLevel());
         }
 
         playerStats.setGemLevelMap(gemLevelMap);
         playerStats.setCurrentGem(rawItemName);
         playerStats.updateColumn();
 
-        RandomGemStuff.ShowRandomUpgradeableItem showRandomUpgradeableItem = new RandomGemStuff.ShowRandomUpgradeableItem(player);
-        RandomGemStuff.GiveRandomUpgradeableItem giveRandomUpgradeableItem = new RandomGemStuff.GiveRandomUpgradeableItem(plugin, player, showRandomUpgradeableItem, gemItemStack, RandomGemStuff.getPrimaryColorOfGemName(item.getName()) + "Rerolled Gem");
+        final RandomGemStuff.ShowRandomUpgradeableItem showRandomUpgradeableItem = new RandomGemStuff.ShowRandomUpgradeableItem(player);
+        final RandomGemStuff.GiveRandomUpgradeableItem giveRandomUpgradeableItem = new RandomGemStuff.GiveRandomUpgradeableItem(plugin, player, showRandomUpgradeableItem, gemItemStack, RandomGemStuff.getPrimaryColorOfGemName(item.getName()) + "Rerolled Gem");
 
         Bukkit.getScheduler().runTaskLater(plugin, player::closeInventory, 1L);
         Bukkit.getScheduler().runTaskLater(plugin, () -> playerInventory.remove(createItem(1)), 2L);

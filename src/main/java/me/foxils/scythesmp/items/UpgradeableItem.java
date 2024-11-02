@@ -3,6 +3,7 @@ package me.foxils.scythesmp.items;
 import me.foxils.foxutils.Item;
 import me.foxils.foxutils.itemactions.ClickActions;
 import me.foxils.foxutils.itemactions.InventoryClickAction;
+import me.foxils.foxutils.registry.ItemRegistry;
 import me.foxils.foxutils.utilities.ItemUtils;
 import me.foxils.foxutils.utilities.ItemAbility;
 import org.bukkit.Material;
@@ -13,22 +14,25 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 @SuppressWarnings("unused")
 public abstract class UpgradeableItem extends Item implements ClickActions, InventoryClickAction {
 
+    private final NamespacedKey LEVEL_KEY;
+
     private final int minLevel;
     private final int maxLevel;
-
-    private static final NamespacedKey LEVEL_KEY = NamespacedKey.fromString("sythesmp:upgrade-level");
 
     public UpgradeableItem(Material material, int customModelData, String name, Plugin plugin, List<ItemAbility> abilityList, List<ItemStack> itemsForRecipe, boolean shapedRecipe, int maxLevel, int minLevel) {
         super(material, customModelData, name, plugin, abilityList, itemsForRecipe, shapedRecipe);
 
         this.minLevel = minLevel;
         this.maxLevel = maxLevel;
+
+        this.LEVEL_KEY = new NamespacedKey(plugin, "upgrade_level");
     }
 
     public UpgradeableItem(Material material, int customModelData, String name, Plugin plugin, List<ItemAbility> abilityList, int maxLevel, int minLevel) {
@@ -36,8 +40,14 @@ public abstract class UpgradeableItem extends Item implements ClickActions, Inve
     }
 
     @Override
-    public void onInvetoryPull(InventoryClickEvent event, ItemStack itemStack) {
-        preventNonPlayerInventoryMovement(event);
+    public ItemStack createItem(int amount) {
+        ItemStack newItem = super.createItem(amount);
+
+        if (!setItemStackLevel(newItem, minLevel)) {
+            plugin.getLogger().severe("Error creating ItemStack for " + getClass().getName() + " item class: Cannot set " + LEVEL_KEY);
+        }
+
+        return newItem;
     }
 
     private void preventNonPlayerInventoryMovement(InventoryClickEvent event) {
@@ -49,18 +59,8 @@ public abstract class UpgradeableItem extends Item implements ClickActions, Inve
     }
 
     @Override
-    public ItemStack createItem(int amount) {
-        ItemStack newItem = super.createItem(amount);
-
-        ItemUtils.storeIntegerData(LEVEL_KEY, newItem, minLevel);
-
-        return newItem;
-    }
-
-    @Override
-    @MustBeInvokedByOverriders
-    public void rightClickBlock(PlayerInteractEvent event, ItemStack itemInteracted) {
-        preventPotInteraction(event, itemInteracted);
+    public void onInvetoryPull(InventoryClickEvent event, ItemStack itemStack) {
+        preventNonPlayerInventoryMovement(event);
     }
 
     private void preventPotInteraction(PlayerInteractEvent event, ItemStack itemInteracted) {
@@ -71,50 +71,38 @@ public abstract class UpgradeableItem extends Item implements ClickActions, Inve
         event.setCancelled(true);
     }
 
-    public void setLevel(Integer level, ItemStack itemStack) {
-        int currentLevel = ItemUtils.getIntegerDataFromWeaponKey(LEVEL_KEY, itemStack);
-
-        if (currentLevel == maxLevel) {
-            return;
-        }
-
-        if (currentLevel + level > maxLevel) {
-            return;
-        }
-
-        ItemUtils.storeIntegerData(LEVEL_KEY, itemStack, level);
+    @Override
+    @MustBeInvokedByOverriders
+    public void rightClickBlock(PlayerInteractEvent event, ItemStack itemInteracted) {
+        preventPotInteraction(event, itemInteracted);
     }
 
-    public boolean upgradeLevel(int amount, ItemStack item) {
-        int level = ItemUtils.getIntegerDataFromWeaponKey(LEVEL_KEY, item);
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    public static boolean setItemStackLevel(@NotNull ItemStack artifactItemStack, int level) {
+        if (!(ItemRegistry.getItemFromItemStack(artifactItemStack) instanceof UpgradeableItem upgradeableItem)) return false;
 
-        if (level == maxLevel) {
-            return false;
-        }
+        if (level > upgradeableItem.getMaximumLevel() || level < upgradeableItem.getMinimumLevel()) return false;
 
-        ItemUtils.storeIntegerData(LEVEL_KEY, item, Math.min(maxLevel, level + amount));
+        ItemUtils.storeIntegerData(level, upgradeableItem.LEVEL_KEY, artifactItemStack);
+
         return true;
     }
 
-    public void downgradeLevel(int amount, ItemStack item) {
-        int level = ItemUtils.getIntegerDataFromWeaponKey(LEVEL_KEY, item);
+    public static Integer getItemStackLevel(@NotNull ItemStack upgradeableItemStack) {
+        if (!(ItemRegistry.getItemFromItemStack(upgradeableItemStack) instanceof UpgradeableItem upgradeableItem)) return 0;
 
-        if (level == minLevel) {
-            return;
-        }
+        final Integer itemLevel = ItemUtils.getIntegerData(upgradeableItem.LEVEL_KEY, upgradeableItemStack);
 
-        ItemUtils.storeIntegerData(LEVEL_KEY, item, Math.max(minLevel, level - amount));
+        if (itemLevel == null) return -1;
+
+        return itemLevel;
     }
 
-    public final int getLevel(ItemStack item) {
-        return ItemUtils.getIntegerDataFromWeaponKey(LEVEL_KEY, item);
-    }
-
-    public int getMaxLevel() {
+    public int getMaximumLevel() {
         return maxLevel;
     }
 
-    public int getMinLevel() {
+    public int getMinimumLevel() {
         return minLevel;
     }
 

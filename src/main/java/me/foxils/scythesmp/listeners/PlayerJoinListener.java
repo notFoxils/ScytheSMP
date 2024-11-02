@@ -72,6 +72,8 @@ public class PlayerJoinListener implements Listener {
 
         if (player.getLastPlayed() != 0) return;//&& !player.getName().equals("Foxils")) return;
 
+        if (PlayerStats.getDataObjectFromUUID(player.getUniqueId()) == null) return;
+
         //if (player.getName().equals("Foxils")) PlayerStats.getDataObjectFromUUID(player.getUniqueId()).deleteColumn();
 
         final PlayerStats playerStats = new PlayerStats(player.getUniqueId());

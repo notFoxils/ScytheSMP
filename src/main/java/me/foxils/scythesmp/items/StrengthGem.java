@@ -50,9 +50,7 @@ public class StrengthGem extends UpgradeableItem implements PassiveAction, DropA
     private void weaknessAbility(PlayerInteractEvent playerInteractEvent, ItemStack itemStack) {
         Player player = playerInteractEvent.getPlayer();
 
-        if (ItemUtils.getCooldown(weaknessAbilityCooldownKey, itemStack, 300, player, new TextComponent(ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "Activated Weakness Aura"))) {
-            return;
-        }
+        if (ItemUtils.getCooldown(weaknessAbilityCooldownKey, itemStack, 300L, player, new TextComponent(ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "Activated Weakness Aura"))) return;
 
         List<Entity> entitiesNearby = player.getNearbyEntities(5, 2, 5);
 
@@ -80,13 +78,11 @@ public class StrengthGem extends UpgradeableItem implements PassiveAction, DropA
     }
 
     private void strengthIncreaseAbility(PlayerInteractEvent event, ItemStack itemInteracted) {
-        if (getLevel(itemInteracted) < 3) return;
+        if (getItemStackLevel(itemInteracted) < 3) return;
 
         Player player = event.getPlayer();
 
-        if (ItemUtils.getCooldown(strengthIncreaseCooldownKey, itemInteracted, 900, player, new TextComponent(ChatColor.DARK_RED + "" + ChatColor.BOLD + "Activated Super Strength"))) {
-            return;
-        }
+        if (ItemUtils.getCooldown(strengthIncreaseCooldownKey, itemInteracted, 900L, player, new TextComponent(ChatColor.DARK_RED + "" + ChatColor.BOLD + "Activated Super Strength"))) return;
 
         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BIT, 1F, 1F);
 
@@ -105,9 +101,7 @@ public class StrengthGem extends UpgradeableItem implements PassiveAction, DropA
     }
 
     private void autoSharpness(Player player, ItemStack thisItem) {
-        if (ItemUtils.getCooldown(sharpnessApplicationCooldownKey, thisItem, 30)) {
-            return;
-        }
+        if (ItemUtils.getCooldown(sharpnessApplicationCooldownKey, thisItem, 30L)) return;
 
         ItemStack item = player.getInventory().getItemInMainHand();
 
@@ -142,9 +136,7 @@ public class StrengthGem extends UpgradeableItem implements PassiveAction, DropA
             return;
         }
 
-        if (currentStrengthEffect != null && currentStrengthEffect.getAmplifier() > 1) {
-            return;
-        }
+        if (currentStrengthEffect != null && currentStrengthEffect.getAmplifier() > 1) return;
 
         player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 600, 1));
     }

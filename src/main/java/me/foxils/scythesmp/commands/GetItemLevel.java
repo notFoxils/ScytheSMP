@@ -3,6 +3,7 @@ package me.foxils.scythesmp.commands;
 import me.foxils.foxutils.Item;
 import me.foxils.foxutils.registry.ItemRegistry;
 import me.foxils.scythesmp.items.UpgradeableItem;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,7 +16,8 @@ public class GetItemLevel implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, String[] strings) {
         if (!(commandSender instanceof Player player)) {
-            return false;
+            commandSender.sendMessage(ChatColor.RED + "Sender is not an player");
+            return true;
         }
 
         final ItemStack itemStack = player.getInventory().getItemInMainHand();
@@ -23,11 +25,11 @@ public class GetItemLevel implements CommandExecutor {
         final Item item = ItemRegistry.getItemFromItemStack(itemStack);
 
         if (!(item instanceof UpgradeableItem upgradeableItem)) {
-            return false;
+            commandSender.sendMessage(ChatColor.YELLOW + "Held item is not an UpgradeableItem");
+            return true;
         }
 
-        player.sendMessage(item.getName() + "'s Level: " + upgradeableItem.getLevel(itemStack));
-
+        commandSender.sendMessage(upgradeableItem.getName() + "'s" + ChatColor.RESET + " Level: " + UpgradeableItem.getItemStackLevel(itemStack));
         return true;
     }
 }

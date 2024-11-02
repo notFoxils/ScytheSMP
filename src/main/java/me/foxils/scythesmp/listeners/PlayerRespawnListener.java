@@ -11,6 +11,8 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import java.util.UUID;
+
 public class PlayerRespawnListener implements Listener {
 
     private final Plugin plugin;
@@ -27,7 +29,11 @@ public class PlayerRespawnListener implements Listener {
     private void givePlayerCurrentGem(PlayerRespawnEvent event) {
         final Player player = event.getPlayer();
 
-        final PlayerStats playerStats = PlayerStats.getDataObjectFromUUID(player.getUniqueId());
+        final UUID playerUUID = player.getUniqueId();
+
+        PlayerStats playerStats = PlayerStats.getDataObjectFromUUID(playerUUID);
+
+        if (playerStats == null) playerStats = new PlayerStats(playerUUID);
 
         final String playerGemRawName = playerStats.getCurrentGem();
 
@@ -35,7 +41,7 @@ public class PlayerRespawnListener implements Listener {
 
         final ItemStack playerGemItem = playerGem.createItem(1);
 
-        playerGem.setLevel(playerStats.getGemLevelMap().get(playerGemRawName), playerGemItem);
+        UpgradeableItem.setItemStackLevel(playerGemItem, playerStats.getGemLevelMap().get(playerGemRawName));
 
         player.getInventory().addItem(playerGemItem);
     }

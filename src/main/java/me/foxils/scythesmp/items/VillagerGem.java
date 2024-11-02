@@ -77,34 +77,25 @@ public class VillagerGem extends UpgradeableItem implements PassiveAction, MineA
     public void dropItemAction(PlayerDropItemEvent event, ItemStack itemUsed) {
         Player player = event.getPlayer();
 
-        if (getLevel(itemUsed) != 3) {
-            return;
-        }
+        if (getItemStackLevel(itemUsed) != 3) return;
 
         setDropMultiplier(itemUsed, player);
     }
 
     @Override
     public void blockMineAction(BlockBreakEvent blockBreakEvent, ItemStack itemStack, ItemStack thisItem) {
-        if (getLevel(thisItem) != 3) {
-            return;
-        }
+        if (getItemStackLevel(thisItem) != 3) return;
 
         multiplyOnMine(blockBreakEvent, thisItem, itemStack);
     }
 
     @Override
     public void rightClickAir(PlayerInteractEvent event, ItemStack itemInteracted) {
-        ItemStack item = event.getItem();
-        Player player = event.getPlayer();
+        final int itemLevel = getItemStackLevel(itemInteracted);
 
-        int itemLevel = getLevel(item);
+        if (itemLevel < 2) return;
 
-        if (itemLevel < 2) {
-            return;
-        }
-
-        grantHeroTen(player, item);
+        grantHeroTen(event, itemInteracted);
     }
 
     @Override
@@ -123,15 +114,17 @@ public class VillagerGem extends UpgradeableItem implements PassiveAction, MineA
 
     @Override
     public void passiveAction(Player player, ItemStack item) {
+        final int itemLevel = getItemStackLevel(item);
+
         grantPassiveEffects(player);
 
         giveVillagerEgg(player, item);
 
-        if (getLevel(item) < 1) return;
+        if (itemLevel < 1) return;
 
         enchantWithFortune(player, item);
 
-        if (getLevel(item) != 3) return;
+        if (itemLevel != 3) return;
 
         grantMaxedEffects(player);
     }
@@ -141,9 +134,7 @@ public class VillagerGem extends UpgradeableItem implements PassiveAction, MineA
     }
 
     private void giveVillagerEgg(Player player, ItemStack item) {
-        if (ItemUtils.getCooldown(villagerEggCooldown, item, 900)) {
-            return;
-        }
+        if (ItemUtils.getCooldown(villagerEggCooldown, item, 900L)) return;
 
         PlayerInventory inventory = player.getInventory();
 
@@ -151,21 +142,15 @@ public class VillagerGem extends UpgradeableItem implements PassiveAction, MineA
     }
 
     private void enchantWithFortune(Player player, ItemStack thisItem) {
-        if (ItemUtils.getCooldown(fortuneEnchantCooldown, thisItem, 900)) {
-            return;
-        }
+        if (ItemUtils.getCooldown(fortuneEnchantCooldown, thisItem, 900L)) return;
 
         ItemStack item = player.getInventory().getItemInMainHand();
 
-        if (!item.getType().name().toLowerCase().contains("pickaxe")) {
-            return;
-        }
+        if (!item.getType().name().toLowerCase().contains("pickaxe")) return;
 
         Map<Enchantment, Integer> itemCurrentEnchantmentMap = item.getEnchantments();
 
-        if (itemCurrentEnchantmentMap.containsKey(Enchantment.SILK_TOUCH)) {
-            return;
-        }
+        if (itemCurrentEnchantmentMap.containsKey(Enchantment.SILK_TOUCH)) return;
 
         if (!itemCurrentEnchantmentMap.containsKey(Enchantment.FORTUNE) || itemCurrentEnchantmentMap.get(Enchantment.FORTUNE) < 2) {
             item.addEnchantment(Enchantment.FORTUNE, 2);
@@ -177,11 +162,9 @@ public class VillagerGem extends UpgradeableItem implements PassiveAction, MineA
     }
 
     private void setDropMultiplier(ItemStack itemUsed, Player player) {
-        if (ItemUtils.getCooldown(miningMultiplierCooldown, itemUsed, 900, player, new TextComponent(ChatColor.AQUA + "" + ChatColor.BOLD + "Used Champion's Grace"))) {
-            return;
-        }
+        if (ItemUtils.getCooldown(miningMultiplierCooldown, itemUsed, 900L, player, new TextComponent(ChatColor.AQUA + "" + ChatColor.BOLD + "Used Champion's Grace"))) return;
 
-        ItemUtils.storeIntegerData(miningMultiplier, itemUsed, 5);
+        ItemUtils.storeIntegerData(5, miningMultiplier, itemUsed);
 
         new BukkitRunnable() {
             @Override
@@ -195,31 +178,29 @@ public class VillagerGem extends UpgradeableItem implements PassiveAction, MineA
                         continue;
                     }
 
-                    ItemUtils.storeIntegerData(miningMultiplier, itemStack, 1);
+                    ItemUtils.storeIntegerData(1, miningMultiplier, itemStack);
                 }
             }
         }.runTaskLater(plugin, 100L);
     }
 
-    private void grantHeroTen(Player player, ItemStack item) {
-        if (ItemUtils.getCooldown(heroTenCooldown, item, 1800, player, new TextComponent(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Used Villager's Blessing"))) {
-            return;
-        }
+    private void grantHeroTen(PlayerInteractEvent event, ItemStack item) {
+        final Player player = event.getPlayer();
+
+        if (ItemUtils.getCooldown(heroTenCooldown, item, 1800L, player, new TextComponent(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Used Villager's Blessing"))) return;
 
         player.addPotionEffect(heroOfTheVillageTen);
     }
 
     private void multiplyOnMine(BlockBreakEvent blockBreakEvent, ItemStack thisItem, ItemStack itemUsedToMine) {
-        Integer multiplier = ItemUtils.getIntegerDataFromWeaponKey(miningMultiplier, thisItem);
+        Integer multiplier = ItemUtils.getIntegerData(miningMultiplier, thisItem);
 
         if (multiplier == null) {
-            ItemUtils.storeIntegerData(miningMultiplier, thisItem, 1);
+            ItemUtils.storeIntegerData(1, miningMultiplier, thisItem);
             return;
         }
 
-        if (multiplier == 1) {
-            return;
-        }
+        if (multiplier == 1) return;
 
         Block block = blockBreakEvent.getBlock();
         Material blockMaterial = block.getType();
