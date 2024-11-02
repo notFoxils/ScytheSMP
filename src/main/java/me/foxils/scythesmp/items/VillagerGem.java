@@ -181,7 +181,7 @@ public class VillagerGem extends UpgradeableItem implements PassiveAction, MineA
             return;
         }
 
-        ItemStack item = ItemUtils.storeIntegerData(miningMultiplier, itemUsed, 5);
+        ItemUtils.storeIntegerData(miningMultiplier, itemUsed, 5);
 
         new BukkitRunnable() {
             @Override
@@ -191,7 +191,7 @@ public class VillagerGem extends UpgradeableItem implements PassiveAction, MineA
                         continue;
                     }
 
-                    if (!itemStack.isSimilar(item)) {
+                    if (!itemStack.isSimilar(itemUsed)) {
                         continue;
                     }
 

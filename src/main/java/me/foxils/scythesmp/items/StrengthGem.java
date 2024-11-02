@@ -117,7 +117,7 @@ public class StrengthGem extends UpgradeableItem implements PassiveAction, DropA
 
         Integer sharpnessLevel = itemCurrentEnchantmentMap.get(Enchantment.SHARPNESS);
 
-        if (sharpnessLevel == null || sharpnessLevel < 5) item.addEnchantment(Enchantment.SHARPNESS, 5);
+        if (sharpnessLevel == null || sharpnessLevel < 3) item.addEnchantment(Enchantment.SHARPNESS, 3);
     }
 
     public static boolean isSharpnessWeapon(ItemStack weapon) {
@@ -138,9 +138,15 @@ public class StrengthGem extends UpgradeableItem implements PassiveAction, DropA
         if (canIncreaseStrength != null && canIncreaseStrength) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 200, 2));
             ItemUtils.storeDataOfType(PersistentDataType.BOOLEAN, false, strengthIncreaseBooleanKey, itemStack);
-        } else if (currentStrengthEffect == null || currentStrengthEffect.getAmplifier() <= 1) {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 200, 1));
+
+            return;
         }
+
+        if (currentStrengthEffect != null && currentStrengthEffect.getAmplifier() > 1) {
+            return;
+        }
+
+        player.addPotionEffect(new PotionEffect(PotionEffectType.STRENGTH, 600, 1));
     }
 
     private void unsuccessfulAbility(Player player, TextComponent unsuccessfulText) {

@@ -52,7 +52,9 @@ public abstract class UpgradeableItem extends Item implements ClickActions, Inve
     public ItemStack createItem(int amount) {
         ItemStack newItem = super.createItem(amount);
 
-        return ItemUtils.storeIntegerData(LEVEL_KEY, newItem, minLevel);
+        ItemUtils.storeIntegerData(LEVEL_KEY, newItem, minLevel);
+
+        return newItem;
     }
 
     @Override

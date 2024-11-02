@@ -89,11 +89,9 @@ public class EarthGem extends UpgradeableItem implements MineAction, DropAction,
 
     @Override
     public void dropItemAction(PlayerDropItemEvent event, ItemStack itemUsed) {
-        if (ItemUtils.getCooldown(miningBoundsCooldownKey, itemUsed, 900, event.getPlayer(), new TextComponent(ChatColor.GREEN + "" + ChatColor.BOLD + "Used Tumble-Four³"))) {
-            return;
-        }
+        if (ItemUtils.getCooldown(miningBoundsCooldownKey, itemUsed, 900, event.getPlayer(), new TextComponent(ChatColor.GREEN + "" + ChatColor.BOLD + "Used Tumble-Four³"))) return;
 
-        ItemStack item = ItemUtils.storeDataOfType(PersistentDataType.INTEGER_ARRAY, new int[]{-1, 3}, miningBoundKey, itemUsed);
+        ItemUtils.storeDataOfType(PersistentDataType.INTEGER_ARRAY, new int[]{-1, 3}, miningBoundKey, itemUsed);
 
         new BukkitRunnable() {
             @Override
@@ -103,7 +101,7 @@ public class EarthGem extends UpgradeableItem implements MineAction, DropAction,
                         continue;
                     }
 
-                    if (!itemStack.isSimilar(item)) {
+                    if (!itemStack.isSimilar(itemUsed)) {
                         continue;
                     }
 
