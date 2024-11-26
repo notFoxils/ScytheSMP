@@ -78,14 +78,12 @@ public abstract class UpgradeableItem extends Item implements ClickActions, Inve
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public static boolean setItemStackLevel(@NotNull ItemStack artifactItemStack, int level) {
-        if (!(ItemRegistry.getItemFromItemStack(artifactItemStack) instanceof UpgradeableItem upgradeableItem)) return false;
+    public static boolean setItemStackLevel(@NotNull ItemStack upgradeableItemStack, int level) {
+        if (!(ItemRegistry.getItemFromItemStack(upgradeableItemStack) instanceof UpgradeableItem upgradeableItem)) return false;
 
         if (level > upgradeableItem.getMaximumLevel() || level < upgradeableItem.getMinimumLevel()) return false;
 
-        ItemUtils.storeIntegerData(level, upgradeableItem.LEVEL_KEY, artifactItemStack);
-
-        return true;
+        return ItemUtils.storeIntegerData(level, upgradeableItem.LEVEL_KEY, upgradeableItemStack);
     }
 
     public static Integer getItemStackLevel(@NotNull ItemStack upgradeableItemStack) {

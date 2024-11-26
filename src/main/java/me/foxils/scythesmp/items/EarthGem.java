@@ -46,14 +46,12 @@ public class EarthGem extends UpgradeableItem implements MineAction, DropAction,
 
     @Override
     public void blockMineAction(BlockBreakEvent event, ItemStack itemUsed, ItemStack thisItem) {
-        if (event.getPlayer().isSneaking()) return;
+        if (!event.getPlayer().isSneaking()) return;
 
-        Block blockBroken = event.getBlock();
+        final Block blockBroken = event.getBlock();
 
-        Location blockLocation = blockBroken.getLocation();
-        World blockWorld = blockBroken.getWorld();
-
-        //-1, 2
+        final Location blockLocation = blockBroken.getLocation();
+        final World blockWorld = blockBroken.getWorld();
 
         int[] miningBounds = ItemUtils.getDataOfType(PersistentDataType.INTEGER_ARRAY, miningBoundKey, thisItem);
 
@@ -65,8 +63,8 @@ public class EarthGem extends UpgradeableItem implements MineAction, DropAction,
             miningBounds = defaultBounds;
         }
 
-        int lowerDepth = miningBounds[0];
-        int upperDepth = miningBounds[1];
+        final int lowerDepth = miningBounds[0];
+        final int upperDepth = miningBounds[1];
 
         for (int x = lowerDepth; x < upperDepth; x++) {
             for (int z = lowerDepth; z < upperDepth; z++) {

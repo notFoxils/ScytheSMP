@@ -3,6 +3,7 @@ package me.foxils.scythesmp.listeners;
 import me.foxils.foxutils.registry.ItemRegistry;
 import me.foxils.scythesmp.items.UpgradeableItem;
 import me.foxils.scythesmp.tables.PlayerStats;
+import org.bukkit.GameRule;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,7 +34,10 @@ public class PlayerRespawnListener implements Listener {
 
         PlayerStats playerStats = PlayerStats.getDataObjectFromUUID(playerUUID);
 
-        if (playerStats == null) playerStats = new PlayerStats(playerUUID);
+        if (playerStats == null) {
+            playerStats = new PlayerStats(playerUUID);
+            PlayerStats.createColumn(playerStats);
+        }
 
         final String playerGemRawName = playerStats.getCurrentGem();
 

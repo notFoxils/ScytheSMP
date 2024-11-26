@@ -77,8 +77,8 @@ public class LifeGem extends UpgradeableItem implements PassiveAction, AttackAct
     }
 
     @Override
-    public void attackAction(EntityDamageByEntityEvent entityDamageByEntityEvent, ItemStack thisItem) {
-        tempLifeSteal(entityDamageByEntityEvent, thisItem);
+    public void attackAction(EntityDamageByEntityEvent entityDamageByEntityEvent, ItemStack itemStackUsedToAttack, ItemStack itemStackOfThisItem) {
+        tempLifeSteal(entityDamageByEntityEvent, itemStackOfThisItem);
     }
 
     private void tempLifeSteal(EntityDamageByEntityEvent event, ItemStack thisItem) {

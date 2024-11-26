@@ -38,17 +38,17 @@ public class AirGem extends UpgradeableItem implements TakeDamageAction, AttackA
     }
 
     @Override
-    public void attackAction(EntityDamageByEntityEvent entityDamageByEntityEvent, ItemStack item) {
+    public void attackAction(EntityDamageByEntityEvent entityDamageByEntityEvent, ItemStack itemStackUsedToAttack, ItemStack itemStackOfThisItem) {
         LivingEntity attacker = (LivingEntity) entityDamageByEntityEvent.getDamager();
         LivingEntity damaged = (LivingEntity) entityDamageByEntityEvent.getEntity();
 
-        if (getItemStackLevel(item) < 1) return;
+        if (getItemStackLevel(itemStackOfThisItem) < 1) return;
 
-        airPunch(attacker, damaged, item);
+        airPunch(attacker, damaged, itemStackOfThisItem);
 
-        if (getItemStackLevel(item) < 2) return;
+        if (getItemStackLevel(itemStackOfThisItem) < 2) return;
 
-        airAttackEffects(attacker, damaged, item);
+        airAttackEffects(attacker, damaged, itemStackOfThisItem);
     }
 
     private void airPunch(LivingEntity attacker, LivingEntity damaged, ItemStack item) {

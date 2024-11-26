@@ -15,12 +15,12 @@ commands:
     usage: /<command> <player>
     permission: op
   getitemlevel:
-    description: Get the level of the current ArtifactItem in your hand
+    description: Get the level of the current UpgradeableItem in your hand
     usage: /<command>
     permission: op
     aliases: [getlevel, levelget]
   setitemlevel:
-    description: Set the level of the current ArtifactItem in your hand
+    description: Set the level of the current UpgradeableItem in your hand
     usage: /<command> <level>
     permission: op
     aliases: [setlevel, levelset]

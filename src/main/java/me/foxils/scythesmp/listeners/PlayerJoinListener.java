@@ -15,6 +15,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public class PlayerJoinListener implements Listener {
 
@@ -70,13 +71,15 @@ public class PlayerJoinListener implements Listener {
     private void rollFirstTimeGem(PlayerJoinEvent event) {
         final Player player = event.getPlayer();
 
-        if (player.getLastPlayed() != 0) return;//&& !player.getName().equals("Foxils")) return;
+        final UUID playerUUID = player.getUniqueId();
 
-        if (PlayerStats.getDataObjectFromUUID(player.getUniqueId()) == null) return;
+        //&& !player.getName().equals("Foxils")) return;
+
+        if (PlayerStats.getDataObjectFromUUID(playerUUID) != null) return;
 
         //if (player.getName().equals("Foxils")) PlayerStats.getDataObjectFromUUID(player.getUniqueId()).deleteColumn();
 
-        final PlayerStats playerStats = new PlayerStats(player.getUniqueId());
+        final PlayerStats playerStats = new PlayerStats(playerUUID);
 
         PlayerStats.createColumn(playerStats);
 

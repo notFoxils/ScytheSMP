@@ -113,8 +113,8 @@ public class SpeedGem extends UpgradeableItem implements DropAction, ClickAction
     }
 
     @Override
-    public void attackAction(EntityDamageByEntityEvent entityDamageByEntityEvent, ItemStack itemStack) {
-        lightningStrikeHit(entityDamageByEntityEvent, itemStack);
+    public void attackAction(EntityDamageByEntityEvent entityDamageByEntityEvent, ItemStack itemStackUsedToAttack, ItemStack itemStackOfThisItem) {
+        lightningStrikeHit(entityDamageByEntityEvent, itemStackOfThisItem);
     }
 
     private void lightningStrikeHit(EntityDamageByEntityEvent entityDamageByEntityEvent, ItemStack itemStack) {
