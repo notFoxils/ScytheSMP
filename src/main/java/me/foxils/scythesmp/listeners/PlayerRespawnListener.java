@@ -79,7 +79,7 @@ public class PlayerRespawnListener implements Listener {
 
         final String playerCurrentGem = playerStats.getCurrentGem();
         final HashMap<String, Integer> gemLevelMap = playerStats.getGemLevelMap();
-        final int playerCurrentGemLevel = Math.max(0, gemLevelMap.get(playerCurrentGem) - 1);
+        final int playerCurrentGemLevel = Math.max(-3, gemLevelMap.get(playerCurrentGem) - 1);
 
         gemLevelMap.replace(playerCurrentGem, playerCurrentGemLevel);
 
