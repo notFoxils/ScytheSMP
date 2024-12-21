@@ -30,7 +30,7 @@ public class PowerGem extends Item implements PassiveAction, ClickActions, DropA
     public final NamespacedKey shootDragonBreathCooldown = new NamespacedKey(plugin, "dragon_breath_cooldown");
     public final NamespacedKey shootDragonBreathCharge = new NamespacedKey(plugin, "dragon_breath_charge");
 
-    private static final List<PotionEffect> passivePotionEffects = Arrays.asList(
+    private static final List<PotionEffect> passivePotionEffects = List.of(
             new PotionEffect(PotionEffectType.STRENGTH, 200, 1, true, true),
             new PotionEffect(PotionEffectType.SPEED, 200, 1, true, true)
     );

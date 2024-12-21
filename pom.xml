@@ -6,7 +6,7 @@
 
     <groupId>me.foxils</groupId>
     <artifactId>scythesmp</artifactId>
-    <version>1.3.3</version>
+    <version>1.3.5</version>
     <packaging>jar</packaging>
 
     <name>ScytheSMP</name>
@@ -82,18 +82,18 @@
         <dependency>
             <groupId>me.foxils</groupId>
             <artifactId>foxutils-items</artifactId>
-            <version>1.17.13-SNAPSHOT</version>
+            <version>1.17.14-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
-            <version>9.0.0</version>
+            <version>9.1.0</version>
         </dependency>
         <dependency>
             <groupId>com.thoughtworks.xstream</groupId>
             <artifactId>xstream</artifactId>
-            <version>1.4.20</version>
+            <version>1.4.21</version>
         </dependency>
     </dependencies>
 </project>

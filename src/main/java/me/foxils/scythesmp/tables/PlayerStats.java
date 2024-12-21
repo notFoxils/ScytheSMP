@@ -14,7 +14,7 @@ public final class PlayerStats {
     private final UUID playerUUID;
 
     private String currentGem;
-    private Map<String, Integer> gemLevelMap;
+    private HashMap<String, Integer> gemLevelMap;
 
     private static final String tableName = "player_stats";
     private static final String identifierName = "playerUUID";
@@ -119,7 +119,7 @@ public final class PlayerStats {
         return playerUUID.toString();
     }
 
-    public Map<String, Integer> getGemLevelMap() {
+    public HashMap<String, Integer> getGemLevelMap() {
         return gemLevelMap;
     }
 
@@ -127,12 +127,12 @@ public final class PlayerStats {
         return magicApi.toXML(gemLevelMap);
     }
 
-    public void setGemLevelMap(Map<String, Integer> gemLevelMap) {
+    public void setGemLevelMap(HashMap<String, Integer> gemLevelMap) {
         this.gemLevelMap = gemLevelMap;
     }
 
     public void setGemLevelMapFromXML(String xml) {
-        Map<String, Integer> basedMap = new HashMap<>();
+        HashMap<String, Integer> basedMap = new HashMap<>();
 
         // *dies of death*
         // this is most definitely a byproduct of my terrible database code

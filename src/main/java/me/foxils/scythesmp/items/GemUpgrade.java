@@ -26,51 +26,51 @@ public class GemUpgrade extends Item implements ClickActions {
         Player player = event.getPlayer();
 
         for (ItemStack item : player.getInventory().getContents()) {
-            if (item == null) {
+            if (item == null)
                 continue;
-            }
 
             Item customItemClass = ItemRegistry.getItemFromItemStack(item);
 
-            if (!(customItemClass instanceof UpgradeableItem upgradeableCustomItem)) {
+            if (!(customItemClass instanceof UpgradeableItem upgradeableCustomItem))
                 continue;
-            }
+
 
             ItemStack upgradeItem = event.getItem();
 
-            if (upgradeItem == null) {
+            if (upgradeItem == null)
                 return;
-            }
 
             int upgradeItemAmount = upgradeItem.getAmount();
 
             int i;
 
             for (i = 0; i < upgradeItemAmount; i++) {
-                if (!UpgradeableItem.setItemStackLevel(upgradeItem, UpgradeableItem.getItemStackLevel(item) + 1)) {
+                if (!UpgradeableItem.setItemStackLevel(item, UpgradeableItem.getItemStackLevel(item) + 1))
                     break;
-                }
+
                 player.getWorld().spawnParticle(Particle.EXPLOSION_EMITTER, player.getLocation(), 1);
                 player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1, 1);
                 player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_TWINKLE, 1, 1);
             }
 
-            if (i == 0) {
+            if (i == 0)
                 return;
-            }
 
             upgradeItem.setAmount(upgradeItemAmount - i);
 
             PlayerStats playerStats = PlayerStats.getDataObjectFromUUID(player.getUniqueId());
 
-            if (playerStats == null) playerStats = new PlayerStats(player.getUniqueId());
+            if (playerStats == null)
+                playerStats = new PlayerStats(player.getUniqueId());
 
             Map<String, Integer> gemLevelMap = playerStats.getGemLevelMap();
 
             int newLevel = UpgradeableItem.getItemStackLevel(item);
 
-            if (gemLevelMap.containsKey(upgradeableCustomItem.getRawName())) gemLevelMap.replace(upgradeableCustomItem.getRawName(), newLevel);
-            else gemLevelMap.put(upgradeableCustomItem.getRawName(), newLevel);
+            if (gemLevelMap.containsKey(upgradeableCustomItem.getRawName()))
+                gemLevelMap.replace(upgradeableCustomItem.getRawName(), newLevel);
+            else
+                gemLevelMap.put(upgradeableCustomItem.getRawName(), newLevel);
 
             playerStats.updateColumn();
             break;

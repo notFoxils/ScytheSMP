@@ -36,7 +36,7 @@ public class WaterGem extends UpgradeableItem implements TakeDamageAction, Passi
 
     public static final PotionEffect waterJetPotionEffect = new PotionEffect(PotionEffectType.MINING_FATIGUE, 300, 0, false, false);
     
-    public static final List<PotionEffect> passivePotionEffects = Arrays.asList(
+    public static final List<PotionEffect> passivePotionEffects = List.of(
             new PotionEffect(PotionEffectType.CONDUIT_POWER, 200, 0, false, false),
             new PotionEffect(PotionEffectType.DOLPHINS_GRACE, 200, 0, false, false)
     );

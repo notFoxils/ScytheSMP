@@ -12,6 +12,8 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class PlayerRespawnListener implements Listener {
@@ -25,6 +27,42 @@ public class PlayerRespawnListener implements Listener {
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         givePlayerCurrentGem(event);
+        upgradeKillerCurrentGem(event);
+    }
+
+    private void upgradeKillerCurrentGem(PlayerRespawnEvent event) {
+        final Player player = event.getPlayer();
+        final Player killer = player.getKiller();
+
+        if (killer == null || player.equals(killer))
+            return;
+
+        final UUID killerUUID = killer.getUniqueId();
+
+        PlayerStats playerStats = PlayerStats.getDataObjectFromUUID(killerUUID);
+
+        if (playerStats == null) {
+            playerStats = new PlayerStats(killerUUID);
+            PlayerStats.createColumn(playerStats);
+        }
+
+        final String killerCurrentGem = playerStats.getCurrentGem();
+        final HashMap<String, Integer> killerGemLevelMap = playerStats.getGemLevelMap();
+        final int killerGemLevel = Math.min(5, killerGemLevelMap.get(killerCurrentGem) + 1);
+
+        killerGemLevelMap.replace(killerCurrentGem, killerGemLevel);
+        playerStats.setGemLevelMap(killerGemLevelMap);
+        playerStats.updateColumn();
+
+        final UpgradeableItem killerCurrentGemClass = (UpgradeableItem) ItemRegistry.getItemFromKey(new NamespacedKey(plugin, killerCurrentGem));
+
+        for (ItemStack itemStack : killer.getInventory().getContents()) {
+            if (!ItemRegistry.getItemFromItemStack(itemStack).equals(killerCurrentGemClass))
+                continue;
+
+            UpgradeableItem.setItemStackLevel(itemStack, killerGemLevel);
+            break;
+        }
     }
 
     private void givePlayerCurrentGem(PlayerRespawnEvent event) {
@@ -39,13 +77,19 @@ public class PlayerRespawnListener implements Listener {
             PlayerStats.createColumn(playerStats);
         }
 
-        final String playerGemRawName = playerStats.getCurrentGem();
+        final String playerCurrentGem = playerStats.getCurrentGem();
+        final HashMap<String, Integer> gemLevelMap = playerStats.getGemLevelMap();
+        final int playerCurrentGemLevel = Math.max(0, gemLevelMap.get(playerCurrentGem) - 1);
 
-        final UpgradeableItem playerGem = (UpgradeableItem) ItemRegistry.getItemFromKey(new NamespacedKey(plugin, playerGemRawName));
+        gemLevelMap.replace(playerCurrentGem, playerCurrentGemLevel);
 
+        playerStats.setGemLevelMap(gemLevelMap);
+        playerStats.updateColumn();
+
+        final UpgradeableItem playerGem = (UpgradeableItem) ItemRegistry.getItemFromKey(new NamespacedKey(plugin, playerCurrentGem));
         final ItemStack playerGemItem = playerGem.createItem(1);
 
-        UpgradeableItem.setItemStackLevel(playerGemItem, playerStats.getGemLevelMap().get(playerGemRawName));
+        UpgradeableItem.setItemStackLevel(playerGemItem, playerCurrentGemLevel);
 
         player.getInventory().addItem(playerGemItem);
     }

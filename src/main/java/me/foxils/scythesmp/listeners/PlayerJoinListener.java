@@ -21,7 +21,7 @@ public class PlayerJoinListener implements Listener {
 
     private final Plugin plugin;
 
-    private static final List<NamespacedKey> recipes = Arrays.asList(
+    private static final List<NamespacedKey> recipes = List.of(
             NamespacedKey.fromString("scythesmp:gem_reroll"),
             NamespacedKey.fromString("scythesmp:gem_upgrade")
     );

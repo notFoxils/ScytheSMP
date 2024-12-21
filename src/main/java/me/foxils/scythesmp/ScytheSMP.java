@@ -58,46 +58,46 @@ public final class ScytheSMP extends JavaPlugin {
     private void registerItems() {
         ItemRegistry.registerItem(new GemUpgrade(Material.NETHER_STAR, ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "[" + ChatColor.LIGHT_PURPLE + ChatColor.BOLD + "Gem Upgrade" + ChatColor.DARK_GRAY + ChatColor.BOLD + "]", this,
                 List.of(
-                        new ItemAbility("Upgrade-ify", Arrays.asList(
+                        new ItemAbility("Upgrade-ify", List.of(
                                 "Upgrades your current Gem by 1 level.",
                                 "If stacked the whole stack is used at once."
                         ), ActionType.RIGHT_CLICK)
                 ),
-                Arrays.asList(
+                List.of(
                         new ItemStack(Material.DIAMOND_BLOCK), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.DIAMOND_BLOCK),
                         new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.AMETHYST_SHARD), new ItemStack(Material.GOLD_INGOT),
                         new ItemStack(Material.DIAMOND_BLOCK), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.DIAMOND_BLOCK)
                 ), true));
-        ItemRegistry.registerItem(new RerollItem(Material.NETHER_STAR, 1, ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "[" + ChatColor.GOLD + ChatColor.BOLD + "Gem Reroll" + ChatColor.DARK_GRAY + ChatColor.BOLD + "]", this,
-                List.of(
-                        new ItemAbility("Gem Forge", Arrays.asList(
-                                "When crafted this item generates a",
-                                "randomly selected Gem. And automatically",
-                                "consumes the previous gem that was in your inventory.",
-                                "This also lowers Gem's level by 1."
-                        ), ActionType.CRAFT)
-                ),
-                Arrays.asList(
-                        new ItemStack(Material.DIAMOND), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.DIAMOND),
-                        new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.AMETHYST_SHARD), new ItemStack(Material.GOLD_INGOT),
-                        new ItemStack(Material.DIAMOND), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.DIAMOND)
-                ), true));
+//        ItemRegistry.registerItem(new RerollItem(Material.NETHER_STAR, 1, ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "[" + ChatColor.GOLD + ChatColor.BOLD + "Gem Reroll" + ChatColor.DARK_GRAY + ChatColor.BOLD + "]", this,
+//                List.of(
+//                        new ItemAbility("Gem Forge", List.of(
+//                                "When crafted this item generates a",
+//                                "randomly selected Gem. And automatically",
+//                                "consumes the previous gem that was in your inventory.",
+//                                "This also lowers Gem's level by 1."
+//                        ), ActionType.CRAFT)
+//                ),
+//                List.of(
+//                        new ItemStack(Material.DIAMOND), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.DIAMOND),
+//                        new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.AMETHYST_SHARD), new ItemStack(Material.GOLD_INGOT),
+//                        new ItemStack(Material.DIAMOND), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.DIAMOND)
+//                ), true));
         ItemRegistry.registerItem(new PowerGem(Material.PAPER, 8, ChatColor.of("#292138") + "" + ChatColor.MAGIC + ChatColor.BOLD + "[" + ChatColor.of("#292138") + ChatColor.BOLD + "[G" + ChatColor.of("#2e233f") + ChatColor.BOLD + "e" + ChatColor.of("#332546") + ChatColor.BOLD + "m " + ChatColor.of("#38264c") + ChatColor.BOLD + "O" + ChatColor.of("#3d2853") + ChatColor.BOLD + "f " + ChatColor.of("#432a5a") + ChatColor.BOLD + "P" + ChatColor.of("#482c61") + ChatColor.BOLD + "o" + ChatColor.of("#4d2e68") + ChatColor.BOLD + "w" + ChatColor.of("#52306f") + ChatColor.BOLD + "e" + ChatColor.of("#573175") + ChatColor.BOLD + "r]" + ChatColor.MAGIC + ChatColor.BOLD + "]", this,
                 List.of(
                         new ItemAbility("test", List.of("testing"), ActionType.NONE)
-                ), Arrays.asList(
+                ), List.of(
                         new ItemStack(Material.NETHERITE_BLOCK), new ItemStack(Material.DIAMOND_BLOCK), new ItemStack(Material.NETHERITE_BLOCK),
                         new ItemStack(Material.END_CRYSTAL), new ItemStack(Material.DRAGON_EGG), new ItemStack(Material.END_CRYSTAL),
                         new ItemStack(Material.NETHERITE_BLOCK), new ItemStack(Material.DIAMOND_BLOCK), new ItemStack(Material.NETHERITE_BLOCK)
                 ), true));
         ItemRegistry.registerItem(new EarthGem(Material.PAPER, 1,  ChatColor.of("#63452c") + "" + ChatColor.BOLD + "[" + ChatColor.DARK_GREEN + ChatColor.BOLD + "Earth Gem" + ChatColor.of("#63452c") + ChatColor.BOLD + "]", this,
-                Arrays.asList(
-                        new ItemAbility("Gift Of The Mines", Arrays.asList(
+                List.of(
+                        new ItemAbility("Gift Of The Mines", List.of(
                                 "Mine in a radius of 3x3x3.",
                                  ChatColor.DARK_GRAY + "(Sneak to Cancel)"
                         ), ActionType.MINE),
                         new ItemAbility("Tumble-Four³", List.of("Expand your passive mining radius to 4x4x4"), ActionType.DROP, 120),
-                        new ItemAbility("Terrain-Toss", Arrays.asList(
+                        new ItemAbility("Terrain-Toss", List.of(
                                 "Inflicts 4 hearts of true damage.",
                                  ChatColor.ITALIC + "Big mans throw bigger rock.",
                                  ChatColor.ITALIC + "     -- Biggest Man"
@@ -106,87 +106,87 @@ public final class ScytheSMP extends JavaPlugin {
                         new ItemAbility("Passive Haste", List.of("Grants haste II permanently"), ActionType.PASSIVE)
         )));
         ItemRegistry.registerItem(new WaterGem(Material.PAPER, 2,  ChatColor.GOLD + "" + ChatColor.BOLD + "[" + ChatColor.BLUE + ChatColor.BOLD + "Water Gem" + ChatColor.GOLD + ChatColor.BOLD + "]", this,
-                Arrays.asList(
-                        new ItemAbility("Drowning Arrows", Arrays.asList(
+                List.of(
+                        new ItemAbility("Drowning Arrows", List.of(
                                 "Shoot an arrow that inflicts poison and deals 1 heart of damage.",
                                 "You can shoot up to 4 arrows, each having a 1s cooldown.",
                                 "Arrows restock every 7 minutes."
                         ), ActionType.LEFT_CLICK, 420),
-                        new ItemAbility("Water-Jet", Arrays.asList(
+                        new ItemAbility("Water-Jet", List.of(
                                 "Shoot a jet of water.",
                                 "Inflicts 1.5 hearts of true-damage, and 7s Mining Fatigue."
                         ), ActionType.RIGHT_CLICK, 120),
-                        new ItemAbility("The Waves", Arrays.asList(
+                        new ItemAbility("The Waves", List.of(
                                 "Launches a large water-ball",
                                 "Deals 4 hearts of true damage"
                         ), ActionType.SHIFT_RIGHT_CLICK, 180),
-                        new ItemAbility("Poseidon's Gifts", Arrays.asList(
+                        new ItemAbility("Poseidon's Gifts", List.of(
                                 "Take 50% less damage in the nether",
                                 "Permanent Conduit Power and Dolphin's Grace"
                         ), ActionType.PASSIVE)
         )));
         ItemRegistry.registerItem(new AirGem(Material.PAPER, 3,  ChatColor.AQUA + "" + ChatColor.BOLD + "[" + ChatColor.WHITE + ChatColor.BOLD + "Air Gem" + ChatColor.AQUA + ChatColor.BOLD + "]", this,
-                Arrays.asList(
+                List.of(
                         new ItemAbility("Light Wind", List.of("Send players flying into the air."), ActionType.ATTACK, 120),
                         new ItemAbility("Air-Channeling", List.of("Allows you to fly in the air with a timer of 10s."), ActionType.DOUBLE_JUMP, 180),
                         new ItemAbility("Double-Jump", List.of("Allows you to double jump."), ActionType.SHIFT_DOUBLE_JUMP, 5),
-                        new ItemAbility("Push-Pull", Arrays.asList(
+                        new ItemAbility("Push-Pull", List.of(
                                 "When hitting a player gain Speed II.",
                                 "Inflicts Slow Falling to the hit player."
                         ), ActionType.PASSIVE, 120),
                         new ItemAbility("Light As A Feather", List.of("Never take fall damage from any source."), ActionType.PASSIVE)
         )));
         ItemRegistry.registerItem(new VillagerGem(Material.PAPER,4,  ChatColor.of("#563C33") + "" + ChatColor.BOLD + "[" + ChatColor.of("#BD8B72") + ChatColor.BOLD + "Villager Gem" + ChatColor.of("#563C33") + ChatColor.BOLD + "]", this,
-                Arrays.asList(
+                List.of(
                         new ItemAbility("Champion’s Grace", List.of("Multiplies all block drops by 5 for 5 seconds."), ActionType.DROP, 180),
                         new ItemAbility("Villager’s Blessing", List.of("Grants Hero of the Village 10 for 5 minutes."), ActionType.RIGHT_CLICK, 180),
                         new ItemAbility("Fortunate", List.of("Enchants your pickaxe with Fortune II"), ActionType.PASSIVE, 900),
-                        new ItemAbility("weird", List.of("Provides 2 Villager spawn eggs every half-hour."), ActionType.PASSIVE, 1800),
+                        new ItemAbility("weird", List.of("Provides a Villager spawn egg every 6 hours."), ActionType.PASSIVE, 21600),
                         new ItemAbility("Villager's Blessings", List.of("Permanent Hero of the Village 2 at max level, Haste 2, and Speed 1"), ActionType.PASSIVE, 0)
         )));
         ItemRegistry.registerItem(new LifeGem(Material.PAPER, 5, ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "[" + ChatColor.DARK_RED + ChatColor.BOLD + "Gem Of Life" + ChatColor.DARK_PURPLE + ChatColor.BOLD + "]", this,
-                Arrays.asList(
+                List.of(
                         new ItemAbility("Wither-Away", List.of("Inflict the withering effect on another player."), ActionType.RIGHT_CLICK, 120),
                         new ItemAbility("Power-Heal", List.of("Restores up-to 10 hearts for 5 seconds"), ActionType.SHIFT_RIGHT_CLICK, 120),
-                        new ItemAbility("Life Steal", Arrays.asList(
+                        new ItemAbility("Life Steal", List.of(
                                 "Steal 4 hearts from another player.",
                                 "Hearts are returned after 30s."
                         ), ActionType.ATTACK, 180),
                         new ItemAbility("Passive Regeneration", List.of("Grants regeneration II for 5s"), ActionType.PASSIVE, 10)
         )));
         ItemRegistry.registerItem(new SpeedGem(Material.PAPER, 6,  ChatColor.DARK_BLUE + "" + ChatColor.BOLD + "[" + ChatColor.BLUE + ChatColor.BOLD + "Speed Gem" + ChatColor.DARK_BLUE + ChatColor.BOLD + "]", this,
-                Arrays.asList(
-                        new ItemAbility("Static-Wrath", Arrays.asList(
+                List.of(
+                        new ItemAbility("Static-Wrath", List.of(
                                 "Build up static with your speed powers and",
                                 "zap all players within a 10 block radius.",
                                 "All players hit will be stunned for 4s."
                                 ), ActionType.SHIFT_DROP, 360),
-                        new ItemAbility("Solo-Strike", Arrays.asList(
+                        new ItemAbility("Solo-Strike", List.of(
                                 "Has a 10% chance to strike your next enemy with lightning.",
                                 "Grants Speed V for 10s."
                         ), ActionType.SHIFT_RIGHT_CLICK, 300),
                         new ItemAbility("Fast-Hands", List.of("Grants Haste IV for 10s"), ActionType.SHIFT_LEFT_CLICK, 300),
-                        new ItemAbility("Passive Effects", Arrays.asList(
+                        new ItemAbility("Passive Effects", List.of(
                                 "Grants Permanent Speed and Haste.",
                                 "Effect level is based on Gem level."
                         ), ActionType.PASSIVE)
         )));
         ItemRegistry.registerItem(new StrengthGem(Material.PAPER, 7,  ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "[" + ChatColor.RED + ChatColor.BOLD + "Strength Gem" + ChatColor.DARK_GRAY + ChatColor.BOLD + "]", this,
-                Arrays.asList(
-                        new ItemAbility("Gloomy Aura", Arrays.asList(
+                List.of(
+                        new ItemAbility("Gloomy Aura", List.of(
                                 "Weakens other players within a",
                                 "5-block radius with Weakness I"
                         ), ActionType.RIGHT_CLICK, 300),
-                        new ItemAbility("Strength Of The Abyss", Arrays.asList(
+                        new ItemAbility("Strength Of The Abyss", List.of(
                                 "Summons powerful tentacles on the ground.",
                                 "Deals 3 damage when other players are hit"
                         ), ActionType.DROP, 120),
-                        new ItemAbility("Super Strength", Arrays.asList(
+                        new ItemAbility("Super Strength", List.of(
                                 "Use all your might and change your passive",
                                 "to a Strength III buff for 20s."
                         ), ActionType.SHIFT_RIGHT_CLICK, 900),
                         new ItemAbility("Buff, Buff", List.of("Grants Strength II permanently"), ActionType.PASSIVE),
-                        new ItemAbility("Auto Sharpness", Arrays.asList(
+                        new ItemAbility("Auto Sharpness", List.of(
                                 "Automatically enchants any Sharpness-capable",
                                 "weapon in your main-hand with Sharpness V"
                         ), ActionType.PASSIVE, 30)
@@ -194,7 +194,7 @@ public final class ScytheSMP extends JavaPlugin {
     }
 
     private void scheduleTasks() {
-        taskIDs.addAll(Arrays.asList(
+        taskIDs.addAll(List.of(
                 Bukkit.getScheduler().scheduleSyncRepeatingTask(this, EarthGem::customThrowCollision, 1, 1),
                 Bukkit.getScheduler().scheduleSyncRepeatingTask(this, WaterGem::customThrowCollision, 1, 1)
         ));
@@ -203,6 +203,7 @@ public final class ScytheSMP extends JavaPlugin {
     @Override
     public void onDisable() {
         cancelTasks();
+        ItemRegistry.unregisterPluginItems(this);
     }
 
     private void cancelTasks() {

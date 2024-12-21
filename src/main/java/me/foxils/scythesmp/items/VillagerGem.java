@@ -17,6 +17,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -26,20 +27,20 @@ import java.util.*;
 
 public class VillagerGem extends UpgradeableItem implements PassiveAction, MineAction, DropAction, ClickActions {
 
-    private final List<PotionEffect> defaultEffects = Arrays.asList(
+    private static final List<PotionEffect> NON_MAXED_GEM_PASSIVE_EFFECTS = List.of(
             new PotionEffect(PotionEffectType.HASTE, 200, 1, false, false),
             new PotionEffect(PotionEffectType.SPEED, 200, 0, false, false)
     );
 
-    private final List<PotionEffect> maxedEffects = List.of(
+    private static final List<PotionEffect> MAXED_GEM_PASSIVE_EFFECTS = List.of(
             new PotionEffect(PotionEffectType.HERO_OF_THE_VILLAGE, 200, 1)
     );
 
-    private final PotionEffect heroOfTheVillageTen = new PotionEffect(PotionEffectType.HERO_OF_THE_VILLAGE, 6000, 9);
+    private static final PotionEffect HERO_OF_THE_VILLAGE_TEN = new PotionEffect(PotionEffectType.HERO_OF_THE_VILLAGE, 6000, 9);
 
-    private final ItemStack villagerStack = new ItemStack(Material.VILLAGER_SPAWN_EGG, 1);
+    private static final ItemStack VILLAGER_EGG = new ItemStack(Material.VILLAGER_SPAWN_EGG, 1);
 
-    private final List<Material> VILLAGER_MULTIPLIER_WHITELIST = Arrays.asList(
+    private static final List<Material> VILLAGER_MULTIPLIER_WHITELIST = List.of(
             Material.DEEPSLATE_COAL_ORE,
             Material.DEEPSLATE_GOLD_ORE,
             Material.DEEPSLATE_COPPER_ORE,
@@ -60,31 +61,41 @@ public class VillagerGem extends UpgradeableItem implements PassiveAction, MineA
             Material.NETHER_GOLD_ORE
     );
 
-    private final NamespacedKey miningMultiplierCooldown = new NamespacedKey(plugin, "mining_multiplier_cooldown");
-    private final NamespacedKey miningMultiplier = new NamespacedKey(plugin, "mining_multiplier");
+    private final NamespacedKey MINING_MULTIPIER_COOLDOWN = new NamespacedKey(plugin, "mining_multiplier_cooldown");
+    private final NamespacedKey MINING_MULTIPLIER_STORAGE = new NamespacedKey(plugin, "mining_multiplier_storage");
 
-    private final NamespacedKey fortuneEnchantCooldown = new NamespacedKey(plugin, "apply_fortune_cooldown");
+    private final NamespacedKey FORTUNE_ENCHANT_COOLDOWN = new NamespacedKey(plugin, "fortune_cooldown");
 
-    private final NamespacedKey heroTenCooldown = new NamespacedKey(plugin, "hero_ten_cooldown");
+    private final NamespacedKey VILLAGERS_BLESSING_COOLDOWN = new NamespacedKey(plugin, "villagers_blessing_cooldown");
 
-    private final NamespacedKey villagerEggCooldown = new NamespacedKey(plugin, "villager_egg_cooldown");
+    private final NamespacedKey VILLAGER_EGG_PASSIVE_COOLDOWN = new NamespacedKey(plugin, "villager_egg_cooldown");
 
     public VillagerGem(Material material, int customModelData, String name, Plugin plugin, List<ItemAbility> abilityList) {
         super(material, customModelData, name, plugin, abilityList, 3, 0);
     }
 
     @Override
+    public ItemStack createItem(int amount) {
+        final ItemStack newItem = super.createItem(amount);
+
+        ItemUtils.storeDataOfType(PersistentDataType.LONG, System.currentTimeMillis(), VILLAGER_EGG_PASSIVE_COOLDOWN, newItem);
+        ItemUtils.storeIntegerData(1, MINING_MULTIPLIER_STORAGE, newItem);
+
+        return newItem;
+    }
+
+    @Override
     public void dropItemAction(PlayerDropItemEvent event, ItemStack itemUsed) {
-        Player player = event.getPlayer();
+        if (getItemStackLevel(itemUsed) != 3)
+            return;
 
-        if (getItemStackLevel(itemUsed) != 3) return;
-
-        setDropMultiplier(itemUsed, player);
+        setDropMultiplier(event, itemUsed);
     }
 
     @Override
     public void blockMineAction(BlockBreakEvent blockBreakEvent, ItemStack itemStack, ItemStack thisItem) {
-        if (getItemStackLevel(thisItem) != 3) return;
+        if (getItemStackLevel(thisItem) != 3)
+            return;
 
         multiplyOnMine(blockBreakEvent, thisItem, itemStack);
     }
@@ -103,10 +114,12 @@ public class VillagerGem extends UpgradeableItem implements PassiveAction, MineA
         super.rightClickBlock(event, itemInteracted);
         rightClickAir(event, itemInteracted);
     }
+
     @Override
     public void shiftRightClickAir(PlayerInteractEvent event, ItemStack itemInteracted) {
         rightClickAir(event, itemInteracted);
     }
+
     @Override
     public void shiftRightClickBlock(PlayerInteractEvent event, ItemStack itemInteracted) {
         rightClickAir(event, itemInteracted);
@@ -120,104 +133,99 @@ public class VillagerGem extends UpgradeableItem implements PassiveAction, MineA
 
         giveVillagerEgg(player, item);
 
-        if (itemLevel < 1) return;
+        if (itemLevel < 1)
+            return;
 
         enchantWithFortune(player, item);
 
-        if (itemLevel != 3) return;
+        if (itemLevel < 3)
+            return;
 
         grantMaxedEffects(player);
     }
 
     private void grantPassiveEffects(Player player) {
-        player.addPotionEffects(defaultEffects);
+        player.addPotionEffects(NON_MAXED_GEM_PASSIVE_EFFECTS);
     }
 
     private void giveVillagerEgg(Player player, ItemStack item) {
-        if (ItemUtils.getCooldown(villagerEggCooldown, item, 900L)) return;
+        if (ItemUtils.getCooldown(VILLAGER_EGG_PASSIVE_COOLDOWN, item, 21600L))
+            return;
 
-        PlayerInventory inventory = player.getInventory();
+        final PlayerInventory inventory = player.getInventory();
 
-        inventory.addItem(villagerStack);
+        inventory.addItem(VILLAGER_EGG);
     }
 
     private void enchantWithFortune(Player player, ItemStack thisItem) {
-        if (ItemUtils.getCooldown(fortuneEnchantCooldown, thisItem, 900L)) return;
+        if (ItemUtils.getCooldown(FORTUNE_ENCHANT_COOLDOWN, thisItem, 900L))
+            return;
 
-        ItemStack item = player.getInventory().getItemInMainHand();
+        final ItemStack item = player.getInventory().getItemInMainHand();
 
-        if (!item.getType().name().toLowerCase().contains("pickaxe")) return;
+        if (!item.getType().name().toLowerCase().contains("pickaxe"))
+            return;
 
-        Map<Enchantment, Integer> itemCurrentEnchantmentMap = item.getEnchantments();
+        final Map<Enchantment, Integer> itemCurrentEnchantmentMap = item.getEnchantments();
 
-        if (itemCurrentEnchantmentMap.containsKey(Enchantment.SILK_TOUCH)) return;
+        if (itemCurrentEnchantmentMap.containsKey(Enchantment.SILK_TOUCH))
+            return;
 
-        if (!itemCurrentEnchantmentMap.containsKey(Enchantment.FORTUNE) || itemCurrentEnchantmentMap.get(Enchantment.FORTUNE) < 2) {
+        if (!itemCurrentEnchantmentMap.containsKey(Enchantment.FORTUNE) || itemCurrentEnchantmentMap.get(Enchantment.FORTUNE) < 2)
             item.addEnchantment(Enchantment.FORTUNE, 2);
-        }
     }
 
     private void grantMaxedEffects(Player player) {
-        player.addPotionEffects(maxedEffects);
+        player.addPotionEffects(MAXED_GEM_PASSIVE_EFFECTS);
     }
 
-    private void setDropMultiplier(ItemStack itemUsed, Player player) {
-        if (ItemUtils.getCooldown(miningMultiplierCooldown, itemUsed, 900L, player, new TextComponent(ChatColor.AQUA + "" + ChatColor.BOLD + "Used Champion's Grace"))) return;
+    private void setDropMultiplier(PlayerDropItemEvent playerDropItemEvent, ItemStack itemUsed) {
+        final Player player = playerDropItemEvent.getPlayer();
 
-        ItemUtils.storeIntegerData(5, miningMultiplier, itemUsed);
+        if (ItemUtils.getCooldown(MINING_MULTIPIER_COOLDOWN, itemUsed, 900L, player, new TextComponent(ChatColor.AQUA + "" + ChatColor.BOLD + "Used Champion's Grace")))
+            return;
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                for (ItemStack itemStack : player.getInventory().getContents()) {
-                    if (itemStack == null || itemStack.getType() == Material.AIR) {
-                        continue;
-                    }
+        ItemUtils.storeIntegerData(5, MINING_MULTIPLIER_STORAGE, itemUsed);
 
-                    if (!itemStack.isSimilar(itemUsed)) {
-                        continue;
-                    }
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            for (ItemStack itemStack : player.getInventory().getContents()) {
+                if (itemStack == null || itemStack.getType() == Material.AIR)
+                    continue;
 
-                    ItemUtils.storeIntegerData(1, miningMultiplier, itemStack);
-                }
+                if (!itemStack.isSimilar(itemUsed))
+                    continue;
+
+                ItemUtils.storeIntegerData(1, MINING_MULTIPLIER_STORAGE, itemStack);
             }
-        }.runTaskLater(plugin, 100L);
+        }, 100L);
     }
 
     private void grantHeroTen(PlayerInteractEvent event, ItemStack item) {
         final Player player = event.getPlayer();
 
-        if (ItemUtils.getCooldown(heroTenCooldown, item, 1800L, player, new TextComponent(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Used Villager's Blessing"))) return;
+        if (ItemUtils.getCooldown(VILLAGERS_BLESSING_COOLDOWN, item, 1800L, player, new TextComponent(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "Used Villager's Blessing"))) return;
 
-        player.addPotionEffect(heroOfTheVillageTen);
+        player.addPotionEffect(HERO_OF_THE_VILLAGE_TEN);
     }
 
     private void multiplyOnMine(BlockBreakEvent blockBreakEvent, ItemStack thisItem, ItemStack itemUsedToMine) {
-        Integer multiplier = ItemUtils.getIntegerData(miningMultiplier, thisItem);
+        final int multiplier = ItemUtils.getDataOfType(PersistentDataType.INTEGER, MINING_MULTIPLIER_STORAGE, thisItem, 1);
 
-        if (multiplier == null) {
-            ItemUtils.storeIntegerData(1, miningMultiplier, thisItem);
+        if (multiplier == 1)
             return;
-        }
 
-        if (multiplier == 1) return;
+        final Block block = blockBreakEvent.getBlock();
 
-        Block block = blockBreakEvent.getBlock();
-        Material blockMaterial = block.getType();
+        if (!VILLAGER_MULTIPLIER_WHITELIST.contains(block.getType()))
+            return;
 
-        if (!VILLAGER_MULTIPLIER_WHITELIST.contains(blockMaterial)) return;
+        final World world = block.getWorld();
+        final Location blockLocation = block.getLocation();
 
-        World world = block.getWorld();
-        Location blockLocation = block.getLocation();
+        for (ItemStack item : block.getDrops(itemUsedToMine)) {
+            final ItemStack multipliedItem = item.clone();
 
-        Collection<ItemStack> defaultDrops = block.getDrops(itemUsedToMine);
-
-        for (ItemStack item : defaultDrops) {
-            ItemStack multipliedItem = item.clone();
-
-            int defaultAmount = item.getAmount();
-
-            multipliedItem.setAmount(defaultAmount * multiplier);
+            multipliedItem.setAmount(item.getAmount() * multiplier);
 
             world.dropItem(blockLocation, multipliedItem);
         }
@@ -227,6 +235,4 @@ public class VillagerGem extends UpgradeableItem implements PassiveAction, MineA
         blockBreakEvent.setDropItems(false);
         blockBreakEvent.setCancelled(true);
     }
-
-
 }

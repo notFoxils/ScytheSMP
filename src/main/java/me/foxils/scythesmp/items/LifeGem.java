@@ -82,23 +82,24 @@ public class LifeGem extends UpgradeableItem implements PassiveAction, AttackAct
     }
 
     private void tempLifeSteal(EntityDamageByEntityEvent event, ItemStack thisItem) {
+        if (event.isCancelled()) return;
         if (!(event.getDamager() instanceof Player player) || !(event.getEntity() instanceof Player playerAttacked)) return;
 
-        AttributeInstance attackedMaxHealthAttribute = playerAttacked.getAttribute(Attribute.GENERIC_MAX_HEALTH);
-        AttributeInstance playerMaxHealthAttribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        final AttributeInstance attackedMaxHealthAttribute = playerAttacked.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        final AttributeInstance playerMaxHealthAttribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
 
         if (attackedMaxHealthAttribute == null || playerMaxHealthAttribute == null) return;
 
-        double attackedMaxHealthValue = attackedMaxHealthAttribute.getValue();
+        final double attackedMaxHealthValue = attackedMaxHealthAttribute.getValue();
 
         if (attackedMaxHealthValue < attackedMaxHealthAttribute.getDefaultValue()) return;
 
         if (ItemUtils.getCooldown(lifeStealCooldownKey, thisItem, 180L, player, new TextComponent(ChatColor.DARK_RED + "" + ChatColor.BOLD + "Used Life-Steal"))) return;
 
-        double playerMaxHealthValue = playerMaxHealthAttribute.getValue();
+        final double playerMaxHealthValue = playerMaxHealthAttribute.getValue();
 
-        double attackedNewValue = attackedMaxHealthValue - 8;
-        double playerNewValue = playerMaxHealthValue + 8;
+        final double attackedNewValue = attackedMaxHealthValue - 8;
+        final double playerNewValue = playerMaxHealthValue + 8;
 
         attackedMaxHealthAttribute.setBaseValue(attackedNewValue);
         playerMaxHealthAttribute.setBaseValue(playerNewValue);
