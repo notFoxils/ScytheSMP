@@ -53,9 +53,10 @@ public class PlayerRespawnListener implements Listener {
         playerStats.updateColumn();
 
         final UpgradeableItem killerCurrentGemClass = (UpgradeableItem) ItemRegistry.getItemFromKey(new NamespacedKey(plugin, killerCurrentGem));
+        assert killerCurrentGemClass != null;
 
         for (ItemStack itemStack : killer.getInventory().getContents()) {
-            if (!ItemRegistry.getItemFromItemStack(itemStack).equals(killerCurrentGemClass))
+            if (!killerCurrentGemClass.equals(ItemRegistry.getItemFromItemStack(itemStack)))
                 continue;
 
             UpgradeableItem.setItemStackLevel(itemStack, killerGemLevel);
@@ -85,6 +86,7 @@ public class PlayerRespawnListener implements Listener {
         playerStats.updateColumn();
 
         final UpgradeableItem playerGem = (UpgradeableItem) ItemRegistry.getItemFromKey(new NamespacedKey(plugin, playerCurrentGem));
+        assert playerGem != null;
         final ItemStack playerGemItem = playerGem.createItem(1);
 
         UpgradeableItem.setItemStackLevel(playerGemItem, playerCurrentGemLevel);
