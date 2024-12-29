@@ -21,7 +21,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -36,7 +35,7 @@ public class VillagerGem extends UpgradeableItem implements PassiveAction, MineA
             new PotionEffect(PotionEffectType.HERO_OF_THE_VILLAGE, 200, 1)
     );
 
-    private static final PotionEffect HERO_OF_THE_VILLAGE_TEN = new PotionEffect(PotionEffectType.HERO_OF_THE_VILLAGE, 6000, 9);
+    private static final PotionEffect HERO_OF_THE_VILLAGE_TEN = new PotionEffect(PotionEffectType.HERO_OF_THE_VILLAGE, 12000, 9);
 
     private static final ItemStack VILLAGER_EGG = new ItemStack(Material.VILLAGER_SPAWN_EGG, 1);
 

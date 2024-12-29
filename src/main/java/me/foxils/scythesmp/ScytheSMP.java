@@ -19,7 +19,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -68,20 +67,20 @@ public final class ScytheSMP extends JavaPlugin {
                         new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.AMETHYST_SHARD), new ItemStack(Material.GOLD_INGOT),
                         new ItemStack(Material.DIAMOND_BLOCK), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.DIAMOND_BLOCK)
                 ), true));
-//        ItemRegistry.registerItem(new RerollItem(Material.NETHER_STAR, 1, ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "[" + ChatColor.GOLD + ChatColor.BOLD + "Gem Reroll" + ChatColor.DARK_GRAY + ChatColor.BOLD + "]", this,
-//                List.of(
-//                        new ItemAbility("Gem Forge", List.of(
-//                                "When crafted this item generates a",
-//                                "randomly selected Gem. And automatically",
-//                                "consumes the previous gem that was in your inventory.",
-//                                "This also lowers Gem's level by 1."
-//                        ), ActionType.CRAFT)
-//                ),
-//                List.of(
-//                        new ItemStack(Material.DIAMOND), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.DIAMOND),
-//                        new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.AMETHYST_SHARD), new ItemStack(Material.GOLD_INGOT),
-//                        new ItemStack(Material.DIAMOND), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.DIAMOND)
-//                ), true));
+        ItemRegistry.registerItem(new RerollItem(Material.NETHER_STAR, 1, ChatColor.DARK_GRAY + "" + ChatColor.BOLD + "[" + ChatColor.GOLD + ChatColor.BOLD + "Gem Reroll" + ChatColor.DARK_GRAY + ChatColor.BOLD + "]", this,
+                List.of(
+                        new ItemAbility("Gem Forge", List.of(
+                                "When crafted this item generates a",
+                                "randomly selected Gem. And automatically",
+                                "consumes the previous gem that was in your inventory.",
+                                "This also lowers Gem's level by 1."
+                        ), ActionType.CRAFT)
+                ),
+                List.of(
+                        new ItemStack(Material.DIAMOND), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.DIAMOND),
+                        new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.AMETHYST_SHARD), new ItemStack(Material.GOLD_INGOT),
+                        new ItemStack(Material.DIAMOND), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.DIAMOND)
+                ), true));
         ItemRegistry.registerItem(new PowerGem(Material.PAPER, 8, ChatColor.of("#292138") + "" + ChatColor.MAGIC + ChatColor.BOLD + "[" + ChatColor.of("#292138") + ChatColor.BOLD + "[G" + ChatColor.of("#2e233f") + ChatColor.BOLD + "e" + ChatColor.of("#332546") + ChatColor.BOLD + "m " + ChatColor.of("#38264c") + ChatColor.BOLD + "O" + ChatColor.of("#3d2853") + ChatColor.BOLD + "f " + ChatColor.of("#432a5a") + ChatColor.BOLD + "P" + ChatColor.of("#482c61") + ChatColor.BOLD + "o" + ChatColor.of("#4d2e68") + ChatColor.BOLD + "w" + ChatColor.of("#52306f") + ChatColor.BOLD + "e" + ChatColor.of("#573175") + ChatColor.BOLD + "r]" + ChatColor.MAGIC + ChatColor.BOLD + "]", this,
                 List.of(
                         new ItemAbility("test", List.of("testing"), ActionType.NONE)

@@ -2,7 +2,7 @@ package me.foxils.scythesmp.items;
 
 import me.foxils.foxutils.Item;
 import me.foxils.foxutils.itemactions.ClickActions;
-import me.foxils.foxutils.itemactions.InventoryClickAction;
+import me.foxils.foxutils.itemactions.InventoryClickActions;
 import me.foxils.foxutils.registry.ItemRegistry;
 import me.foxils.foxutils.utilities.ItemUtils;
 import me.foxils.foxutils.utilities.ItemAbility;
@@ -15,11 +15,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 @SuppressWarnings("unused")
-public abstract class UpgradeableItem extends Item implements ClickActions, InventoryClickAction {
+public abstract class UpgradeableItem extends Item implements ClickActions, InventoryClickActions {
 
     private final NamespacedKey LEVEL_KEY;
 
@@ -59,8 +60,13 @@ public abstract class UpgradeableItem extends Item implements ClickActions, Inve
     }
 
     @Override
-    public void onInvetoryPull(InventoryClickEvent event, ItemStack itemStack) {
-        preventNonPlayerInventoryMovement(event);
+    public void onInvetoryClick(InventoryClickEvent inventoryClickEvent, ItemStack itemStack, @Nullable ItemStack itemStack1) {
+        preventNonPlayerInventoryMovement(inventoryClickEvent);
+    }
+
+    @Override
+    public void onInvetoryInteract(InventoryClickEvent inventoryClickEvent, ItemStack itemStack, @Nullable ItemStack itemStack1) {
+        preventNonPlayerInventoryMovement(inventoryClickEvent);
     }
 
     private void preventPotInteraction(PlayerInteractEvent event, ItemStack itemInteracted) {

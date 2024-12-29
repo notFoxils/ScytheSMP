@@ -3,7 +3,6 @@ package me.foxils.scythesmp.listeners;
 import me.foxils.foxutils.registry.ItemRegistry;
 import me.foxils.scythesmp.items.UpgradeableItem;
 import me.foxils.scythesmp.tables.PlayerStats;
-import org.bukkit.GameRule;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,7 +12,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 public class PlayerRespawnListener implements Listener {
@@ -57,7 +55,7 @@ public class PlayerRespawnListener implements Listener {
         final UpgradeableItem killerCurrentGemClass = (UpgradeableItem) ItemRegistry.getItemFromKey(new NamespacedKey(plugin, killerCurrentGem));
 
         for (ItemStack itemStack : killer.getInventory().getContents()) {
-            if (!ItemRegistry.getItemFromItemStack(itemStack).equals(killerCurrentGemClass))
+            if (itemStack == null || !ItemRegistry.getItemFromItemStack(itemStack).equals(killerCurrentGemClass))
                 continue;
 
             UpgradeableItem.setItemStackLevel(itemStack, killerGemLevel);
