@@ -41,7 +41,7 @@ public class RerollItem extends Item implements InventoryClickActions {
         final HashMap<String, Integer> gemLevelMap = playerStats.getGemLevelMap();
 
         for (ItemStack itemStack : playerInventory.getContents()) {
-            if (itemStack == null || !(ItemRegistry.getItemFromItemStack(itemStack) instanceof UpgradeableItem upgradeableItem))
+            if (!(ItemRegistry.getItemFromItemStack(itemStack) instanceof UpgradeableItem upgradeableItem))
                 continue;
 
             final int storedItemLevel = UpgradeableItem.getItemStackLevel(itemStack) - 1;

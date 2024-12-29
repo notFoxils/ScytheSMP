@@ -26,14 +26,8 @@ public class GemUpgrade extends Item implements ClickActions {
         Player player = event.getPlayer();
 
         for (ItemStack item : player.getInventory().getContents()) {
-            if (item == null)
+            if (!(ItemRegistry.getItemFromItemStack(item) instanceof UpgradeableItem upgradeableCustomItem))
                 continue;
-
-            Item customItemClass = ItemRegistry.getItemFromItemStack(item);
-
-            if (!(customItemClass instanceof UpgradeableItem upgradeableCustomItem))
-                continue;
-
 
             ItemStack upgradeItem = event.getItem();
 

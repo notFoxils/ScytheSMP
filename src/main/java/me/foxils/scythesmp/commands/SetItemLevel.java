@@ -1,6 +1,5 @@
 package me.foxils.scythesmp.commands;
 
-import me.foxils.foxutils.Item;
 import me.foxils.foxutils.registry.ItemRegistry;
 import me.foxils.scythesmp.items.UpgradeableItem;
 import org.bukkit.ChatColor;
@@ -22,9 +21,7 @@ public class SetItemLevel implements CommandExecutor {
 
         final ItemStack itemStack = player.getInventory().getItemInMainHand();
 
-        final Item item = ItemRegistry.getItemFromItemStack(itemStack);
-
-        if (!(item instanceof UpgradeableItem)) {
+        if (!(ItemRegistry.getItemFromItemStack(itemStack) instanceof UpgradeableItem upgradeableItem)) {
             commandSender.sendMessage(ChatColor.YELLOW + "Held item is not an ArtifactItem");
             return true;
         }
@@ -39,11 +36,11 @@ public class SetItemLevel implements CommandExecutor {
         }
 
         if (!UpgradeableItem.setItemStackLevel(itemStack, newLevel)) {
-            commandSender.sendMessage(ChatColor.DARK_RED + "Could not set the level for item: " + item.getName());
+            commandSender.sendMessage(ChatColor.DARK_RED + "Could not set the level for item: " + upgradeableItem.getName());
             return true;
         }
 
-        commandSender.sendMessage(ChatColor.GREEN + "Set " + item.getName() + "'s " + ChatColor.RESET + "Level to" + newLevel);
+        commandSender.sendMessage(ChatColor.GREEN + "Set " + upgradeableItem.getName() + "'s " + ChatColor.RESET + "Level to" + newLevel);
         return true;
     }
 }

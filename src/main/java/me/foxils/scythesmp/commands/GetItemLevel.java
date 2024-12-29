@@ -22,9 +22,7 @@ public class GetItemLevel implements CommandExecutor {
 
         final ItemStack itemStack = player.getInventory().getItemInMainHand();
 
-        final Item item = ItemRegistry.getItemFromItemStack(itemStack);
-
-        if (!(item instanceof UpgradeableItem upgradeableItem)) {
+        if (!(ItemRegistry.getItemFromItemStack(itemStack)instanceof UpgradeableItem upgradeableItem)) {
             commandSender.sendMessage(ChatColor.YELLOW + "Held item is not an UpgradeableItem");
             return true;
         }

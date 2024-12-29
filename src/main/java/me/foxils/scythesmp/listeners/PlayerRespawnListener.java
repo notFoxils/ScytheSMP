@@ -55,7 +55,7 @@ public class PlayerRespawnListener implements Listener {
         final UpgradeableItem killerCurrentGemClass = (UpgradeableItem) ItemRegistry.getItemFromKey(new NamespacedKey(plugin, killerCurrentGem));
 
         for (ItemStack itemStack : killer.getInventory().getContents()) {
-            if (itemStack == null || !ItemRegistry.getItemFromItemStack(itemStack).equals(killerCurrentGemClass))
+            if (!ItemRegistry.getItemFromItemStack(itemStack).equals(killerCurrentGemClass))
                 continue;
 
             UpgradeableItem.setItemStackLevel(itemStack, killerGemLevel);
